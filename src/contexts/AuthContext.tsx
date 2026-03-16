@@ -1,9 +1,10 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import type { Profile, UserRole } from '../types';
 
-interface AuthContextValue {
+export interface AuthContextValue {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
@@ -14,7 +15,7 @@ interface AuthContextValue {
   refreshProfile: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextValue | null>(null);
+export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -39,7 +40,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    // 초기 세션 복원
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -50,9 +50,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(false);
     });
 
-    // 세션 변경 감지
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
@@ -91,11 +90,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-// useAuth는 src/hooks/useAuth.ts 에서 re-export됩니다
-export function useAuthContext(): AuthContextValue {
-  const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth must be used within AuthProvider');
-  return ctx;
 }

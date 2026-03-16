@@ -8,15 +8,12 @@ export function UserManagement() {
   const { profile: myProfile } = useAuth();
   const orgId = myProfile?.organization_id ?? null;
   const [users, setUsers] = useState<Profile[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!orgId);
   const [saving, setSaving] = useState<string | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    if (!orgId) {
-      setLoading(false);
-      return;
-    }
+    if (!orgId) return;
     supabase
       .from('profiles')
       .select('*')

@@ -20,4 +20,11 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  // Context 파일은 Provider 컴포넌트와 Context 객체를 함께 export하는 것이 표준 패턴
+  {
+    files: ['**/contexts/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

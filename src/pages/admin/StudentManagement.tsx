@@ -17,7 +17,7 @@ export function StudentManagement() {
   const { profile } = useAuth();
   const orgId = profile?.organization_id ?? null;
   const [students, setStudents] = useState<StudentDB[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!orgId);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
@@ -25,10 +25,7 @@ export function StudentManagement() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
-    if (!orgId) {
-      setLoading(false);
-      return;
-    }
+    if (!orgId) return;
     supabase
       .from('students')
       .select('*')
