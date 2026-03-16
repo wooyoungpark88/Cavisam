@@ -55,7 +55,7 @@ export function BehaviorStats() {
             <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {/* 총계 카드 */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-sm font-bold text-gray-500 mb-4">행동 유형별 발생 현황</h3>
@@ -86,7 +86,7 @@ export function BehaviorStats() {
             {/* 최근 7일 추이 */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
               <h3 className="text-sm font-bold text-gray-500 mb-4">최근 7일 발생 추이</h3>
-              <div className="flex items-end gap-2 h-40">
+              <div className="flex items-end gap-1 sm:gap-2 h-28 sm:h-36 md:h-40">
                 {last7Days.map((d) => {
                   const count = stats?.byDate.get(d) ?? 0;
                   const heightPct = Math.round((count / maxCount) * 100);
@@ -94,7 +94,7 @@ export function BehaviorStats() {
                   return (
                     <div key={d} className="flex-1 flex flex-col items-center gap-1">
                       <span className="text-xs text-gray-500">{count}</span>
-                      <div className="w-full bg-gray-100 rounded-t relative" style={{ height: '120px' }}>
+                      <div className="w-full bg-gray-100 rounded-t relative" style={{ height: '100%' }}>
                         <div
                           className="absolute bottom-0 w-full bg-purple-500 rounded-t transition-all duration-500"
                           style={{ height: `${heightPct}%` }}

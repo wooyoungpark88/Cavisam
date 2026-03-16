@@ -23,13 +23,13 @@ export function TeacherDashboard() {
 
   return (
     <div className="h-full">
-      <div className="flex items-center justify-between mb-6 bg-white rounded-lg p-4">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 bg-white rounded-lg p-4 gap-3">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Button variant="primary" size="sm">오늘</Button>
-          <span className="text-lg font-medium">{dateStr}</span>
+          <span className="text-sm sm:text-lg font-medium">{dateStr}</span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4 flex-wrap">
           <div className="flex items-center gap-2">
             <span className="text-sm">관심 필요</span>
             <Badge variant={filter === 'attention' ? 'danger' : 'default'}>

@@ -87,9 +87,9 @@ export function ParentNotification() {
         <p className="text-sm text-gray-500">학생의 일일 컨디션을 보호자에게 전달합니다.</p>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-6">
         {/* 학생 목록 */}
-        <div className="w-64 bg-white rounded-lg border border-gray-200 p-4">
+        <div className="w-full md:w-64 bg-white rounded-lg border border-gray-200 p-4">
           <h3 className="text-sm font-bold text-gray-600 mb-3">학생 목록</h3>
           <div className="space-y-2">
             {students.map((s) => (
@@ -121,7 +121,7 @@ export function ParentNotification() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 mb-6">
               <div className="bg-gray-50 rounded-lg p-4">
                 <p className="text-xs text-gray-500 mb-1">수면</p>
                 <p className="font-medium">{selectedStudent.sleep || '-'}</p>

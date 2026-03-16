@@ -36,7 +36,7 @@ export function UnconfirmedPanel({ events, count, onMultiSelectChange, onExclude
   };
 
   return (
-    <Card className="w-[382px] h-[690px] overflow-hidden flex flex-col shrink-0">
+    <Card className="w-full lg:w-[382px] h-auto lg:h-[690px] overflow-hidden flex flex-col lg:shrink-0">
       <div className="flex items-center justify-between mb-3">
         <span className="font-bold text-sm">미확인 이벤트 ({count}건)</span>
         <Checkbox label="다중선택" onChange={handleMultiSelectChange} />

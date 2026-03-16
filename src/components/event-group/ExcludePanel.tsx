@@ -8,7 +8,7 @@ interface ExcludePanelProps {
 
 export function ExcludePanel({ events }: ExcludePanelProps) {
   return (
-    <Card className="w-[157px] h-[690px] overflow-hidden flex flex-col">
+    <Card className="w-full lg:w-[157px] h-auto lg:h-[690px] overflow-hidden flex flex-col">
       <div className="mb-4">
         <span className="font-bold text-sm">대상자 아님</span>
       </div>

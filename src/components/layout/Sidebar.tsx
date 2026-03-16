@@ -56,9 +56,11 @@ const menuGroups: MenuGroup[] = [
 interface SidebarProps {
   activeItem?: string;
   onItemClick?: (itemId: string) => void;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export function Sidebar({ activeItem, onItemClick }: SidebarProps) {
+export function Sidebar({ activeItem, onItemClick, isOpen = false, onClose }: SidebarProps) {
   const navigate = useNavigate();
   const [expandedGroups, setExpandedGroups] = useState<string[]>(
     menuGroups.map((g) => g.id)
@@ -78,9 +80,31 @@ export function Sidebar({ activeItem, onItemClick }: SidebarProps) {
   };
 
   return (
-    <aside className="w-[233px] bg-white border-r border-gray-300 h-full overflow-y-auto shrink-0">
+    <aside className={[
+      'w-[233px] bg-white border-r border-gray-300 h-full overflow-y-auto shrink-0',
+      // 모바일: fixed 오버레이
+      'fixed inset-y-0 left-0 z-30 transition-transform duration-300',
+      // 데스크톱(md+): 일반 flow 복귀
+      'md:static md:translate-x-0 md:z-auto md:transition-none',
+      // 모바일 열림/닫힘
+      isOpen ? 'translate-x-0' : '-translate-x-full',
+    ].join(' ')}>
+      {/* 닫기 버튼 - 모바일 전용 */}
+      <div className="flex justify-end p-2 md:hidden">
+        <button
+          onClick={onClose}
+          className="p-1.5 rounded hover:bg-gray-100 transition-colors"
+          aria-label="메뉴 닫기"
+        >
+          <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
       {/* 대시보드 링크 */}
-      <div className="px-4 pt-4 pb-2">
+      <div className="px-4 pt-2 pb-2 md:pt-4">
         <button
           onClick={() => navigate('/teacher')}
           className={`w-full text-left px-3 py-2 text-sm rounded transition-colors ${

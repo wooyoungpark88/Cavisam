@@ -28,10 +28,10 @@ export function EventGroupManagement() {
   return (
     <MainLayout activeMenuItem="event-group">
       <div className="h-full flex flex-col">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
           <h1 className="text-xl font-bold text-gray-800">이벤트 그룹관리</h1>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 flex-wrap">
             <Button
               variant={autoApprove ? 'primary' : 'secondary'}
               size="sm"
@@ -44,7 +44,7 @@ export function EventGroupManagement() {
           </div>
         </div>
 
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           <Select
             options={[
               { value: 'all', label: '기간 전체' },
@@ -78,7 +78,7 @@ export function EventGroupManagement() {
             <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
-          <div className="flex-1 flex gap-4 overflow-hidden">
+          <div className="flex-1 flex flex-col lg:flex-row gap-4 overflow-auto lg:overflow-hidden">
             <UnconfirmedPanel
               events={unconfirmed}
               count={unconfirmed.length}
@@ -92,7 +92,7 @@ export function EventGroupManagement() {
                   <p className="text-sm mt-1">미확인 이벤트를 확인하면 여기에 표시됩니다.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {confirmed.map((event) => (
                     <EventCard key={event.id} event={event} />
                   ))}

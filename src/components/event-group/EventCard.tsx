@@ -14,7 +14,7 @@ const behaviorLabels = {
 
 export function EventCard({ event }: EventCardProps) {
   return (
-    <Card className="w-[489px]">
+    <Card className="w-full">
       <div className="flex items-center gap-3 mb-4">
         <Avatar size="lg" />
         <div>

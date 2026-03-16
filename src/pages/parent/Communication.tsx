@@ -105,6 +105,7 @@ export function ParentCommunication() {
   const [inputValue, setInputValue] = useState('');
   const [awayMode, setAwayMode] = useState(true);
   const [sending, setSending] = useState(false);
+  const [childListOpen, setChildListOpen] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const { messages, reload } = useMessages(selectedStudentId);
@@ -126,14 +127,12 @@ export function ParentCommunication() {
     const trimmed = inputValue.trim();
     if (!trimmed || !selectedStudentId || !user) return;
 
-    // 수신자: 선재 로직에서는 같은 기관의 교사에게. 여기서는 broadcast (student_id로 조회)
-    // 실제 상황에서는 담당 교사 ID를 찾아야 하나, 여기서는 단순히 메시지 저장
     setSending(true);
     try {
       await sendMessage({
         student_id: selectedStudentId,
         sender_id: user.id,
-        receiver_id: user.id, // 실제로는 담당 교사 ID
+        receiver_id: user.id,
         content: trimmed,
         message_type: 'text',
       });
@@ -147,31 +146,33 @@ export function ParentCommunication() {
   const selectedStudent = students.find((s) => s.id === selectedStudentId);
 
   return (
-    <div className="min-h-screen bg-[rgba(0,0,0,0.7)] flex items-center justify-center p-[50px]">
+    <div className="min-h-screen bg-[rgba(0,0,0,0.7)] flex items-center justify-center p-4 sm:p-8 md:p-[50px]">
+      {/* 뒤로 가기 */}
       <button
         onClick={() => navigate('/')}
-        className="absolute left-10 top-10 flex items-center gap-3 z-10"
+        className="absolute left-4 top-4 sm:left-10 sm:top-10 flex items-center gap-3 z-10"
       >
         <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
           <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
         </div>
-        <span className="text-[20px] font-bold text-black">뒤로 가기</span>
+        <span className="hidden sm:inline text-[20px] font-bold text-black">뒤로 가기</span>
       </button>
 
+      {/* 닫기 */}
       <button
         onClick={() => navigate('/')}
-        className="absolute right-10 top-10 w-10 h-10 z-10"
+        className="absolute right-4 top-4 sm:right-10 sm:top-10 w-10 h-10 z-10"
       >
         <svg className="w-full h-full text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
 
-      <div className="bg-[#f1f1f1] flex gap-10 rounded-lg shadow-lg pt-[120px] pb-[50px] px-10 w-full max-w-[1523px]">
-        {/* 좌측 네비게이션 */}
-        <aside className="w-[240px] bg-white rounded-lg shadow-md p-4 flex flex-col gap-2">
+      <div className="bg-[#f1f1f1] flex flex-col md:flex-row gap-4 md:gap-10 rounded-lg shadow-lg pt-16 sm:pt-20 md:pt-[120px] pb-6 md:pb-[50px] px-4 sm:px-6 md:px-10 w-full max-w-[1523px]">
+        {/* 좌측 네비게이션 - 데스크톱만 */}
+        <aside className="hidden md:flex w-[240px] bg-white rounded-lg shadow-md p-4 flex-col gap-2 shrink-0">
           <div className="px-2.5 py-2 text-sm font-bold text-gray-500 mb-2">
             {profile?.name ?? '보호자'} 님
           </div>
@@ -183,28 +184,57 @@ export function ParentCommunication() {
           </button>
         </aside>
 
-        <div className="flex-1 flex flex-col gap-[30px] min-w-0">
+        <div className="flex-1 flex flex-col gap-4 md:gap-[30px] min-w-0">
           {/* 상단 바 */}
-          <div className="bg-white rounded-lg shadow-md px-5 py-2.5 h-[77px] flex items-center gap-2.5">
-            <div className="bg-[#026eff] rounded-full px-2.5 py-1.5 w-[110px] flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">소통방</span>
+          <div className="bg-white rounded-lg shadow-md px-4 sm:px-5 py-2.5 h-auto sm:h-[77px] flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+            <div className="bg-[#026eff] rounded-full px-2.5 py-1.5 w-[110px] flex items-center justify-center shrink-0">
+              <span className="text-white font-bold text-xl sm:text-2xl">소통방</span>
             </div>
-            <div className="flex-1">
-              <span className="text-[#313131] font-bold text-2xl">
+            <div className="flex-1 min-w-0">
+              <span className="text-[#313131] font-bold text-xl sm:text-2xl truncate">
                 {selectedStudent?.name ?? '학생 선택'}
               </span>
             </div>
+            {/* 자녀 목록 토글 - 모바일 전용 */}
+            <button
+              onClick={() => setChildListOpen(!childListOpen)}
+              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors shrink-0"
+              aria-label="자녀 선택"
+            >
+              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </button>
           </div>
 
-          <div className="bg-[#d7e8ff] rounded-lg p-5 flex gap-5 flex-1 overflow-hidden min-h-0" style={{ minHeight: '500px' }}>
+          <div className="bg-[#d7e8ff] rounded-lg p-3 sm:p-5 flex gap-4 sm:gap-5 flex-1 overflow-hidden min-h-0 relative" style={{ minHeight: '400px' }}>
+            {/* 모바일 자녀 목록 백드롭 */}
+            {childListOpen && (
+              <div
+                className="absolute inset-0 bg-black/30 z-[5] md:hidden"
+                onClick={() => setChildListOpen(false)}
+              />
+            )}
+
             {/* 자녀 목록 */}
-            <div className="w-[195px] bg-white rounded-lg p-5 flex flex-col gap-2 overflow-y-auto shrink-0">
+            <div className={[
+              'bg-white rounded-lg p-4 sm:p-5 flex flex-col gap-2 overflow-y-auto shrink-0',
+              // 모바일: 절대 위치 오버레이
+              'absolute inset-y-0 left-0 z-10 w-[195px] transition-transform duration-300',
+              // 데스크톱: 일반 flow
+              'md:static md:z-auto md:transition-none md:translate-x-0',
+              childListOpen ? 'translate-x-0' : '-translate-x-full',
+            ].join(' ')}>
               {students.length === 0 ? (
                 <p className="text-sm text-gray-400 text-center">연결된 자녀가 없습니다</p>
               ) : students.map((s) => (
                 <button
                   key={s.id}
-                  onClick={() => setSelectedStudentId(s.id)}
+                  onClick={() => {
+                    setSelectedStudentId(s.id);
+                    setChildListOpen(false);
+                  }}
                   className={`flex items-center gap-2.5 p-4 rounded-lg w-full text-left ${
                     selectedStudentId === s.id ? 'bg-black' : 'bg-[#eaeaea]'
                   }`}
@@ -218,14 +248,14 @@ export function ParentCommunication() {
             </div>
 
             {/* 채팅 영역 */}
-            <div className="flex-1 bg-white rounded-lg p-5 flex flex-col min-w-0 overflow-hidden">
-              <div className="bg-black rounded-lg p-2.5 mb-5">
-                <p className="text-white font-bold text-base text-center">
+            <div className="flex-1 bg-white rounded-lg p-3 sm:p-5 flex flex-col min-w-0 overflow-hidden">
+              <div className="bg-black rounded-lg p-2.5 mb-4 sm:mb-5">
+                <p className="text-white font-bold text-sm sm:text-base text-center">
                   안녕하세요. {selectedStudent?.name ?? '...'} 이용인 소통방입니다.
                 </p>
               </div>
 
-              <div className="flex-1 overflow-y-auto space-y-5 py-5">
+              <div className="flex-1 overflow-y-auto space-y-4 sm:space-y-5 py-3 sm:py-5">
                 {messages.map((msg) => (
                   <MessageBubble key={msg.id} msg={msg} userId={user?.id ?? ''} />
                 ))}
@@ -234,16 +264,16 @@ export function ParentCommunication() {
 
               {awayMode && (
                 <div className="bg-[#026eff] rounded-lg p-2.5 mb-3">
-                  <p className="text-white font-bold text-base text-center">
+                  <p className="text-white font-bold text-sm sm:text-base text-center">
                     자리비움이 설정되어, 보호자님과 케비쌤이 소통합니다.
                   </p>
                 </div>
               )}
 
-              <div className="flex gap-2.5 items-center px-5 py-2.5 bg-[#f2f2f2] border-t border-[#cecece] rounded-b-lg h-[52px] shrink-0">
+              <div className="flex gap-2 sm:gap-2.5 items-center px-3 sm:px-5 py-2.5 bg-[#f2f2f2] border-t border-[#cecece] rounded-b-lg h-[52px] shrink-0">
                 <button
                   onClick={() => setAwayMode(!awayMode)}
-                  className={`flex items-center gap-1.5 font-medium text-base shrink-0 ${
+                  className={`flex items-center gap-1.5 font-medium text-sm sm:text-base shrink-0 ${
                     awayMode ? 'text-[#026eff]' : 'text-[#9c9c9c]'
                   }`}
                 >
@@ -258,26 +288,26 @@ export function ParentCommunication() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), void handleSend())}
                   placeholder="메세지를 입력하세요."
-                  className="flex-1 bg-transparent text-base text-black placeholder-[#9c9c9c] outline-none"
+                  className="flex-1 bg-transparent text-sm sm:text-base text-black placeholder-[#9c9c9c] outline-none min-w-0"
                   disabled={sending}
                 />
                 <button
                   onClick={() => void handleSend()}
                   disabled={sending || !inputValue.trim()}
-                  className="w-10 h-10 shrink-0 flex items-center justify-center disabled:opacity-40"
+                  className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 flex items-center justify-center disabled:opacity-40"
                 >
-                  <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
                 </button>
               </div>
 
-              <div className="flex flex-wrap gap-2.5 p-2.5 bg-[#f2f2f2] rounded-b-lg shrink-0">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2.5 p-2 sm:p-2.5 bg-[#f2f2f2] rounded-b-lg shrink-0">
                 {quickReplies.map((text, i) => (
                   <button
                     key={i}
                     onClick={() => setInputValue(text)}
-                    className="px-5 py-2.5 bg-white border border-[#d9d9d9] rounded-full text-[#9c9c9c] text-base hover:border-[#026eff] hover:text-[#026eff] transition-colors"
+                    className="px-3 py-1.5 sm:px-5 sm:py-2.5 bg-white border border-[#d9d9d9] rounded-full text-[#9c9c9c] text-sm sm:text-base hover:border-[#026eff] hover:text-[#026eff] transition-colors"
                   >
                     {text}
                   </button>

@@ -6,7 +6,7 @@ export function Landing() {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
       <div className="text-center mb-8">
-        <div className="text-4xl font-bold mb-4">
+        <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
           <span className="text-purple-600">Care</span>Via
         </div>
         <p className="text-lg text-gray-600 mb-2">
@@ -21,10 +21,10 @@ export function Landing() {
         <span className="text-xl font-medium">케비쌤 서비스</span>
       </div>
 
-      <div className="flex gap-8">
+      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 w-full max-w-[620px] px-4 sm:px-0">
         <button
           onClick={() => navigate('/teacher')}
-          className="w-72 h-72 bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col items-center justify-center gap-4"
+          className="w-full sm:w-72 h-56 sm:h-72 bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col items-center justify-center gap-4"
         >
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -45,7 +45,7 @@ export function Landing() {
 
         <button
           onClick={() => navigate('/parent')}
-          className="w-72 h-72 bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col items-center justify-center gap-4"
+          className="w-full sm:w-72 h-56 sm:h-72 bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col items-center justify-center gap-4"
         >
           <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
             <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
