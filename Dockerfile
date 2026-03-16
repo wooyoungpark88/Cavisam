@@ -20,8 +20,13 @@ RUN npm run build
 FROM nginx:1.27-alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+# nginx entrypoint가 시작 시 envsubst 처리 후 conf.d/default.conf 로 자동 배치
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+
+# Railway $PORT 미주입 시 fallback
+ENV PORT=8080
+
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
