@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: #f4f4f4;
+  --color-card: #ffffff;
+  --color-header: #000000;
+  --color-border: #cccccc;
+  --color-border-light: rgba(204, 204, 204, 0.8);
+  --color-text-primary: #313131;
+  --color-text-secondary: #515151;
+  --color-text-muted: #848484;
+  --color-accent: rgba(136, 136, 136, 0.7);
+  
+  --font-family-sans: 'Noto Sans KR', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
