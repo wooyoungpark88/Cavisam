@@ -99,7 +99,7 @@ function MessageBubble({ msg, userId }: { msg: MessageDB; userId: string }) {
 
 export function ParentCommunication() {
   const navigate = useNavigate();
-  const { user, profile } = useAuth();
+  const { profile } = useAuth();
   const [students, setStudents] = useState<StudentDB[]>([]);
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
   const [inputValue, setInputValue] = useState('');
@@ -112,12 +112,12 @@ export function ParentCommunication() {
 
   // 자녀 목록 로드
   useEffect(() => {
-    if (!user) return;
-    getStudentsByParent(user.id).then((data) => {
+    if (!profile) return;
+    getStudentsByParent(profile.id).then((data) => {
       setStudents(data);
       if (data.length > 0) setSelectedStudentId(data[0].id);
     });
-  }, [user]);
+  }, [profile]);
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -125,14 +125,14 @@ export function ParentCommunication() {
 
   const handleSend = async () => {
     const trimmed = inputValue.trim();
-    if (!trimmed || !selectedStudentId || !user) return;
+    if (!trimmed || !selectedStudentId || !profile) return;
 
     setSending(true);
     try {
       await sendMessage({
         student_id: selectedStudentId,
-        sender_id: user.id,
-        receiver_id: user.id,
+        sender_id: profile.id,
+        receiver_id: profile.id,
         content: trimmed,
         message_type: 'text',
       });
@@ -257,7 +257,7 @@ export function ParentCommunication() {
 
               <div className="flex-1 overflow-y-auto space-y-4 sm:space-y-5 py-3 sm:py-5">
                 {messages.map((msg) => (
-                  <MessageBubble key={msg.id} msg={msg} userId={user?.id ?? ''} />
+                  <MessageBubble key={msg.id} msg={msg} userId={profile?.id ?? ''} />
                 ))}
                 <div ref={chatEndRef} />
               </div>

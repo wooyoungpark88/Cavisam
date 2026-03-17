@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import {
-  Landing, Login, AuthCallback, RoleSetup, NotFound,
+  Landing, Login, NotFound,
   TeacherDashboard, EventGroupManagement, BehaviorStats,
   RealtimeVideo, BehaviorAnalysis, InterventionReport, ParentNotification,
   ParentCommunication,
@@ -14,8 +14,6 @@ export const router = createBrowserRouter([
   // 공개
   { path: '/', element: <Landing /> },
   { path: '/login', element: <Login /> },
-  { path: '/auth/callback', element: <AuthCallback /> },
-  { path: '/auth/setup', element: <RoleSetup /> },
 
   // 교사 영역
   {

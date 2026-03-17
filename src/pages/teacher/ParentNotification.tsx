@@ -11,7 +11,7 @@ interface Profile {
 }
 
 export function ParentNotification() {
-  const { user, profile } = useAuth();
+  const { profile } = useAuth();
   const today = new Date().toISOString().slice(0, 10);
   const { students } = useStudents(today);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
@@ -26,7 +26,7 @@ export function ParentNotification() {
   }, [students, selectedStudent]);
 
   const handleSendReport = async () => {
-    if (!selectedStudent || !user || !profile?.organization_id) return;
+    if (!selectedStudent || !profile?.organization_id) return;
 
     // 해당 학생의 보호자 ID 찾기
     const { data: studentData } = await supabase
@@ -63,7 +63,7 @@ export function ParentNotification() {
     try {
       await sendMessage({
         student_id: selectedStudent.id,
-        sender_id: user.id,
+        sender_id: profile.id,
         receiver_id: parentId,
         content: JSON.stringify(report),
         message_type: 'daily_report',

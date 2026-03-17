@@ -5,27 +5,29 @@ import { useAuth } from './useAuth';
 import type { MessageDB } from '../lib/api/messages';
 
 export function useMessages(studentId: string | null) {
-  const { user } = useAuth();
+  const { profile } = useAuth();
   const [messages, setMessages] = useState<MessageDB[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const userId = profile?.id ?? null;
+
   const load = useCallback(async () => {
-    if (!studentId || !user) return;
+    if (!studentId || !userId) return;
     setLoading(true);
     try {
-      const data = await getMessages(studentId, user.id);
+      const data = await getMessages(studentId, userId);
       setMessages(data);
-      await markAsRead(studentId, user.id);
+      await markAsRead(studentId, userId);
     } finally {
       setLoading(false);
     }
-  }, [studentId, user]);
+  }, [studentId, userId]);
 
   useEffect(() => { void load(); }, [load]);
 
   // Realtime 구독
   useEffect(() => {
-    if (!studentId || !user) return;
+    if (!studentId || !userId) return;
     const channel = supabase
       .channel(`messages-${studentId}`)
       .on(
@@ -40,7 +42,7 @@ export function useMessages(studentId: string | null) {
       )
       .subscribe();
     return () => { void supabase.removeChannel(channel); };
-  }, [studentId, user, load]);
+  }, [studentId, userId, load]);
 
   return { messages, loading, reload: load };
 }

@@ -1,92 +1,82 @@
 import { createContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { Session, User } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
 import type { Profile, UserRole } from '../types';
 
+const STORAGE_KEY = 'cavisam_auth';
+
+interface StoredAuth {
+  id: string;
+  name: string;
+  role: UserRole;
+  organization_id: string;
+  organization_name: string;
+}
+
 export interface AuthContextValue {
-  user: User | null;
-  session: Session | null;
   profile: Profile | null;
   role: UserRole | null;
   loading: boolean;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
-  refreshProfile: () => Promise<void>;
+  signIn: (data: StoredAuth) => void;
+  signOut: () => void;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
+function generateId(): string {
+  return crypto.randomUUID?.() ?? `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function loadAuth(): StoredAuth | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as StoredAuth;
+  } catch {
+    return null;
+  }
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  async function fetchProfile(userId: string): Promise<Profile | null> {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', userId)
-      .single();
-    if (error) return null;
-    return data as Profile;
-  }
-
-  async function refreshProfile() {
-    if (!user) return;
-    const p = await fetchProfile(user.id);
-    setProfile(p);
-  }
-
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        const p = await fetchProfile(session.user.id);
-        setProfile(p);
-      }
-      setLoading(false);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          const p = await fetchProfile(session.user.id);
-          setProfile(p);
-        } else {
-          setProfile(null);
-        }
-        setLoading(false);
-      }
-    );
-
-    return () => subscription.unsubscribe();
+    const stored = loadAuth();
+    if (stored) {
+      setProfile({
+        id: stored.id,
+        name: stored.name,
+        role: stored.role,
+        organization_id: stored.organization_id,
+        avatar_url: null,
+        created_at: '',
+      });
+    }
+    setLoading(false);
   }, []);
 
-  async function signInWithGoogle() {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
+  function signIn(data: StoredAuth) {
+    const auth: StoredAuth = { ...data, id: data.id || generateId() };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(auth));
+    setProfile({
+      id: auth.id,
+      name: auth.name,
+      role: auth.role,
+      organization_id: auth.organization_id,
+      avatar_url: null,
+      created_at: '',
     });
   }
 
-  async function signOut() {
-    await supabase.auth.signOut();
+  function signOut() {
+    localStorage.removeItem(STORAGE_KEY);
     setProfile(null);
   }
 
   const role = profile?.role ?? null;
 
   return (
-    <AuthContext.Provider
-      value={{ user, session, profile, role, loading, signInWithGoogle, signOut, refreshProfile }}
-    >
+    <AuthContext.Provider value={{ profile, role, loading, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
