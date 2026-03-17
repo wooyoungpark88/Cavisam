@@ -29,8 +29,8 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
     <aside
       className={[
         'w-[200px] bg-white rounded-lg p-4 flex flex-col gap-2 shrink-0',
-        'fixed inset-y-0 left-0 z-30 transition-transform duration-300',
-        'md:static md:translate-x-0 md:z-auto md:transition-none md:h-auto md:rounded-lg',
+        'fixed inset-y-0 left-0 z-40 transition-transform duration-300',
+        'md:static md:translate-x-0 md:z-auto md:transition-none md:h-fit md:self-start md:rounded-lg',
         isOpen ? 'translate-x-0' : '-translate-x-full',
       ].join(' ')}
     >

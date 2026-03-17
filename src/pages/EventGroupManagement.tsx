@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { MainLayout } from '../components/layout';
 import { Button, Select, DateInput } from '../components/common';
 import { UnconfirmedPanel, ExcludePanel, EventCard } from '../components/event-group';
 import { useEvents } from '../hooks/useEvents';
@@ -26,8 +25,7 @@ export function EventGroupManagement() {
   };
 
   return (
-    <MainLayout activeMenuItem="event-group">
-      <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-3">
           <h1 className="text-xl font-bold text-gray-800">이벤트 그룹관리</h1>
 
@@ -103,7 +101,6 @@ export function EventGroupManagement() {
             <ExcludePanel events={excluded} />
           </div>
         )}
-      </div>
-    </MainLayout>
+    </div>
   );
 }

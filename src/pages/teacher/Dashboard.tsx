@@ -160,7 +160,7 @@ function DailyCard({
 
       {/* Note */}
       {student.note && (
-        <div className="mx-4 my-2 rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: '#fffde6' }}>
+        <div className="mx-4 my-2 rounded-lg px-3 py-2 text-sm bg-[#fffde6]">
           <span className="text-gray-500 font-medium">특이사항: </span>
           <span className="text-gray-700">{student.note}</span>
         </div>
@@ -168,7 +168,7 @@ function DailyCard({
 
       {/* Medication */}
       {student.medication && (
-        <div className="mx-4 mb-2 rounded-lg px-3 py-2 text-sm" style={{ backgroundColor: '#fffde6' }}>
+        <div className="mx-4 mb-2 rounded-lg px-3 py-2 text-sm bg-[#fffde6]">
           <span className="text-gray-500 font-medium">약복용: </span>
           <span className="text-gray-700">{student.medication}</span>
         </div>
@@ -178,15 +178,13 @@ function DailyCard({
       <div className="px-4 pb-4 pt-2 space-y-2">
         <button
           onClick={onAICare}
-          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5"
-          style={{ backgroundColor: '#026eff' }}
+          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#026eff]"
         >
           <span>✨</span> AI 케어 보기 &gt;
         </button>
         <button
           onClick={onChat}
-          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5"
-          style={{ backgroundColor: '#636363' }}
+          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#636363]"
         >
           <span>💬</span> 소통방 가기 &gt;
         </button>
@@ -277,15 +275,13 @@ function StatsCard({
       <div className="px-4 pb-4 pt-1 space-y-2">
         <button
           onClick={onAICare}
-          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5"
-          style={{ backgroundColor: '#026eff' }}
+          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#026eff]"
         >
           <span>✨</span> AI 케어 보기 &gt;
         </button>
         <button
           onClick={onChat}
-          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5"
-          style={{ backgroundColor: '#636363' }}
+          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#636363]"
         >
           <span>💬</span> 소통방 가기 &gt;
         </button>
@@ -334,7 +330,7 @@ export function TeacherDashboard() {
   })();
 
   return (
-    <div className="min-h-full" style={{ backgroundColor: '#f1f1f1' }}>
+    <div className="min-h-full bg-[#f1f1f1]">
       {/* ── Top Bar ── */}
       <div className="bg-white rounded-xl shadow-sm px-4 sm:px-6 py-4 mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -342,16 +338,14 @@ export function TeacherDashboard() {
           <div className="flex items-center gap-3 flex-wrap">
             {viewMode === 'daily' && (
               <span
-                className="text-white text-xs font-bold px-3 py-1 rounded-full"
-                style={{ backgroundColor: '#026eff' }}
+                className="text-white text-xs font-bold px-3 py-1 rounded-full bg-[#026eff]"
               >
                 오늘
               </span>
             )}
             {viewMode !== 'daily' && (
               <span
-                className="text-white text-xs font-bold px-3 py-1 rounded-full"
-                style={{ backgroundColor: '#026eff' }}
+                className="text-white text-xs font-bold px-3 py-1 rounded-full bg-[#026eff]"
               >
                 {viewLabels[viewMode]}
               </span>
@@ -418,8 +412,7 @@ export function TeacherDashboard() {
               <p className="text-sm mt-2">대상자 관리에서 학생을 추가하세요.</p>
               <button
                 onClick={() => navigate('/admin/students')}
-                className="mt-4 px-4 py-2 text-sm rounded-lg text-white"
-                style={{ backgroundColor: '#636363' }}
+                className="mt-4 px-4 py-2 text-sm rounded-lg text-white bg-[#636363]"
               >
                 대상자 관리로 이동
               </button>

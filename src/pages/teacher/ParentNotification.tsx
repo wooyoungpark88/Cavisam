@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useStudents } from '../../hooks/useStudents';
 import { useMessages } from '../../hooks/useMessages';
@@ -254,6 +255,7 @@ function ParentBubble({ msg, parentName }: { msg: MessageDB; parentName: string 
 /* ───────────────────── Main Page ───────────────────── */
 
 export function ParentNotification() {
+  const navigate = useNavigate();
   const { profile } = useAuth();
   const today = new Date().toISOString().slice(0, 10);
   const { students, loading: studentsLoading } = useStudents(today);
@@ -363,7 +365,7 @@ export function ParentNotification() {
   const mealPct = selectedStudent ? (mealMap[selectedStudent.meal] ?? 80) : 80;
 
   return (
-    <div className="h-screen flex flex-col bg-[#f4f4f4] overflow-hidden">
+    <div className="h-full flex flex-col bg-[#f4f4f4] overflow-hidden">
       {/* ═══ Top Bar ═══ */}
       <div className="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-5 shrink-0">
         <div className="flex items-center gap-2">
@@ -481,7 +483,10 @@ export function ParentNotification() {
               </div>
 
               {/* AI Care button */}
-              <button className="w-full mt-5 py-2.5 bg-[#026eff] text-white text-sm font-semibold rounded-xl hover:bg-[#0254cc] transition-colors">
+              <button
+                onClick={() => navigate('/teacher/intervention-report')}
+                className="w-full mt-5 py-2.5 bg-[#026eff] text-white text-sm font-semibold rounded-xl hover:bg-[#0254cc] transition-colors"
+              >
                 AI 케어 보기 &gt;
               </button>
             </div>
@@ -587,7 +592,10 @@ export function ParentNotification() {
                 />
 
                 {/* Cavi Chat button */}
-                <button className="flex items-center gap-1 text-xs font-medium px-3 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shrink-0">
+                <button
+                  onClick={() => alert('케비챔 AI 기능은 준비 중입니다.')}
+                  className="flex items-center gap-1 text-xs font-medium px-3 py-2 rounded-lg bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors shrink-0"
+                >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z" />
                     <path d="M18 14l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" />

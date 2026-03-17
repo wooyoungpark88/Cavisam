@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { MainLayout } from '../../components/layout';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
 import type { Profile, UserRole } from '../../types';
@@ -45,8 +44,7 @@ export function UserManagement() {
   };
 
   return (
-    <MainLayout activeMenuItem="user-mgmt">
-      <div className="h-full">
+    <div className="h-full">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-1">사용자 관리</h2>
           <p className="text-sm text-gray-500">소속 기관의 구성원 역할을 관리합니다.</p>
@@ -112,7 +110,6 @@ export function UserManagement() {
             </div>
           </div>
         )}
-      </div>
-    </MainLayout>
+    </div>
   );
 }

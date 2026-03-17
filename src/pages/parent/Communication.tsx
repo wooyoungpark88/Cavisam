@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useMessages } from '../../hooks/useMessages';
 import { getStudentsByParent } from '../../lib/api/students';
@@ -347,7 +346,6 @@ function MessageBubble({ msg, userId, parentName }: { msg: MessageDB; userId: st
 
 /* ───── Main Component ───── */
 export function ParentCommunication() {
-  const navigate = useNavigate();
   const { profile } = useAuth();
   const [students, setStudents] = useState<StudentDB[]>([]);
   const [selectedStudentId, setSelectedStudentId] = useState<string | null>(null);
@@ -422,31 +420,7 @@ export function ParentCommunication() {
   const parentName = profile?.name ?? '보호자';
 
   return (
-    <div className="min-h-screen bg-[rgba(0,0,0,0.7)] flex items-center justify-center p-4 sm:p-8 md:p-[50px]">
-      {/* Back button */}
-      <button
-        onClick={() => navigate('/')}
-        className="absolute left-4 top-4 sm:left-10 sm:top-10 flex items-center gap-3 z-10"
-      >
-        <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center">
-          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-        </div>
-        <span className="hidden sm:inline text-[20px] font-bold text-black">뒤로 가기</span>
-      </button>
-
-      {/* Close button */}
-      <button
-        onClick={() => navigate('/')}
-        className="absolute right-4 top-4 sm:right-10 sm:top-10 w-10 h-10 z-10"
-      >
-        <svg className="w-full h-full text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-
-      <div className="bg-[#f1f1f1] flex flex-col gap-4 md:gap-5 rounded-lg shadow-lg pt-16 sm:pt-20 md:pt-[80px] pb-6 md:pb-[30px] px-4 sm:px-6 md:px-8 w-full max-w-[1400px]">
+    <div className="h-full flex flex-col bg-[#f1f1f1] rounded-lg gap-4 md:gap-5 p-4 sm:p-5 md:p-6 overflow-hidden">
         {/* Top bar */}
         <div className="bg-white rounded-lg shadow-md px-4 sm:px-5 py-2.5 h-auto sm:h-[64px] flex items-center justify-between flex-wrap sm:flex-nowrap gap-2">
           <div className="flex items-center gap-2.5">
@@ -466,9 +440,9 @@ export function ParentCommunication() {
         </div>
 
         {/* Two-panel layout */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-5 flex-1" style={{ minHeight: '500px' }}>
+        <div className="flex flex-col md:flex-row gap-4 md:gap-5 flex-1 min-h-0 overflow-hidden">
           {/* Left Panel - Student Info */}
-          <div className="bg-white rounded-xl shadow-md p-5 sm:p-6 w-full md:w-[320px] shrink-0 flex flex-col">
+          <div className="bg-white rounded-xl shadow-md p-5 sm:p-6 w-full md:w-[320px] shrink-0 hidden md:flex flex-col">
             {/* Student avatar + name */}
             <div className="flex items-center gap-3 mb-4">
               <div className="w-12 h-12 rounded-full bg-[#e8f0fe] flex items-center justify-center shrink-0">
@@ -522,7 +496,10 @@ export function ParentCommunication() {
             </div>
 
             {/* AI Care button */}
-            <button className="w-full bg-[#026eff] hover:bg-[#0258cc] text-white font-bold py-3 rounded-xl text-base mt-5 transition-colors">
+            <button
+              onClick={() => alert('AI 케어 기능은 준비 중입니다.')}
+              className="w-full bg-[#026eff] hover:bg-[#0258cc] text-white font-bold py-3 rounded-xl text-base mt-5 transition-colors"
+            >
               ✨ AI 케어 보기 &gt;
             </button>
           </div>
@@ -556,7 +533,10 @@ export function ParentCommunication() {
                   className="flex-1 bg-white border border-[#e0e0e0] rounded-full px-4 py-2 text-sm text-[#313131] placeholder-[#9c9c9c] outline-none focus:border-[#026eff] min-w-0"
                   disabled={sending}
                 />
-                <button className="shrink-0 px-3 py-2 bg-[#e8e8e8] rounded-full text-sm text-[#636363] font-medium hover:bg-[#ddd] transition-colors">
+                <button
+                  onClick={() => alert('케비챔 AI 기능은 준비 중입니다.')}
+                  className="shrink-0 px-3 py-2 bg-[#e8e8e8] rounded-full text-sm text-[#636363] font-medium hover:bg-[#ddd] transition-colors"
+                >
                   ✨ 케비챔
                 </button>
                 <button
@@ -575,10 +555,7 @@ export function ParentCommunication() {
                 {quickReplies.map((text, i) => (
                   <button
                     key={i}
-                    onClick={() => {
-                      setInputValue(text);
-                      void handleSend(text);
-                    }}
+                    onClick={() => void handleSend(text)}
                     className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-[#d9d9d9] rounded-full text-[#636363] text-xs sm:text-sm hover:border-[#026eff] hover:text-[#026eff] transition-colors"
                   >
                     {text}
@@ -588,7 +565,6 @@ export function ParentCommunication() {
             </div>
           </div>
         </div>
-      </div>
 
       {/* Daily Report Modal */}
       {showReportModal && selectedStudent && (

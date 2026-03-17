@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { MainLayout } from '../../components/layout';
 import { Button } from '../../components/common';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase } from '../../lib/supabase';
@@ -74,8 +73,7 @@ export function StudentManagement() {
   };
 
   return (
-    <MainLayout activeMenuItem="subject-mgmt">
-      <div className="h-full">
+    <div className="h-full">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-800 mb-1">대상자 관리</h2>
@@ -187,7 +185,6 @@ export function StudentManagement() {
             </div>
           </div>
         )}
-      </div>
-    </MainLayout>
+    </div>
   );
 }

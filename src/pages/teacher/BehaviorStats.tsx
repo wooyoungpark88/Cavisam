@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { MainLayout } from '../../components/layout';
 import { useAuth } from '../../hooks/useAuth';
 import { getBehaviorStats } from '../../lib/api/events';
 
@@ -43,8 +42,7 @@ export function BehaviorStats() {
   const maxCount = Math.max(...last7Days.map((d) => stats?.byDate.get(d) ?? 0), 1);
 
   return (
-    <MainLayout activeMenuItem="behavior-stats">
-      <div className="h-full">
+    <div className="h-full">
         <div className="mb-6">
           <h2 className="text-xl font-bold text-gray-800 mb-1">도전적 행동 통계</h2>
           <p className="text-sm text-gray-500">최근 30일간의 행동 이벤트 통계입니다.</p>
@@ -123,7 +121,6 @@ export function BehaviorStats() {
             })}
           </div>
         )}
-      </div>
-    </MainLayout>
+    </div>
   );
 }

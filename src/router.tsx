@@ -40,7 +40,9 @@ export const router = createBrowserRouter([
     path: '/teacher/event-group',
     element: (
       <TeacherGuard>
-        <EventGroupManagement />
+        <MainLayout>
+          <EventGroupManagement />
+        </MainLayout>
       </TeacherGuard>
     ),
   },
@@ -48,7 +50,9 @@ export const router = createBrowserRouter([
     path: '/teacher/behavior-stats',
     element: (
       <TeacherGuard>
-        <BehaviorStats />
+        <MainLayout>
+          <BehaviorStats />
+        </MainLayout>
       </TeacherGuard>
     ),
   },
@@ -56,7 +60,9 @@ export const router = createBrowserRouter([
     path: '/teacher/realtime-video',
     element: (
       <TeacherGuard>
-        <RealtimeVideo />
+        <MainLayout>
+          <RealtimeVideo />
+        </MainLayout>
       </TeacherGuard>
     ),
   },
@@ -64,7 +70,9 @@ export const router = createBrowserRouter([
     path: '/teacher/behavior-analysis',
     element: (
       <TeacherGuard>
-        <BehaviorAnalysis />
+        <MainLayout>
+          <BehaviorAnalysis />
+        </MainLayout>
       </TeacherGuard>
     ),
   },
@@ -72,7 +80,9 @@ export const router = createBrowserRouter([
     path: '/teacher/intervention-report',
     element: (
       <TeacherGuard>
-        <InterventionReport />
+        <MainLayout>
+          <InterventionReport />
+        </MainLayout>
       </TeacherGuard>
     ),
   },
@@ -94,7 +104,9 @@ export const router = createBrowserRouter([
     path: '/admin/students',
     element: (
       <AdminGuard>
-        <StudentManagement />
+        <MainLayout>
+          <StudentManagement />
+        </MainLayout>
       </AdminGuard>
     ),
   },
@@ -102,7 +114,9 @@ export const router = createBrowserRouter([
     path: '/admin/users',
     element: (
       <AdminGuard>
-        <UserManagement />
+        <MainLayout>
+          <UserManagement />
+        </MainLayout>
       </AdminGuard>
     ),
   },
@@ -110,7 +124,9 @@ export const router = createBrowserRouter([
     path: '/admin/devices',
     element: (
       <AdminGuard>
-        <DeviceManagement />
+        <MainLayout>
+          <DeviceManagement />
+        </MainLayout>
       </AdminGuard>
     ),
   },
@@ -118,7 +134,9 @@ export const router = createBrowserRouter([
     path: '/admin/video-history',
     element: (
       <AdminGuard>
-        <VideoHistory />
+        <MainLayout>
+          <VideoHistory />
+        </MainLayout>
       </AdminGuard>
     ),
   },
@@ -126,7 +144,9 @@ export const router = createBrowserRouter([
     path: '/admin/system-log',
     element: (
       <AdminGuard>
-        <SystemLog />
+        <MainLayout>
+          <SystemLog />
+        </MainLayout>
       </AdminGuard>
     ),
   },
@@ -134,7 +154,9 @@ export const router = createBrowserRouter([
     path: '/admin/system-error',
     element: (
       <AdminGuard>
-        <SystemError />
+        <MainLayout>
+          <SystemError />
+        </MainLayout>
       </AdminGuard>
     ),
   },
@@ -142,7 +164,9 @@ export const router = createBrowserRouter([
     path: '/admin/ai-report',
     element: (
       <AdminGuard>
-        <AiReport />
+        <MainLayout>
+          <AiReport />
+        </MainLayout>
       </AdminGuard>
     ),
   },
