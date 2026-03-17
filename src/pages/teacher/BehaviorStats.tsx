@@ -85,7 +85,7 @@ export function BehaviorStats() {
   };
 
   return (
-    <div className="h-full space-y-6">
+    <div className="h-full max-w-5xl mx-auto space-y-6">
       {/* 헤더 */}
       <div>
         <h2 className="text-xl font-bold text-gray-800">행동 추이</h2>
@@ -99,7 +99,7 @@ export function BehaviorStats() {
       ) : (
         <div className="space-y-4">
           {/* 행동 유형별 발생 현황 */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-5">
+          <div className="bg-white rounded-2xl border border-gray-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300 p-5">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-bold text-gray-700">행동 유형별 발생 현황</h3>
               <span className="text-2xl font-bold text-gray-800">{total}건</span>
@@ -133,7 +133,7 @@ export function BehaviorStats() {
           </div>
 
           {/* 최근 7일 발생 추이 - 컬러 바 차트 */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-5">
+          <div className="bg-white rounded-2xl border border-gray-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300 p-5">
             <h3 className="text-sm font-bold text-gray-700 mb-4">최근 7일 발생 추이</h3>
 
             <div className="flex items-end gap-2 h-40">
@@ -151,7 +151,7 @@ export function BehaviorStats() {
                       />
                     </div>
                     <span className="text-xs text-gray-500 font-medium">{dayOfWeek}</span>
-                    <span className="text-[10px] text-gray-400">{d.slice(5)}</span>
+                    <span className="text-xs text-gray-400">{d.slice(5)}</span>
                   </div>
                 );
               })}
@@ -175,7 +175,7 @@ export function BehaviorStats() {
           </div>
 
           {/* 주간 컨디션 추이 */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-5">
+          <div className="bg-white rounded-2xl border border-gray-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300 p-5">
             <h3 className="text-sm font-bold text-gray-700 mb-4">주간 컨디션 추이</h3>
 
             <div className="flex items-end gap-2">

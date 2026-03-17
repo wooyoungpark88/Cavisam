@@ -51,7 +51,7 @@ export function Landing() {
         {/* 교사용 */}
         <button
           onClick={enterAsTeacher}
-          className="flex-1 bg-white border-2 border-gray-100 rounded-2xl p-8 hover:border-[#026eff] hover:shadow-lg transition-all flex flex-col items-center gap-5 group"
+          className="flex-1 bg-white border-2 border-gray-100 rounded-2xl p-8 hover:border-[#026eff] hover:shadow-lg transition-all flex flex-col items-center gap-5 group shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)]"
         >
           <div className="w-20 h-20 bg-blue-50 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform">
             <img src="/icon-teacher.png" alt="교사" className="w-14 h-14 object-contain" />
@@ -60,7 +60,7 @@ export function Landing() {
             <p className="text-xl font-bold text-[#026eff]">교사용</p>
             <p className="text-sm text-gray-500 mt-1">학생 관리 및 행동 기록</p>
           </div>
-          <div className="flex items-center justify-center gap-2 bg-[#1e1e1e] text-white w-full py-3 rounded-xl text-sm font-bold mt-auto group-hover:bg-[#026eff] transition-colors">
+          <div className="flex items-center justify-center gap-2 bg-[#0f172a] text-white w-full py-3 rounded-xl text-sm font-bold mt-auto group-hover:bg-[#026eff] transition-colors">
             <span>바로가기</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
@@ -71,7 +71,7 @@ export function Landing() {
         {/* 보호자용 */}
         <button
           onClick={enterAsParent}
-          className="flex-1 bg-[#fef2f2] border-2 border-red-100 rounded-2xl p-8 hover:border-[#026eff] hover:shadow-lg transition-all flex flex-col items-center gap-5 group"
+          className="flex-1 bg-[#fef2f2] border-2 border-red-100 rounded-2xl p-8 hover:border-[#026eff] hover:shadow-lg transition-all flex flex-col items-center gap-5 group shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)]"
         >
           <div className="w-20 h-20 bg-red-50 rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform">
             <img src="/icon-family.png" alt="가족" className="w-14 h-14 object-contain" />
@@ -80,7 +80,7 @@ export function Landing() {
             <p className="text-xl font-bold text-[#026eff]">보호자용</p>
             <p className="text-sm text-gray-500 mt-1">자녀 상태 확인 및 소통</p>
           </div>
-          <div className="flex items-center justify-center gap-2 bg-[#1e1e1e] text-white w-full py-3 rounded-xl text-sm font-bold mt-auto group-hover:bg-[#026eff] transition-colors">
+          <div className="flex items-center justify-center gap-2 bg-[#0f172a] text-white w-full py-3 rounded-xl text-sm font-bold mt-auto group-hover:bg-[#026eff] transition-colors">
             <span>바로가기</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />

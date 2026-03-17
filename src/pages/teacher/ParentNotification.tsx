@@ -81,7 +81,7 @@ function TeacherBubble({ msg, name }: { msg: MessageDB; name: string }) {
         <div className="bg-white rounded-2xl rounded-tl-md px-4 py-3 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">{msg.content}</p>
         </div>
-        <p className="text-[11px] text-gray-400 mt-1 ml-1">{formatTime(msg.created_at)}</p>
+        <p className="text-xs text-gray-400 mt-1 ml-1">{formatTime(msg.created_at)}</p>
       </div>
     </div>
   );
@@ -94,7 +94,7 @@ function ParentBubble({ msg, parentName }: { msg: MessageDB; parentName: string 
       <div className="max-w-[80%] bg-[#026eff] rounded-2xl rounded-tr-md px-4 py-3 shadow-sm">
         <p className="text-sm text-white leading-relaxed whitespace-pre-wrap">{msg.content}</p>
       </div>
-      <p className="text-[11px] text-gray-400 mt-1 mr-1">{formatTime(msg.created_at)}</p>
+      <p className="text-xs text-gray-400 mt-1 mr-1">{formatTime(msg.created_at)}</p>
     </div>
   );
 }
@@ -302,7 +302,7 @@ export function ParentNotification() {
                   { icon: '🍽️', label: '평균 식사', value: `${mealPct}%`, badge: '지난주 대비 동일', delta: '→', deltaColor: 'text-gray-400' },
                 ].map((s) => (
                   <div key={s.label} className="bg-gray-50 rounded-xl px-4 py-4">
-                    <span className="inline-block text-[11px] bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
+                    <span className="inline-block text-xs bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">{s.icon} {s.label}</span>
                       <div className="flex items-center gap-1.5">
@@ -329,7 +329,7 @@ export function ParentNotification() {
           {selectedStudent ? (
             <>
               {/* Chat header */}
-              <div className="bg-[#1e1e1e] px-5 py-3 shrink-0">
+              <div className="bg-[#0f172a] px-5 py-3 shrink-0">
                 <p className="text-white text-sm font-medium">안녕하세요. {selectedStudent.name} 이용인 소통방입니다.</p>
               </div>
 

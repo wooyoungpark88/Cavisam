@@ -72,7 +72,7 @@ function DailyReportModal({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#313131] rounded-t-2xl px-6 py-4 flex items-center justify-center">
+        <div className="bg-[#0f172a] rounded-t-2xl px-6 py-4 flex items-center justify-center">
           <h2 className="text-white font-bold text-lg">{studentName} 이용인 일일보고</h2>
         </div>
 
@@ -212,7 +212,7 @@ function DailyReportModal({
           </button>
           <button
             onClick={onClose}
-            className="bg-[#313131] hover:bg-[#444] text-white font-bold px-6 py-3 rounded-xl text-base transition-colors"
+            className="bg-gray-600 hover:bg-gray-700 text-white font-bold px-6 py-3 rounded-xl text-base transition-colors"
           >
             취소 ✕
           </button>
@@ -280,17 +280,17 @@ function MessageBubble({ msg, userId, parentName }: { msg: MessageDB; userId: st
     return (
       <div className="flex justify-start gap-2.5">
         {/* Teacher avatar */}
-        <div className="w-9 h-9 rounded-full bg-[#e0e0e0] flex items-center justify-center shrink-0 mt-1">
+        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0 mt-1">
           <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
           </svg>
         </div>
         <div className="flex flex-col items-start">
-          <span className="text-sm font-bold text-[#313131] mb-1">{senderName || '선생님'}</span>
+          <span className="text-sm font-bold text-gray-800 mb-1">{senderName || '선생님'}</span>
           {report ? (
             <DailyReportCard report={report} />
           ) : (
-            <div className="bg-white border border-[#e0e0e0] rounded-xl p-3 text-sm">{msg.content}</div>
+            <div className="bg-white border border-gray-200/60 rounded-xl p-3 text-sm">{msg.content}</div>
           )}
           <span className="text-xs text-gray-400 mt-1">
             {new Date(msg.created_at).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
@@ -307,7 +307,7 @@ function MessageBubble({ msg, userId, parentName }: { msg: MessageDB; userId: st
           <span className="text-sm font-bold text-[#026eff] mb-1">{parentName} 보호자님</span>
           <div className="flex items-start gap-1.5">
             <div className="bg-[#f2f2f2] rounded-xl px-4 py-2.5 max-w-md">
-              <p className="text-sm text-[#313131]">{msg.content}</p>
+              <p className="text-sm text-gray-800">{msg.content}</p>
             </div>
             {/* Heart icon */}
             <button className="mt-1 text-gray-300 hover:text-red-400 transition-colors shrink-0">
@@ -327,15 +327,15 @@ function MessageBubble({ msg, userId, parentName }: { msg: MessageDB; userId: st
   return (
     <div className="flex justify-start gap-2.5">
       {/* Teacher avatar */}
-      <div className="w-9 h-9 rounded-full bg-[#e0e0e0] flex items-center justify-center shrink-0 mt-1">
+      <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0 mt-1">
         <svg className="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
         </svg>
       </div>
       <div className="flex flex-col items-start">
-        <span className="text-sm font-bold text-[#313131] mb-1">{senderName || '선생님'}</span>
-        <div className="bg-white border border-[#e0e0e0] rounded-xl px-4 py-2.5 max-w-md">
-          <p className="text-sm text-[#313131]">{msg.content}</p>
+        <span className="text-sm font-bold text-gray-800 mb-1">{senderName || '선생님'}</span>
+        <div className="bg-white border border-gray-200/60 rounded-xl px-4 py-2.5 max-w-md">
+          <p className="text-sm text-gray-800">{msg.content}</p>
         </div>
         <span className="text-xs text-gray-400 mt-1">
           {new Date(msg.created_at).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
@@ -454,7 +454,7 @@ export function ParentCommunication() {
                 { icon: '🍽️', label: '평균 식사', value: '92%', badge: '지난주 대비 동일', delta: '→', deltaColor: 'text-gray-400' },
               ].map((s) => (
                 <div key={s.label} className="bg-gray-50 rounded-xl px-4 py-4">
-                  <span className="inline-block text-[11px] bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
+                  <span className="inline-block text-xs bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">{s.icon} {s.label}</span>
                     <div className="flex items-center gap-1.5">
@@ -475,7 +475,7 @@ export function ParentCommunication() {
           {/* Right Panel - Chat Area */}
           <div className="flex-1 flex flex-col min-w-0 bg-[#f8f9fa]">
             {/* Chat header */}
-            <div className="bg-[#1e1e1e] px-5 py-3 shrink-0">
+            <div className="bg-[#0f172a] px-5 py-3 shrink-0">
               <p className="text-white text-sm font-medium">안녕하세요. {selectedStudent?.name ?? '...'} 이용인 소통방입니다.</p>
             </div>
 

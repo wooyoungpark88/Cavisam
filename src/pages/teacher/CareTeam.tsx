@@ -44,7 +44,7 @@ const avatarBgClasses: Record<string, string> = {
 
 export function CareTeam() {
   return (
-    <div className="h-full space-y-6">
+    <div className="h-full space-y-6 max-w-5xl mx-auto">
       {/* 헤더 */}
       <div>
         <h2 className="text-xl font-bold text-gray-800">돌봄 팀</h2>
@@ -52,14 +52,14 @@ export function CareTeam() {
       </div>
 
       {/* 팀원 목록 */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
+      <div className="bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+        <div className="p-5 border-b border-gray-100">
           <h3 className="text-sm font-bold text-gray-700">팀원 ({teamMembers.length}명)</h3>
         </div>
 
         <div className="divide-y divide-gray-100">
           {teamMembers.map((member) => (
-            <div key={member.id} className="p-4 flex items-center gap-3">
+            <div key={member.id} className="p-4 flex items-center gap-3 hover:bg-gray-50 transition-colors">
               {/* 아바타 */}
               <div
                 className={`w-11 h-11 rounded-full ${avatarBgClasses[member.accessColor]} flex items-center justify-center shrink-0`}
@@ -75,7 +75,7 @@ export function CareTeam() {
 
               {/* 접근 권한 뱃지 */}
               <span
-                className={`text-[10px] font-bold px-2.5 py-1 rounded-full shrink-0 ${accessBadgeClasses[member.accessColor]}`}
+                className={`text-xs font-bold px-2.5 py-1 rounded-full shrink-0 ${accessBadgeClasses[member.accessColor]}`}
               >
                 {member.access}
               </span>
@@ -85,14 +85,14 @@ export function CareTeam() {
       </div>
 
       {/* 이번 주 돌봄 일정 */}
-      <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
+      <div className="bg-white rounded-2xl border border-gray-200/60 overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+        <div className="p-5 border-b border-gray-100">
           <h3 className="text-sm font-bold text-gray-700">이번 주 돌봄 일정</h3>
         </div>
 
         <div className="divide-y divide-gray-100">
           {scheduleItems.map((item, index) => (
-            <div key={item.id} className="p-4 flex items-start gap-3">
+            <div key={item.id} className="p-4 flex items-start gap-3 hover:bg-gray-50 transition-colors">
               {/* 번호 */}
               <div className="w-7 h-7 rounded-full bg-[#026eff]/10 flex items-center justify-center shrink-0">
                 <span className="text-xs font-bold text-[#026eff]">{index + 1}</span>

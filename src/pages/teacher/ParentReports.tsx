@@ -129,7 +129,7 @@ export function ParentReports() {
   };
 
   return (
-    <div className="h-full space-y-5">
+    <div className="h-full max-w-5xl mx-auto space-y-5">
       {/* 헤더 */}
       <div>
         <h2 className="text-xl font-bold text-gray-800">보호자 아침 보고</h2>
@@ -139,7 +139,7 @@ export function ParentReports() {
       </div>
 
       {/* 퀵 오버뷰 */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-4">
+      <div className="bg-white rounded-2xl border border-gray-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] transition-shadow duration-300 p-4">
         <div className="flex items-center gap-3 overflow-x-auto pb-1">
           {reports.map((r) => (
             <div key={r.id} className="flex flex-col items-center gap-1 shrink-0">
@@ -150,11 +150,11 @@ export function ParentReports() {
                   {r.studentName.slice(0, 1)}
                 </span>
               </div>
-              <span className="text-[10px] text-gray-500 font-medium">{r.studentName}</span>
+              <span className="text-xs text-gray-500 font-medium">{r.studentName}</span>
               {r.received ? (
-                <span className="text-[10px]">{conditionIcon(r.condition)}</span>
+                <span className="text-xs">{conditionIcon(r.condition)}</span>
               ) : (
-                <span className="text-[10px] text-gray-400">미수신</span>
+                <span className="text-xs text-gray-400">미수신</span>
               )}
             </div>
           ))}
@@ -168,7 +168,7 @@ export function ParentReports() {
           .map((r) => (
             <div
               key={r.id}
-              className="bg-white rounded-2xl border border-gray-200 overflow-hidden"
+              className="bg-white rounded-2xl border border-gray-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-300 overflow-hidden"
             >
               {/* 카드 헤더 */}
               <div className="p-4">
@@ -185,12 +185,12 @@ export function ParentReports() {
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-800">{r.studentName}</span>
                         {r.alert && (
-                          <span className="text-[10px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full">
+                          <span className="text-xs font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded-full">
                             주의
                           </span>
                         )}
                         {r.confirmed && (
-                          <span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full">
+                          <span className="text-xs font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full">
                             확인됨 ✓
                           </span>
                         )}
@@ -259,17 +259,17 @@ export function ParentReports() {
                   <div className="grid grid-cols-3 gap-2">
                     <div className="bg-white rounded-xl p-3 text-center">
                       <div className="text-lg mb-1">😴</div>
-                      <div className="text-[10px] text-gray-400 mb-0.5">수면</div>
+                      <div className="text-xs text-gray-400 mb-0.5">수면</div>
                       <div className="text-xs font-medium text-gray-700">{r.sleep || '-'}</div>
                     </div>
                     <div className="bg-white rounded-xl p-3 text-center">
                       <div className="text-lg mb-1">🍚</div>
-                      <div className="text-[10px] text-gray-400 mb-0.5">아침식사</div>
+                      <div className="text-xs text-gray-400 mb-0.5">아침식사</div>
                       <div className="text-xs font-medium text-gray-700">{r.breakfast || '-'}</div>
                     </div>
                     <div className="bg-white rounded-xl p-3 text-center">
                       <div className="text-lg mb-1">💊</div>
-                      <div className="text-[10px] text-gray-400 mb-0.5">약복용</div>
+                      <div className="text-xs text-gray-400 mb-0.5">약복용</div>
                       <div className="text-xs font-medium text-gray-700">
                         {r.medication ? '복용 완료' : '미복용'}
                       </div>
@@ -279,7 +279,7 @@ export function ParentReports() {
                   {/* 보호자 메모 */}
                   {r.parentNote && (
                     <div className="bg-white rounded-xl p-3 border border-gray-100">
-                      <div className="text-[10px] text-gray-400 mb-1 font-medium">보호자 전달사항</div>
+                      <div className="text-xs text-gray-400 mb-1 font-medium">보호자 전달사항</div>
                       <p className="text-sm text-gray-700">{r.parentNote}</p>
                     </div>
                   )}
@@ -316,7 +316,7 @@ export function ParentReports() {
               <div>
                 <span className="font-bold text-gray-600">{r.studentName}</span>
                 <p className="text-xs text-gray-400">{r.parentName}</p>
-                <span className="text-[10px] text-gray-400 font-medium">아침 보고 미수신</span>
+                <span className="text-xs text-gray-400 font-medium">아침 보고 미수신</span>
               </div>
             </div>
             <button className="text-xs font-bold text-[#026eff] bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">

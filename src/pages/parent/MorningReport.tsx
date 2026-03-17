@@ -53,11 +53,11 @@ function buildAiSummary(sleep: SleepLevel | null, _sq: SleepQuality | null, cond
 /* ───── Sub-Components ───── */
 function CardSection({ emoji, title, required, children }: { emoji: string; title: string; required?: boolean; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
+    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] border border-gray-200/60 p-5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
       <div className="flex items-center gap-2.5 mb-4">
         <span className="text-lg">{emoji}</span>
         <span className="text-sm font-semibold text-gray-900">{title}</span>
-        {required && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">*필수</span>}
+        {required && <span className="text-xs font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">*필수</span>}
       </div>
       {children}
     </div>
@@ -74,7 +74,7 @@ function OptionCard({ emoji, label, sub, selected, onClick }: { emoji: string; l
       }`}>
       <span className="text-2xl mb-1">{emoji}</span>
       <span className={`text-xs font-semibold ${selected ? 'text-[#026eff]' : 'text-gray-600'}`}>{label}</span>
-      {sub && <span className="text-[10px] text-gray-400 mt-0.5">{sub}</span>}
+      {sub && <span className="text-xs text-gray-400 mt-0.5">{sub}</span>}
     </button>
   );
 }
@@ -108,7 +108,7 @@ export function MorningReport() {
         </div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">보고 완료!</h2>
         <p className="text-sm text-gray-400 mb-8">선생님에게 전달되었습니다</p>
-        <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-6 mb-8 text-left">
+        <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] border border-gray-200/60 p-6 mb-8 text-left">
           <p className="text-xs font-semibold text-purple-600 mb-2">🤖 AI 요약</p>
           <p className="text-sm text-gray-700 leading-relaxed">{aiSummary}</p>
         </div>
@@ -147,7 +147,7 @@ export function MorningReport() {
           </div>
           {sleep && (
             <div className="mt-3 pt-3 border-t border-gray-50">
-              <p className="text-[11px] text-gray-400 mb-2">수면의 질</p>
+              <p className="text-xs text-gray-400 mb-2">수면의 질</p>
               <div className="flex gap-2">
                 {SLEEP_QUALITY_OPTIONS.map((q) => (
                   <button key={q} type="button" onClick={() => setSleepQuality(sleepQuality === q ? null : q)}

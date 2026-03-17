@@ -112,7 +112,7 @@ function DailyCard({
   onChat: () => void;
 }) {
   return (
-    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
+    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-200/60 overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <div className="flex items-center gap-2">
@@ -123,7 +123,7 @@ function DailyCard({
               '👤'
             )}
           </div>
-          <span className="font-semibold text-[15px]">{student.name}</span>
+          <span className="font-semibold text-sm">{student.name}</span>
         </div>
         <span className="text-red-500 text-xs font-medium">{student.date}</span>
       </div>
@@ -184,7 +184,7 @@ function DailyCard({
         </button>
         <button
           onClick={onChat}
-          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#636363]"
+          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#0f172a] hover:bg-[#1e293b]"
         >
           <span>💬</span> 소통방 가기 &gt;
         </button>
@@ -220,7 +220,7 @@ function StatsCard({
   const badgeLabel = mode === 'weekly' ? '주간 통계' : '월간 통계';
 
   return (
-    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
+    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-200/60 overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ function StatsCard({
               '👤'
             )}
           </div>
-          <span className="font-semibold text-[15px]">{student.name}</span>
+          <span className="font-semibold text-sm">{student.name}</span>
         </div>
         <span className="bg-red-100 text-red-600 text-xs font-medium px-2 py-0.5 rounded-full">
           {badgeLabel}
@@ -281,7 +281,7 @@ function StatsCard({
         </button>
         <button
           onClick={onChat}
-          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#636363]"
+          className="w-full py-2.5 rounded-lg text-white text-sm font-medium flex items-center justify-center gap-1.5 bg-[#0f172a] hover:bg-[#1e293b]"
         >
           <span>💬</span> 소통방 가기 &gt;
         </button>
@@ -332,7 +332,7 @@ export function TeacherDashboard() {
   return (
     <div className="min-h-full max-w-7xl mx-auto">
       {/* ── Top Bar ── */}
-      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 px-5 sm:px-6 py-4 mb-5">
+      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04),0_1px_2px_rgba(0,0,0,0.02)] border border-gray-200/60 px-5 sm:px-6 py-4 mb-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           {/* Left: badge + date */}
           <div className="flex items-center gap-3 flex-wrap">
@@ -412,7 +412,7 @@ export function TeacherDashboard() {
               <p className="text-sm mt-2">대상자 관리에서 학생을 추가하세요.</p>
               <button
                 onClick={() => navigate('/admin/students')}
-                className="mt-4 px-4 py-2 text-sm rounded-lg text-white bg-[#636363]"
+                className="mt-4 px-4 py-2 text-sm rounded-lg text-white bg-[#0f172a] hover:bg-[#1e293b]"
               >
                 대상자 관리로 이동
               </button>
