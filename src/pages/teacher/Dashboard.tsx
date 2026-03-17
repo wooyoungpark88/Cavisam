@@ -330,9 +330,9 @@ export function TeacherDashboard() {
   })();
 
   return (
-    <div className="min-h-full bg-[#f1f1f1]">
+    <div className="min-h-full">
       {/* ── Top Bar ── */}
-      <div className="bg-white rounded-xl shadow-sm px-4 sm:px-6 py-4 mb-6">
+      <div className="bg-white rounded-xl shadow-sm px-4 sm:px-6 py-3 mb-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           {/* Left: badge + date */}
           <div className="flex items-center gap-3 flex-wrap">
@@ -420,7 +420,7 @@ export function TeacherDashboard() {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
           {filteredStudents.map((student) =>
             viewMode === 'daily' ? (
               <DailyCard
