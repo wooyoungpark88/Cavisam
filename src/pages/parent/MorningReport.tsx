@@ -95,7 +95,7 @@ function buildAiSummary(
 /* ───── Sub-Components ───── */
 function SectionTitle({ icon, title, required }: { icon: string; title: string; required?: boolean }) {
   return (
-    <h3 className="flex items-center gap-2 text-base font-semibold text-text-primary mb-3">
+    <h3 className="flex items-center gap-2 text-base font-semibold text-gray-900 mb-3">
       <span>{icon}</span>
       {title}
       {required && <span className="text-xs font-normal text-red-500">*필수</span>}
@@ -122,8 +122,8 @@ function OptionButton({
         flex-1 min-w-0 rounded-xl border-2 py-3 px-2 text-center text-sm font-medium
         transition-all duration-200
         ${selected
-          ? 'border-brand bg-blue-50 text-brand shadow-sm'
-          : 'border-gray-200 bg-white text-text-secondary hover:border-gray-300'
+          ? 'border-[#026eff] bg-blue-50 text-[#026eff] shadow-sm'
+          : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
         }
         ${className}
       `}
@@ -168,8 +168,8 @@ export function MorningReport() {
           <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-3xl">✅</span>
           </div>
-          <h2 className="text-xl font-bold text-text-primary mb-2">아침 보고 완료!</h2>
-          <p className="text-sm text-text-muted mb-6">선생님에게 전달되었습니다</p>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">아침 보고 완료!</h2>
+          <p className="text-sm text-gray-400 mb-6">선생님에게 전달되었습니다</p>
 
           <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-6 text-left">
             <p className="text-xs font-semibold text-purple-600 mb-1">🤖 AI 요약</p>
@@ -178,7 +178,7 @@ export function MorningReport() {
 
           <button
             onClick={() => navigate('/parent')}
-            className="w-full bg-brand text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
+            className="w-full bg-[#026eff] text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
           >
             홈으로 돌아가기
           </button>
@@ -195,25 +195,25 @@ export function MorningReport() {
         <div className="flex items-center justify-between px-4 py-3">
           <button
             onClick={() => navigate('/parent')}
-            className="text-text-muted hover:text-text-primary transition-colors"
+            className="text-gray-400 hover:text-gray-900 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
-          <h1 className="text-base font-bold text-text-primary">아침 보고</h1>
+          <h1 className="text-base font-bold text-gray-900">아침 보고</h1>
           <div className="w-6" />
         </div>
 
         {/* Progress Bar */}
         <div className="px-4 pb-3">
-          <div className="flex items-center justify-between text-xs text-text-muted mb-1">
+          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
             <span>진행률</span>
             <span>{filledCount}/{totalRequired} 완료</span>
           </div>
           <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-brand rounded-full transition-all duration-500 ease-out"
+              className="h-full bg-[#026eff] rounded-full transition-all duration-500 ease-out"
               style={{ width: `${progressPercent}%` }}
             />
           </div>
@@ -229,14 +229,14 @@ export function MorningReport() {
             {SLEEP_OPTIONS.map((opt) => (
               <OptionButton key={opt.value} selected={sleep === opt.value} onClick={() => setSleep(opt.value)}>
                 <div className="font-semibold">{opt.label}</div>
-                <div className="text-xs text-text-muted mt-0.5">{opt.sub}</div>
+                <div className="text-xs text-gray-400 mt-0.5">{opt.sub}</div>
               </OptionButton>
             ))}
           </div>
 
           {sleep && (
             <div className="mt-3 pt-3 border-t border-gray-100">
-              <p className="text-xs text-text-muted mb-2">수면 질</p>
+              <p className="text-xs text-gray-400 mb-2">수면 질</p>
               <div className="flex gap-2">
                 {SLEEP_QUALITY_OPTIONS.map((q) => (
                   <button
@@ -246,8 +246,8 @@ export function MorningReport() {
                     className={`
                       flex-1 py-2 rounded-lg text-xs font-medium border transition-all
                       ${sleepQuality === q
-                        ? 'border-brand bg-blue-50 text-brand'
-                        : 'border-gray-200 bg-gray-50 text-text-muted hover:border-gray-300'
+                        ? 'border-[#026eff] bg-blue-50 text-[#026eff]'
+                        : 'border-gray-200 bg-gray-50 text-gray-400 hover:border-gray-300'
                       }
                     `}
                   >
@@ -319,9 +319,9 @@ export function MorningReport() {
             onChange={(e) => setNote(e.target.value)}
             placeholder="선생님에게 전달할 내용이 있으면 적어주세요..."
             rows={3}
-            className="w-full border border-gray-200 rounded-xl p-3 text-sm text-text-primary
-                       placeholder:text-text-muted resize-none focus:outline-none focus:ring-2
-                       focus:ring-brand/30 focus:border-brand transition-all"
+            className="w-full border border-gray-200 rounded-xl p-3 text-sm text-gray-900
+                       placeholder:text-gray-400 resize-none focus:outline-none focus:ring-2
+                       focus:ring-blue-200 focus:border-[#026eff] transition-all"
           />
         </section>
 
@@ -332,7 +332,7 @@ export function MorningReport() {
           className={`
             w-full py-4 rounded-2xl font-semibold text-base transition-all duration-200
             ${canSubmit
-              ? 'bg-brand text-white hover:opacity-90 shadow-md shadow-brand/20'
+              ? 'bg-[#026eff] text-white hover:opacity-90 shadow-md shadow-blue-200'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }
           `}
