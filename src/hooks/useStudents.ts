@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { getStudentsWithRecords } from '../lib/api/students';
 import { useAuth } from './useAuth';
+import { DEMO_STUDENTS } from '../lib/demo';
 import type { Student } from '../types';
 
 export function useStudents(date: string) {
@@ -15,10 +16,17 @@ export function useStudents(date: string) {
     setLoading(true);
     try {
       const data = await getStudentsWithRecords(profile.organization_id, date);
-      setStudents(data);
+      // Supabase가 비어있으면 데모 데이터 사용
+      if (data.length === 0) {
+        setStudents(DEMO_STUDENTS);
+      } else {
+        setStudents(data);
+      }
       setError(null);
-    } catch (e) {
-      setError(String(e));
+    } catch {
+      // Supabase 연결 실패 시 데모 데이터 사용
+      setStudents(DEMO_STUDENTS);
+      setError(null);
     } finally {
       setLoading(false);
     }

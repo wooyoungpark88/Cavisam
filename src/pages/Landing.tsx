@@ -1,7 +1,32 @@
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../hooks/useAuth';
+import { DEMO_ORG_ID, DEMO_TEACHER_ID, DEMO_PARENT_ID } from '../lib/demo';
 
 export function Landing() {
   const navigate = useNavigate();
+  const { signIn } = useAuth();
+
+  const enterAsTeacher = () => {
+    signIn({
+      id: DEMO_TEACHER_ID,
+      name: '김태희 선생님',
+      role: 'teacher',
+      organization_id: DEMO_ORG_ID,
+      organization_name: '해오름 발달장애인복지관',
+    });
+    navigate('/teacher');
+  };
+
+  const enterAsParent = () => {
+    signIn({
+      id: DEMO_PARENT_ID,
+      name: '김민준 어머니',
+      role: 'parent',
+      organization_id: DEMO_ORG_ID,
+      organization_name: '해오름 발달장애인복지관',
+    });
+    navigate('/parent');
+  };
 
   return (
     <div className="min-h-screen bg-[#3d3d3d] flex items-center justify-center p-4">
@@ -31,7 +56,7 @@ export function Landing() {
           <div className="flex flex-col sm:flex-row gap-5 w-full max-w-[520px]">
             {/* 교사용 */}
             <button
-              onClick={() => navigate('/teacher')}
+              onClick={enterAsTeacher}
               className="flex-1 bg-white border border-[#e0e0e0] rounded-xl p-6 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center gap-4"
             >
               <img
@@ -53,7 +78,7 @@ export function Landing() {
 
             {/* 보호자용 */}
             <button
-              onClick={() => navigate('/parent')}
+              onClick={enterAsParent}
               className="flex-1 bg-[#fde8e8] border border-[#ffd0d0] rounded-xl p-6 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center gap-4"
             >
               <img

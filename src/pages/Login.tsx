@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
+import { DEMO_TEACHER_ID, DEMO_PARENT_ID } from '../lib/demo';
 import type { Organization, UserRole } from '../types';
 
 // 기본 시설 목록 (Supabase 조회 실패 시 fallback)
@@ -53,8 +54,8 @@ export function Login() {
     setSubmitting(true);
 
     signIn({
-      id: '',
-      name: selectedRole === 'teacher' ? '교사' : '보호자',
+      id: selectedRole === 'teacher' ? DEMO_TEACHER_ID : DEMO_PARENT_ID,
+      name: selectedRole === 'teacher' ? '김태희 선생님' : '김민준 어머니',
       role: selectedRole,
       organization_id: selectedOrg,
       organization_name: selectedOrgObj.name,

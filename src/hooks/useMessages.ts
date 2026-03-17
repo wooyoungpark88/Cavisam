@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 import { getMessages, markAsRead } from '../lib/api/messages';
 import { useAuth } from './useAuth';
+import { getDemoMessages } from '../lib/demo';
 import type { MessageDB } from '../lib/api/messages';
 
 export function useMessages(studentId: string | null) {
@@ -16,8 +17,16 @@ export function useMessages(studentId: string | null) {
     setLoading(true);
     try {
       const data = await getMessages(studentId, userId);
-      setMessages(data);
-      await markAsRead(studentId, userId);
+      if (data.length === 0) {
+        // Supabase에 메시지가 없으면 데모 메시지 사용
+        setMessages(getDemoMessages(studentId));
+      } else {
+        setMessages(data);
+      }
+      await markAsRead(studentId, userId).catch(() => {/* ignore */});
+    } catch {
+      // Supabase 연결 실패 시 데모 메시지 사용
+      setMessages(getDemoMessages(studentId));
     } finally {
       setLoading(false);
     }

@@ -3,6 +3,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useMessages } from '../../hooks/useMessages';
 import { getStudentsByParent } from '../../lib/api/students';
 import { sendMessage } from '../../lib/api/messages';
+import { DEMO_PARENT_STUDENTS } from '../../lib/demo';
 import type { StudentDB } from '../../lib/api/students';
 import type { MessageDB } from '../../lib/api/messages';
 
@@ -11,7 +12,7 @@ const quickReplies = [
   '오늘 아침에 짜증을 많이 내더라고요',
   '오늘 점심 메뉴는 뭔가요?',
   '새로운 활동에 잘 참여하고 있나요?',
-  '어제 밤에 잠을 잘 못 잤어요',
+  '약을 먹이지 못했어요',
 ];
 
 /* ───── Daily Report Modal ───── */
@@ -356,12 +357,16 @@ export function ParentCommunication() {
 
   const { messages, reload } = useMessages(selectedStudentId);
 
-  // Load children
+  // Load children (Supabase → 없으면 데모 데이터)
   useEffect(() => {
     if (!profile) return;
     getStudentsByParent(profile.id).then((data) => {
-      setStudents(data);
-      if (data.length > 0) setSelectedStudentId(data[0].id);
+      const result = data.length > 0 ? data : DEMO_PARENT_STUDENTS;
+      setStudents(result);
+      if (result.length > 0) setSelectedStudentId(result[0].id);
+    }).catch(() => {
+      setStudents(DEMO_PARENT_STUDENTS);
+      if (DEMO_PARENT_STUDENTS.length > 0) setSelectedStudentId(DEMO_PARENT_STUDENTS[0].id);
     });
   }, [profile]);
 
