@@ -112,7 +112,7 @@ function DailyCard({
   onChat: () => void;
 }) {
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <div className="flex items-center gap-2">
@@ -220,7 +220,7 @@ function StatsCard({
   const badgeLabel = mode === 'weekly' ? '주간 통계' : '월간 통계';
 
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
       {/* Header */}
       <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <div className="flex items-center gap-2">
@@ -330,9 +330,9 @@ export function TeacherDashboard() {
   })();
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full max-w-7xl mx-auto">
       {/* ── Top Bar ── */}
-      <div className="bg-white rounded-xl shadow-sm px-4 sm:px-6 py-3 mb-4">
+      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 px-5 sm:px-6 py-4 mb-5">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           {/* Left: badge + date */}
           <div className="flex items-center gap-3 flex-wrap">

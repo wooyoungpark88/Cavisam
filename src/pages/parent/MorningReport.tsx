@@ -9,142 +9,72 @@ type Breakfast = 'all' | 'most' | 'some' | 'none';
 type Bowel = 'normal' | 'soft' | 'hard' | 'none';
 type Medication = 'done' | 'request' | 'none';
 
-/* ───── Option Configs ───── */
-const SLEEP_OPTIONS: { value: SleepLevel; emoji: string; label: string }[] = [
-  { value: 'good', emoji: '😴', label: '충분' },
-  { value: 'normal', emoji: '🌙', label: '보통' },
-  { value: 'bad', emoji: '😵', label: '부족' },
+/* ───── Options ───── */
+const SLEEP_OPTIONS: { value: SleepLevel; emoji: string; label: string; sub: string }[] = [
+  { value: 'good', emoji: '😴', label: '충분', sub: '7시간 이상' },
+  { value: 'normal', emoji: '🌙', label: '보통', sub: '5~7시간' },
+  { value: 'bad', emoji: '😵', label: '부족', sub: '5시간 미만' },
 ];
-
-const SLEEP_QUALITY_OPTIONS: SleepQuality[] = ['숙면', '뒤척임', '자주 깸'];
-
 const CONDITION_OPTIONS: { value: Condition; emoji: string; label: string }[] = [
   { value: 'good', emoji: '☀️', label: '좋음' },
   { value: 'normal', emoji: '🌤️', label: '보통' },
   { value: 'bad', emoji: '🌧️', label: '안좋음' },
 ];
-
 const BREAKFAST_OPTIONS: { value: Breakfast; emoji: string; label: string }[] = [
   { value: 'all', emoji: '🍱', label: '전부' },
   { value: 'most', emoji: '🥄', label: '대부분' },
   { value: 'some', emoji: '🥢', label: '조금' },
   { value: 'none', emoji: '❌', label: '안먹음' },
 ];
-
 const BOWEL_OPTIONS: { value: Bowel; emoji: string; label: string }[] = [
   { value: 'normal', emoji: '✅', label: '정상' },
   { value: 'soft', emoji: '💧', label: '무른편' },
   { value: 'hard', emoji: '🪨', label: '딱딱함' },
   { value: 'none', emoji: '➖', label: '없음' },
 ];
-
 const MEDICATION_OPTIONS: { value: Medication; emoji: string; label: string }[] = [
   { value: 'done', emoji: '✅', label: '복용 완료' },
   { value: 'request', emoji: '🏫', label: '기관 요청' },
   { value: 'none', emoji: '➖', label: '약 없음' },
 ];
+const SLEEP_QUALITY_OPTIONS: SleepQuality[] = ['숙면', '뒤척임', '자주 깸'];
 
 /* ───── Helpers ───── */
-function buildAiSummary(
-  sleep: SleepLevel | null,
-  sleepQuality: SleepQuality | null,
-  condition: Condition | null,
-  breakfast: Breakfast | null,
-  bowel: Bowel | null,
-  medication: Medication | null,
-  note: string,
-): string {
+function buildAiSummary(sleep: SleepLevel | null, _sq: SleepQuality | null, cond: Condition | null, bf: Breakfast | null, _bw: Bowel | null, med: Medication | null, note: string) {
   const parts: string[] = [];
-
-  if (sleep) {
-    const sleepText = sleep === 'good' ? '충분히 잤고' : sleep === 'normal' ? '보통 수준으로 잤고' : '수면이 부족했고';
-    const qualityText = sleepQuality ? ` (${sleepQuality})` : '';
-    parts.push(`수면은 ${sleepText}${qualityText}`);
-  }
-  if (condition) {
-    const condText = condition === 'good' ? '컨디션이 좋은 상태입니다' : condition === 'normal' ? '컨디션은 보통입니다' : '컨디션이 좋지 않습니다';
-    parts.push(condText);
-  }
-  if (breakfast) {
-    const mealText =
-      breakfast === 'all' ? '아침을 전부 먹었고' :
-      breakfast === 'most' ? '아침을 대부분 먹었고' :
-      breakfast === 'some' ? '아침을 조금 먹었고' : '아침을 먹지 않았고';
-    parts.push(mealText);
-  }
-  if (bowel) {
-    const bowelText =
-      bowel === 'normal' ? '배변은 정상입니다' :
-      bowel === 'soft' ? '배변이 무른 편입니다' :
-      bowel === 'hard' ? '배변이 딱딱한 편입니다' : '배변 활동이 없었습니다';
-    parts.push(bowelText);
-  }
-  if (medication) {
-    const medText =
-      medication === 'done' ? '약은 복용 완료했습니다' :
-      medication === 'request' ? '약 복용을 기관에 요청합니다' : '복용할 약이 없습니다';
-    parts.push(medText);
-  }
-  if (note.trim()) {
-    parts.push(`추가 메모: "${note.trim()}"`);
-  }
-
+  if (sleep) parts.push(`수면은 ${sleep === 'good' ? '충분' : sleep === 'normal' ? '보통' : '부족'}했습니다`);
+  if (cond) parts.push(`컨디션은 ${cond === 'good' ? '좋은 상태' : cond === 'normal' ? '보통' : '좋지 않은 상태'}입니다`);
+  if (bf) parts.push(`아침은 ${bf === 'all' ? '전부' : bf === 'most' ? '대부분' : bf === 'some' ? '조금' : '안'} 먹었습니다`);
+  if (med) parts.push(`약은 ${med === 'done' ? '복용 완료' : med === 'request' ? '기관에서 복용 요청' : '복용할 약 없음'}`);
+  if (note.trim()) parts.push(`전달 사항: "${note.trim()}"`);
   return parts.join('. ') + '.';
 }
 
 /* ───── Sub-Components ───── */
-function CardSection({
-  emoji,
-  title,
-  required,
-  children,
-}: {
-  emoji: string;
-  title: string;
-  required?: boolean;
-  children: React.ReactNode;
-}) {
+function CardSection({ emoji, title, required, children }: { emoji: string; title: string; required?: boolean; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6">
-      <div className="flex items-center gap-2 mb-4">
+    <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] transition-shadow duration-300">
+      <div className="flex items-center gap-2.5 mb-4">
         <span className="text-lg">{emoji}</span>
-        <span className="text-base font-semibold text-gray-900">{title}</span>
-        {required && (
-          <span className="text-xs font-medium text-red-500 bg-red-50 px-1.5 py-0.5 rounded">*필수</span>
-        )}
+        <span className="text-sm font-semibold text-gray-900">{title}</span>
+        {required && <span className="text-[10px] font-bold text-red-500 bg-red-50 px-1.5 py-0.5 rounded">*필수</span>}
       </div>
       {children}
     </div>
   );
 }
 
-function CardButton({
-  emoji,
-  label,
-  selected,
-  onClick,
-}: {
-  emoji: string;
-  label: string;
-  selected: boolean;
-  onClick: () => void;
-}) {
+function OptionCard({ emoji, label, sub, selected, onClick }: { emoji: string; label: string; sub?: string; selected: boolean; onClick: () => void }) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`
-        flex flex-col items-center justify-center rounded-2xl border-2 py-4 px-2 transition-all duration-200
-        ${selected
-          ? 'border-[#026eff] bg-blue-50 shadow-sm'
-          : 'border-gray-200 bg-white hover:border-gray-300'
-        }
-      `}
-    >
-      <span className="text-2xl mb-1.5">{emoji}</span>
-      <span className={`text-sm font-medium ${selected ? 'text-[#026eff]' : 'text-gray-600'}`}>
-        {label}
-      </span>
+    <button type="button" onClick={onClick}
+      className={`flex flex-col items-center justify-center rounded-xl border-2 py-4 px-2 transition-all duration-200 ease-out cursor-pointer ${
+        selected
+          ? 'border-[#026eff] bg-blue-50/60 shadow-sm scale-[1.02]'
+          : 'border-gray-100 bg-gray-50/40 hover:border-gray-200 hover:bg-white hover:shadow-sm'
+      }`}>
+      <span className="text-2xl mb-1">{emoji}</span>
+      <span className={`text-xs font-semibold ${selected ? 'text-[#026eff]' : 'text-gray-600'}`}>{label}</span>
+      {sub && <span className="text-[10px] text-gray-400 mt-0.5">{sub}</span>}
     </button>
   );
 }
@@ -152,7 +82,6 @@ function CardButton({
 /* ───── Main Component ───── */
 export function MorningReport() {
   const navigate = useNavigate();
-
   const [sleep, setSleep] = useState<SleepLevel | null>(null);
   const [sleepQuality, setSleepQuality] = useState<SleepQuality | null>(null);
   const [condition, setCondition] = useState<Condition | null>(null);
@@ -162,205 +91,115 @@ export function MorningReport() {
   const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  /* Progress */
-  const requiredFields = [sleep, condition, breakfast, medication];
-  const filledCount = requiredFields.filter((v) => v !== null).length;
   const totalRequired = 4;
-  const canSubmit = filledCount === totalRequired;
+  const filledCount = [sleep, condition, breakfast, medication].filter(Boolean).length;
+  const canSubmit = filledCount >= totalRequired;
   const progressPercent = (filledCount / totalRequired) * 100;
 
-  const handleSubmit = () => {
-    if (!canSubmit) return;
-    setSubmitted(true);
-  };
-
+  const handleSubmit = () => { if (canSubmit) setSubmitted(true); };
   const aiSummary = buildAiSummary(sleep, sleepQuality, condition, breakfast, bowel, medication, note);
 
-  /* ───── Success Screen ───── */
+  /* ── Success Screen ── */
   if (submitted) {
     return (
-      <div className="flex items-center justify-center p-6 py-16">
-        <div className="w-full max-w-md text-center">
-          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-5">
-            <span className="text-4xl">✅</span>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">보고 완료!</h2>
-          <p className="text-sm text-gray-400 mb-8">선생님에게 전달되었습니다</p>
-
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-8 text-left">
-            <div className="bg-purple-50 border border-purple-200 rounded-xl p-4">
-              <p className="text-xs font-semibold text-purple-600 mb-2">🤖 AI 요약</p>
-              <p className="text-sm text-purple-800 leading-relaxed">{aiSummary}</p>
-            </div>
-          </div>
-
-          <button
-            onClick={() => navigate('/parent')}
-            className="w-full md:w-auto md:px-12 bg-[#026eff] text-white font-semibold py-4 rounded-2xl hover:opacity-90 transition-opacity"
-          >
-            홈으로 돌아가기
-          </button>
+      <div className="max-w-md mx-auto py-16 text-center">
+        <div className="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+          <span className="text-4xl">✅</span>
         </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">보고 완료!</h2>
+        <p className="text-sm text-gray-400 mb-8">선생님에게 전달되었습니다</p>
+        <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-6 mb-8 text-left">
+          <p className="text-xs font-semibold text-purple-600 mb-2">🤖 AI 요약</p>
+          <p className="text-sm text-gray-700 leading-relaxed">{aiSummary}</p>
+        </div>
+        <button onClick={() => navigate('/parent')}
+          className="bg-[#026eff] text-white font-semibold py-3 px-10 rounded-xl hover:bg-[#0254cc] hover:shadow-lg hover:shadow-blue-200/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300">
+          홈으로 돌아가기
+        </button>
       </div>
     );
   }
 
-  /* ───── Form Screen ───── */
+  /* ── Form Screen ── */
   return (
-    <div className="pb-8">
+    <div className="max-w-4xl mx-auto">
       {/* Header */}
-      <div className="px-4 md:px-6 pt-6 pb-4">
-        <div className="flex items-center justify-between mb-1">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">오늘 아침 보고</h1>
-            <p className="text-sm text-gray-500 mt-1">서준이 → 김수진 선생님</p>
-          </div>
-          <span className="text-sm font-semibold text-[#026eff] bg-blue-50 px-3 py-1.5 rounded-full">
-            {filledCount}/{totalRequired}
-          </span>
+      <div className="flex items-center justify-between mb-2">
+        <div>
+          <h1 className="text-xl font-bold text-gray-900">오늘 아침 보고</h1>
+          <p className="text-sm text-gray-400 mt-0.5">서준이 → 김수진 선생님</p>
         </div>
-
-        {/* Progress Bar */}
-        <div className="h-1.5 bg-gray-100 rounded-full mt-4">
-          <div
-            className={`h-full rounded-full transition-all duration-500 ease-out ${
-              progressPercent === 100 ? 'bg-emerald-500' : 'bg-[#026eff]'
-            }`}
-            style={{ width: `${progressPercent}%` }}
-          />
-        </div>
+        <span className={`text-sm font-bold px-3 py-1 rounded-lg transition-colors duration-300 ${canSubmit ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-[#026eff]'}`}>
+          {filledCount}/{totalRequired}
+        </span>
       </div>
 
-      {/* 2-Column Card Grid */}
-      <div className="px-4 md:px-6 py-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Row 1, Col 1: Sleep */}
-          <CardSection emoji="🌙" title="어젯밤 수면" required>
-            <div className="grid grid-cols-3 gap-3">
-              {SLEEP_OPTIONS.map((opt) => (
-                <CardButton
-                  key={opt.value}
-                  emoji={opt.emoji}
-                  label={opt.label}
-                  selected={sleep === opt.value}
-                  onClick={() => setSleep(opt.value)}
-                />
-              ))}
-            </div>
+      {/* Progress */}
+      <div className="h-1 bg-gray-100 rounded-full mb-8 overflow-hidden">
+        <div className={`h-full rounded-full transition-all duration-500 ease-out ${canSubmit ? 'bg-emerald-500' : 'bg-[#026eff]'}`} style={{ width: `${progressPercent}%` }} />
+      </div>
 
-            {/* Sleep Quality sub-options (pills) */}
-            {sleep && (
-              <div className="flex gap-2 mt-4">
+      {/* 2-column grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <CardSection emoji="🌙" title="어젯밤 수면" required>
+          <div className="grid grid-cols-3 gap-2">
+            {SLEEP_OPTIONS.map((o) => <OptionCard key={o.value} emoji={o.emoji} label={o.label} sub={o.sub} selected={sleep === o.value} onClick={() => setSleep(o.value)} />)}
+          </div>
+          {sleep && (
+            <div className="mt-3 pt-3 border-t border-gray-50">
+              <p className="text-[11px] text-gray-400 mb-2">수면의 질</p>
+              <div className="flex gap-2">
                 {SLEEP_QUALITY_OPTIONS.map((q) => (
-                  <button
-                    key={q}
-                    type="button"
-                    onClick={() => setSleepQuality(sleepQuality === q ? null : q)}
-                    className={`
-                      px-3 py-1.5 rounded-full text-xs font-medium border transition-all
-                      ${sleepQuality === q
-                        ? 'border-[#026eff] bg-blue-50 text-[#026eff]'
-                        : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
-                      }
-                    `}
-                  >
-                    {q}
-                  </button>
+                  <button key={q} type="button" onClick={() => setSleepQuality(sleepQuality === q ? null : q)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 ${
+                      sleepQuality === q ? 'border-[#026eff] bg-blue-50 text-[#026eff]' : 'border-gray-100 text-gray-400 hover:border-gray-200'
+                    }`}>{q}</button>
                 ))}
               </div>
-            )}
-          </CardSection>
-
-          {/* Row 1, Col 2: Condition */}
-          <CardSection emoji="🌡️" title="컨디션" required>
-            <div className="grid grid-cols-3 gap-3">
-              {CONDITION_OPTIONS.map((opt) => (
-                <CardButton
-                  key={opt.value}
-                  emoji={opt.emoji}
-                  label={opt.label}
-                  selected={condition === opt.value}
-                  onClick={() => setCondition(opt.value)}
-                />
-              ))}
             </div>
-          </CardSection>
+          )}
+        </CardSection>
 
-          {/* Row 2, Col 1: Breakfast */}
-          <CardSection emoji="🍚" title="아침 식사" required>
-            <div className="grid grid-cols-4 gap-2 sm:gap-3">
-              {BREAKFAST_OPTIONS.map((opt) => (
-                <CardButton
-                  key={opt.value}
-                  emoji={opt.emoji}
-                  label={opt.label}
-                  selected={breakfast === opt.value}
-                  onClick={() => setBreakfast(opt.value)}
-                />
-              ))}
-            </div>
-          </CardSection>
+        <CardSection emoji="🌡️" title="컨디션" required>
+          <div className="grid grid-cols-3 gap-2">
+            {CONDITION_OPTIONS.map((o) => <OptionCard key={o.value} emoji={o.emoji} label={o.label} selected={condition === o.value} onClick={() => setCondition(o.value)} />)}
+          </div>
+        </CardSection>
 
-          {/* Row 2, Col 2: Bowel */}
-          <CardSection emoji="🚽" title="배변">
-            <div className="grid grid-cols-4 gap-2 sm:gap-3">
-              {BOWEL_OPTIONS.map((opt) => (
-                <CardButton
-                  key={opt.value}
-                  emoji={opt.emoji}
-                  label={opt.label}
-                  selected={bowel === opt.value}
-                  onClick={() => setBowel(opt.value)}
-                />
-              ))}
-            </div>
-          </CardSection>
+        <CardSection emoji="🍚" title="아침 식사" required>
+          <div className="grid grid-cols-4 gap-2">
+            {BREAKFAST_OPTIONS.map((o) => <OptionCard key={o.value} emoji={o.emoji} label={o.label} selected={breakfast === o.value} onClick={() => setBreakfast(o.value)} />)}
+          </div>
+        </CardSection>
 
-          {/* Row 3, Col 1: Medication */}
-          <CardSection emoji="💊" title="약 복용" required>
-            <div className="grid grid-cols-3 gap-3">
-              {MEDICATION_OPTIONS.map((opt) => (
-                <CardButton
-                  key={opt.value}
-                  emoji={opt.emoji}
-                  label={opt.label}
-                  selected={medication === opt.value}
-                  onClick={() => setMedication(opt.value)}
-                />
-              ))}
-            </div>
-          </CardSection>
+        <CardSection emoji="🚽" title="배변">
+          <div className="grid grid-cols-4 gap-2">
+            {BOWEL_OPTIONS.map((o) => <OptionCard key={o.value} emoji={o.emoji} label={o.label} selected={bowel === o.value} onClick={() => setBowel(o.value)} />)}
+          </div>
+        </CardSection>
 
-          {/* Row 3, Col 2: Note */}
-          <CardSection emoji="📝" title="전달 사항">
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="선생님에게 전달할 내용이 있으면 적어주세요..."
-              rows={4}
-              className="w-full border border-gray-200 rounded-xl p-3 text-sm text-gray-900
-                         placeholder:text-gray-400 resize-none focus:outline-none focus:ring-2
-                         focus:ring-blue-200 focus:border-[#026eff] transition-all"
-            />
-          </CardSection>
-        </div>
+        <CardSection emoji="💊" title="약 복용" required>
+          <div className="grid grid-cols-3 gap-2">
+            {MEDICATION_OPTIONS.map((o) => <OptionCard key={o.value} emoji={o.emoji} label={o.label} selected={medication === o.value} onClick={() => setMedication(o.value)} />)}
+          </div>
+        </CardSection>
 
-        {/* Submit Button */}
-        <div className="mt-6 flex justify-center">
-          <button
-            onClick={handleSubmit}
-            disabled={!canSubmit}
-            className={`
-              w-full md:w-auto md:px-16 py-4 rounded-2xl font-semibold text-base transition-all duration-200
-              ${canSubmit
-                ? 'bg-[#026eff] text-white hover:opacity-90 shadow-md shadow-blue-200'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }
-            `}
-          >
-            {canSubmit ? '선생님에게 전송' : `${totalRequired - filledCount}개 항목을 더 선택해주세요`}
-          </button>
-        </div>
+        <CardSection emoji="📝" title="전달 사항">
+          <textarea value={note} onChange={(e) => setNote(e.target.value)} placeholder="선생님에게 전달할 내용이 있으면 적어주세요..." rows={4}
+            className="w-full border border-gray-100 rounded-xl p-3.5 text-sm text-gray-700 placeholder:text-gray-300 resize-none focus:outline-none focus:ring-2 focus:ring-[#026eff]/10 focus:border-[#026eff]/30 transition-all duration-200 bg-gray-50/30" />
+        </CardSection>
+      </div>
+
+      {/* Submit */}
+      <div className="mt-8 flex justify-center pb-4">
+        <button onClick={handleSubmit} disabled={!canSubmit}
+          className={`py-3.5 px-16 rounded-xl font-semibold text-sm transition-all duration-300 ${
+            canSubmit
+              ? 'bg-[#026eff] text-white hover:bg-[#0254cc] hover:shadow-lg hover:shadow-blue-200/40 hover:-translate-y-0.5 active:translate-y-0'
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          }`}>
+          {canSubmit ? '📨 선생님에게 전송' : `${totalRequired - filledCount}개 항목을 더 선택해주세요`}
+        </button>
       </div>
     </div>
   );

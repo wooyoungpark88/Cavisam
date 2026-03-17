@@ -214,9 +214,9 @@ export function ParentTimeline() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="max-w-6xl mx-auto space-y-5">
       {/* ── Header ── */}
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+      <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-gray-900">서준이의 하루</h1>
@@ -242,7 +242,7 @@ export function ParentTimeline() {
       {/* ── Morning Report CTA (full width, above grid) ── */}
       <button
         onClick={() => navigate('/parent/morning-report')}
-        className="w-full bg-white rounded-2xl border border-gray-200 p-4 flex items-center gap-4 hover:border-purple-300 transition-colors"
+        className="w-full bg-white rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.03)] border border-gray-100/80 p-4 hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] hover:border-purple-200 transition-all duration-300 flex items-center gap-4"
       >
         <div className="w-11 h-11 bg-purple-100 rounded-xl flex items-center justify-center shrink-0">
           <span className="text-xl">📋</span>
@@ -260,7 +260,7 @@ export function ParentTimeline() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
         {/* ── Left Column: Timeline ── */}
         <div>
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-6">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-1.5 h-1.5 rounded-full bg-[#026eff]" />
               <h2 className="text-base font-bold text-gray-900">오늘의 타임라인</h2>
@@ -270,7 +270,7 @@ export function ParentTimeline() {
               {TIMELINE_DATA.map((entry) => (
                 <div
                   key={entry.id}
-                  className={`bg-white rounded-2xl border border-gray-200 p-4 ${cardBorderClass(entry.type)}`}
+                  className={`bg-white rounded-2xl shadow-[0_1px_2px_rgba(0,0,0,0.03)] border border-gray-100/80 p-4 hover:shadow-[0_2px_8px_rgba(0,0,0,0.06)] transition-shadow duration-300 ${cardBorderClass(entry.type)}`}
                 >
                   {/* Card Header */}
                   <div className="flex items-center justify-between mb-3">
@@ -300,7 +300,7 @@ export function ParentTimeline() {
         {/* ── Right Column: Sidebar ── */}
         <div className="space-y-6">
           {/* AI Weekly Insights */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-6">
             <h3 className="text-base font-bold text-gray-900 mb-4">🤖 AI 주간 인사이트</h3>
             <div className="space-y-3">
               {AI_INSIGHTS.map((item) => (
@@ -316,7 +316,7 @@ export function ParentTimeline() {
           </div>
 
           {/* Care Team */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <div className="bg-white rounded-2xl shadow-[0_1px_3px_rgba(0,0,0,0.04)] border border-gray-100/80 p-6">
             <h3 className="text-base font-bold text-gray-900 mb-4">👥 돌봄 팀</h3>
             <div className="space-y-3">
               {CARE_TEAM.map((member) => (
