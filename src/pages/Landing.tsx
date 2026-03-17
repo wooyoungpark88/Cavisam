@@ -44,8 +44,8 @@ export function Landing() {
         <div className="px-8 py-10 flex flex-col items-center">
           {/* 로고: 파란 심볼 + CareVia */}
           <div className="flex flex-col items-center mb-6">
-            <img src="/logo-carevia.svg" alt="CareVia" className="w-14 mb-3" />
-            <span className="text-2xl sm:text-3xl font-bold text-[#026eff]">CareVia</span>
+            <img src="/logo-carevia.svg" alt="CareVia" className="w-24 mb-4" />
+            <span className="text-4xl sm:text-5xl font-black text-[#026eff]">CareVia</span>
           </div>
 
           <p className="text-base text-[#515151] mb-1 text-center">
@@ -56,7 +56,7 @@ export function Landing() {
           </p>
 
           {/* 케비쌤 서비스 버튼 - 파란색 */}
-          <div className="bg-[#026eff] text-white px-8 py-3 rounded-lg mb-10">
+          <div className="bg-[#026eff] text-white px-8 py-3 rounded-full mb-10">
             <span className="text-xl font-medium">케비쌤 서비스</span>
           </div>
 
@@ -64,7 +64,7 @@ export function Landing() {
           <div className="flex flex-col sm:flex-row gap-6 w-full max-w-[560px]">
             <button
               onClick={() => navigate('/teacher')}
-              className="flex-1 min-w-[240px] bg-white border-2 border-[#e0e0e0] rounded-xl p-6 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center justify-center gap-4"
+              className="flex-1 min-w-[240px] bg-white border-2 border-[#e0e0e0] rounded-xl p-8 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center justify-center gap-4"
             >
               <div className="w-16 h-16 bg-[#f4f4f4] rounded-full flex items-center justify-center">
                 <TeacherIcon />
@@ -73,7 +73,7 @@ export function Landing() {
                 <p className="text-lg font-medium text-[#313131]">교사용</p>
                 <p className="text-sm text-[#848484]">교사용 대시보드</p>
               </div>
-              <div className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg font-medium text-sm">
+              <div className="flex items-center justify-center gap-2 bg-black text-white w-full py-2.5 rounded-lg font-medium text-sm">
                 <span>바로가기</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -83,7 +83,7 @@ export function Landing() {
 
             <button
               onClick={() => navigate('/parent')}
-              className="flex-1 min-w-[240px] bg-white border-2 border-[#e0e0e0] rounded-xl p-6 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center justify-center gap-4"
+              className="flex-1 min-w-[240px] bg-white border-2 border-[#e0e0e0] rounded-xl p-8 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center justify-center gap-4"
             >
               <div className="w-16 h-16 bg-[#f4f4f4] rounded-full flex items-center justify-center">
                 <FamilyIcon />
@@ -92,7 +92,7 @@ export function Landing() {
                 <p className="text-lg font-medium text-[#313131]">보호자용</p>
                 <p className="text-sm text-[#848484]">보호자 소통방</p>
               </div>
-              <div className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg font-medium text-sm">
+              <div className="flex items-center justify-center gap-2 bg-black text-white w-full py-2.5 rounded-lg font-medium text-sm">
                 <span>바로가기</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
