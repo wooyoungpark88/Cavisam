@@ -22,7 +22,7 @@ export function Login() {
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
       <div className="text-center mb-12">
         <div className="text-5xl font-bold mb-4">
-          <span className="text-purple-600">Care</span>Via
+          <span className="text-[#026eff]">Care</span>Via
         </div>
         <p className="text-lg text-gray-600 mb-1">어제보다 나은 내일을 만드는, 케어비아</p>
         <p className="text-sm text-gray-400">케어비아의 캐비챗과 함께 체계적인 변화를 경험하세요.</p>

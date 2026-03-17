@@ -22,6 +22,7 @@ export default {
         accent: {
           DEFAULT: 'rgba(136,136,136,0.7)',
         },
+        brand: '#026eff',
       },
       fontFamily: {
         sans: ['"Noto Sans KR"', 'sans-serif'],

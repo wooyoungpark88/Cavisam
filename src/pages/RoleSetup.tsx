@@ -64,7 +64,7 @@ export function RoleSetup() {
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
       <div className="text-center mb-8">
         <div className="text-4xl font-bold mb-2">
-          <span className="text-purple-600">Care</span>Via
+          <span className="text-[#026eff]">Care</span>Via
         </div>
         <p className="text-sm text-gray-500">케어비아에 오신 것을 환영합니다</p>
       </div>

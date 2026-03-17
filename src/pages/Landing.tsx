@@ -1,68 +1,106 @@
 import { useNavigate } from 'react-router-dom';
 
+function TeacherIcon() {
+  return (
+    <svg className="w-10 h-10 text-[#313131]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+    </svg>
+  );
+}
+
+function FamilyIcon() {
+  return (
+    <svg className="w-10 h-10 text-[#313131]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+    </svg>
+  );
+}
+
 export function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4">
-      <div className="text-center mb-8">
-        <div className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-          <span className="text-purple-600">Care</span>Via
+    <div className="min-h-screen bg-[#e5e5e5] flex items-center justify-center p-4">
+      {/* 모달 컨테이너 */}
+      <div className="w-full max-w-[680px] bg-white rounded-xl shadow-lg overflow-hidden">
+        {/* 상단 바: 케비챗 보호자 */}
+        <div className="bg-[#eaeaea] px-4 py-2 flex items-center justify-between">
+          <span className="text-sm font-medium text-[#515151]">케비챗 보호자</span>
+          <button
+            onClick={() => {}}
+            className="w-8 h-8 flex items-center justify-center text-[#515151] hover:bg-[#d9d9d9] rounded transition-colors"
+            aria-label="닫기"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
         </div>
-        <p className="text-lg text-gray-600 mb-2">
-          "어제보다 나은 내일을 만드는, 케어비아"
-        </p>
-        <p className="text-sm text-gray-400">
-          "케어비아의 캐비챗과 함께 체계적인 변화를 경험하세요."
-        </p>
-      </div>
 
-      <div className="bg-purple-600 text-white px-8 py-3 rounded-lg mb-12">
-        <span className="text-xl font-medium">케비쌤 서비스</span>
-      </div>
+        {/* 메인 콘텐츠 */}
+        <div className="px-8 py-10 flex flex-col items-center">
+          {/* 로고: 파란 심볼 + CareVia */}
+          <div className="flex flex-col items-center mb-6">
+            <img src="/logo-carevia.svg" alt="CareVia" className="w-14 h-14 mb-3" />
+            <span className="text-2xl sm:text-3xl font-bold text-[#026eff]">CareVia</span>
+          </div>
 
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 w-full max-w-[620px] px-4 sm:px-0">
-        <button
-          onClick={() => navigate('/teacher')}
-          className="w-full sm:w-72 h-56 sm:h-72 bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col items-center justify-center gap-4"
-        >
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
-          </div>
-          <div className="text-center">
-            <p className="text-lg font-medium text-gray-800">교사용</p>
-            <p className="text-sm text-gray-600">교사용 대시보드</p>
-          </div>
-          <div className="flex items-center gap-2 text-purple-600 font-medium">
-            <span>바로가기</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </button>
+          <p className="text-base text-[#515151] mb-1 text-center">
+            어제보다 나은 내일을 만드는, 케어비아
+          </p>
+          <p className="text-sm text-[#848484] mb-8 text-center">
+            케어비아의 캐비챗과 함께 체계적인 변화를 경험하세요.
+          </p>
 
-        <button
-          onClick={() => navigate('/parent')}
-          className="w-full sm:w-72 h-56 sm:h-72 bg-white border-2 border-gray-200 rounded-2xl p-6 hover:border-purple-400 hover:shadow-lg transition-all flex flex-col items-center justify-center gap-4"
-        >
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+          {/* 케비쌤 서비스 버튼 - 파란색 */}
+          <div className="bg-[#026eff] text-white px-8 py-3 rounded-lg mb-10">
+            <span className="text-xl font-medium">케비쌤 서비스</span>
           </div>
-          <div className="text-center">
-            <p className="text-lg font-medium text-gray-800">보호자용</p>
-            <p className="text-sm text-gray-600">보호자 소통방</p>
+
+          {/* 교사용 / 보호자용 카드 */}
+          <div className="flex flex-col sm:flex-row gap-6 w-full max-w-[560px]">
+            <button
+              onClick={() => navigate('/teacher')}
+              className="flex-1 min-w-[240px] bg-white border-2 border-[#e0e0e0] rounded-xl p-6 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center justify-center gap-4"
+            >
+              <div className="w-16 h-16 bg-[#f4f4f4] rounded-full flex items-center justify-center">
+                <TeacherIcon />
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-medium text-[#313131]">교사용</p>
+                <p className="text-sm text-[#848484]">교사용 대시보드</p>
+              </div>
+              <div className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg font-medium text-sm">
+                <span>바로가기</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </button>
+
+            <button
+              onClick={() => navigate('/parent')}
+              className="flex-1 min-w-[240px] bg-white border-2 border-[#e0e0e0] rounded-xl p-6 hover:border-[#026eff] hover:shadow-md transition-all flex flex-col items-center justify-center gap-4"
+            >
+              <div className="w-16 h-16 bg-[#f4f4f4] rounded-full flex items-center justify-center">
+                <FamilyIcon />
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-medium text-[#313131]">보호자용</p>
+                <p className="text-sm text-[#848484]">보호자 소통방</p>
+              </div>
+              <div className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg font-medium text-sm">
+                <span>바로가기</span>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </button>
           </div>
-          <div className="flex items-center gap-2 text-purple-600 font-medium">
-            <span>바로가기</span>
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </div>
-        </button>
+        </div>
       </div>
     </div>
   );
