@@ -125,7 +125,7 @@ function DailyCard({
           </div>
           <span className="font-semibold text-sm">{student.name}</span>
         </div>
-        <span className="text-red-500 text-xs font-medium">{student.date}</span>
+        <span className="text-red-500 text-xs font-medium truncate max-w-[120px]">{student.date}</span>
       </div>
 
       {/* Daily items */}

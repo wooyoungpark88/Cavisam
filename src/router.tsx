@@ -139,6 +139,26 @@ export const router = createBrowserRouter([
       </ParentGuard>
     ),
   },
+  {
+    path: '/parent/behavior-stats',
+    element: (
+      <ParentGuard>
+        <MainLayout>
+          <BehaviorStats />
+        </MainLayout>
+      </ParentGuard>
+    ),
+  },
+  {
+    path: '/parent/care-team',
+    element: (
+      <ParentGuard>
+        <MainLayout>
+          <CareTeam />
+        </MainLayout>
+      </ParentGuard>
+    ),
+  },
 
   // 관리자 서비스
   {

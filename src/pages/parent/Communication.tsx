@@ -307,7 +307,7 @@ function MessageBubble({ msg, userId, parentName }: { msg: MessageDB; userId: st
           <span className="text-sm font-bold text-[#026eff] mb-1">{parentName} 보호자님</span>
           <div className="flex items-start gap-1.5">
             <div className="bg-[#f2f2f2] rounded-xl px-4 py-2.5 max-w-md">
-              <p className="text-sm text-gray-800">{msg.content}</p>
+              <p className="text-sm text-gray-800 break-words">{msg.content}</p>
             </div>
             {/* Heart icon */}
             <button className="mt-1 text-gray-300 hover:text-red-400 transition-colors shrink-0">
@@ -335,7 +335,7 @@ function MessageBubble({ msg, userId, parentName }: { msg: MessageDB; userId: st
       <div className="flex flex-col items-start">
         <span className="text-sm font-bold text-gray-800 mb-1">{senderName || '선생님'}</span>
         <div className="bg-white border border-gray-200/60 rounded-xl px-4 py-2.5 max-w-md">
-          <p className="text-sm text-gray-800">{msg.content}</p>
+          <p className="text-sm text-gray-800 break-words">{msg.content}</p>
         </div>
         <span className="text-xs text-gray-400 mt-1">
           {new Date(msg.created_at).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
@@ -507,7 +507,7 @@ export function ParentCommunication() {
                 className="text-sm font-medium px-3 py-2 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200 transition-colors shrink-0">
                 ✨ 케비챔
               </button>
-              <button onClick={() => void handleSend()} disabled={sending || !inputValue.trim()}
+              <button onClick={() => void handleSend()} disabled={sending || !inputValue.trim()} aria-label="메시지 전송"
                 className="w-10 h-10 bg-[#026eff] text-white rounded-full flex items-center justify-center hover:bg-[#0254cc] transition-colors disabled:opacity-30 shrink-0 shadow-sm">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
               </button>

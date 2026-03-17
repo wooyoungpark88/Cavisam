@@ -40,12 +40,12 @@ const SUMMARY_BADGES = [
 
 const TIMELINE_DATA: TimelineEntry[] = [
   { id: '1', type: 'parent_report', time: '07:45', teacher: '이영희 어머님 (보호자)', emoji: '📋', content: null },
-  { id: '2', type: 'condition', time: '08:45', teacher: '김수진 선생님', emoji: '☀️', content: '아침에 밝은 표정으로 등원했어요' },
-  { id: '3', type: 'meal', time: '12:10', teacher: '김수진 선생님', emoji: '🍚', content: '점심 — 밥, 국, 반찬 대부분 먹음' },
-  { id: '4', type: 'medication', time: '12:30', teacher: '김수진 선생님', emoji: '💊', content: '리스페리돈 0.5mg 복용 완료' },
-  { id: '5', type: 'photo', time: '14:00', teacher: '김수진 선생님', emoji: '📸', content: '미술활동 — 점토로 동물 만들기' },
+  { id: '2', type: 'condition', time: '08:45', teacher: '김태희 선생님', emoji: '☀️', content: '아침에 밝은 표정으로 등원했어요' },
+  { id: '3', type: 'meal', time: '12:10', teacher: '김태희 선생님', emoji: '🍚', content: '점심 — 밥, 국, 반찬 대부분 먹음' },
+  { id: '4', type: 'medication', time: '12:30', teacher: '김태희 선생님', emoji: '💊', content: '리스페리돈 0.5mg 복용 완료' },
+  { id: '5', type: 'photo', time: '14:00', teacher: '김태희 선생님', emoji: '📸', content: '미술활동 — 점토로 동물 만들기' },
   { id: '6', type: 'challenge', time: '15:20', teacher: 'CareVia AI', emoji: '⚠️', content: '자해 행동 1회 감지 (머리 박기) → 직원 즉시 개입, 3분 내 안정' },
-  { id: '7', type: 'condition', time: '16:30', teacher: '김수진 선생님', emoji: '🌤️', content: '하원 시 차분한 상태' },
+  { id: '7', type: 'condition', time: '16:30', teacher: '김태희 선생님', emoji: '🌤️', content: '하원 시 차분한 상태' },
   { id: '8', type: 'ai_insight', time: '18:00', teacher: 'AI 주간 분석', emoji: '🤖', content: null },
 ];
 
@@ -56,7 +56,7 @@ const AI_INSIGHTS = [
 ];
 
 const CARE_TEAM = [
-  { name: '김수진 선생님', role: '담당 교사', avatar: '👩‍🏫' },
+  { name: '김태희 선생님', role: '담당 교사', avatar: '👩‍🏫' },
   { name: '박미영', role: 'BCBA 치료사', avatar: '👩‍⚕️' },
   { name: '정민호', role: '활동보조인', avatar: '🧑‍🤝‍🧑' },
 ];
@@ -122,7 +122,7 @@ function ParentReportContent() {
           컨디션 양호. 충분한 수면 후 아침 대부분 섭취. 약 복용 완료.
         </p>
       </div>
-      <p className="text-sm text-green-600 font-medium">✓ 김수진 선생님 확인 완료 · 08:50</p>
+      <p className="text-sm text-green-600 font-medium">✓ 김태희 선생님 확인 완료 · 08:50</p>
     </div>
   );
 }
@@ -202,9 +202,9 @@ export function ParentTimeline() {
         return (
           <div>
             <p className="text-sm text-gray-800 font-medium mb-2">{entry.content as string}</p>
-            <div className="bg-gray-100 rounded-xl h-32 flex items-center justify-center">
-              <span className="text-2xl">📷</span>
-              <span className="text-sm text-gray-400 ml-2">사진 영역</span>
+            <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl h-32 flex flex-col items-center justify-center border border-blue-100">
+              <span className="text-3xl mb-1">🎨</span>
+              <span className="text-xs text-blue-400 font-medium">활동 사진이 여기에 표시됩니다</span>
             </div>
           </div>
         );

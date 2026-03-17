@@ -79,7 +79,7 @@ function TeacherBubble({ msg, name }: { msg: MessageDB; name: string }) {
       <div className="max-w-[80%]">
         <p className="text-xs font-medium text-gray-500 mb-1">{name}</p>
         <div className="bg-white rounded-2xl rounded-tl-md px-4 py-3 shadow-sm border border-gray-100">
-          <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+          <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>
         </div>
         <p className="text-xs text-gray-400 mt-1 ml-1">{formatTime(msg.created_at)}</p>
       </div>
@@ -92,7 +92,7 @@ function ParentBubble({ msg, parentName }: { msg: MessageDB; parentName: string 
     <div className="flex flex-col items-end mb-4">
       <p className="text-xs font-medium text-[#026eff] mb-1">{parentName}</p>
       <div className="max-w-[80%] bg-[#026eff] rounded-2xl rounded-tr-md px-4 py-3 shadow-sm">
-        <p className="text-sm text-white leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+        <p className="text-sm text-white leading-relaxed whitespace-pre-wrap break-words">{msg.content}</p>
       </div>
       <p className="text-xs text-gray-400 mt-1 mr-1">{formatTime(msg.created_at)}</p>
     </div>
@@ -378,7 +378,7 @@ export function ParentNotification() {
                   ✨ 케비챔
                 </button>
 
-                <button onClick={() => void handleSend()} disabled={!messageText.trim()}
+                <button onClick={() => void handleSend()} disabled={!messageText.trim()} aria-label="메시지 전송"
                   className="w-10 h-10 bg-[#026eff] text-white rounded-full flex items-center justify-center hover:bg-[#0254cc] transition-colors disabled:opacity-30 shrink-0 shadow-sm">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
                 </button>

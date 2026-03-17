@@ -19,8 +19,8 @@ const parentMenu = [
   { id: 'timeline', label: '홈 타임라인', icon: '🏠', path: '/parent' },
   { id: 'morning-report', label: '아침 보고', icon: '📋', path: '/parent/morning-report' },
   { id: 'communication', label: '소통방', icon: '💬', path: '/parent/communication' },
-  { id: 'behavior-stats', label: '행동 추이', icon: '📊', path: '/teacher/behavior-stats' },
-  { id: 'care-team', label: '돌봄 팀', icon: '👥', path: '/teacher/care-team' },
+  { id: 'behavior-stats', label: '행동 추이', icon: '📊', path: '/parent/behavior-stats' },
+  { id: 'care-team', label: '돌봄 팀', icon: '👥', path: '/parent/care-team' },
 ];
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
@@ -65,7 +65,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       ].join(' ')}
     >
       {/* Logo section */}
-      <div className="px-5 py-5 border-b border-white/10">
+      <header className="px-5 py-5 border-b border-white/10">
         <div className="flex items-center gap-2">
           <span className="text-xl">🌱</span>
           <span className="text-white text-lg font-bold tracking-tight">CareVia</span>
@@ -73,7 +73,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
         <p className="text-slate-400 text-xs mt-1">
           {role === 'parent' ? '보호자' : '교사'} 대시보드
         </p>
-      </div>
+      </header>
 
       {/* Navigation */}
       <nav className="flex-1 flex flex-col gap-1 px-3 py-4 overflow-y-auto">
@@ -97,7 +97,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
       </nav>
 
       {/* Bottom section */}
-      <div className="px-3 py-4 border-t border-white/10">
+      <footer className="px-3 py-4 border-t border-white/10">
         <button
           onClick={handleRoleSwitch}
           className="w-full text-left px-3 py-2.5 text-sm rounded-lg text-slate-400 hover:bg-white/10 hover:text-white transition-colors flex items-center gap-3"
@@ -105,7 +105,7 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           <span className="text-base">🔄</span>
           <span>{role === 'teacher' ? '보호자 뷰로 전환' : '교사 뷰로 전환'}</span>
         </button>
-      </div>
+      </footer>
     </aside>
   );
 }

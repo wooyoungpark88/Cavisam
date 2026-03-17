@@ -24,6 +24,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       {/* Mobile hamburger */}
       <button
         onClick={() => setSidebarOpen(true)}
+        aria-label="메뉴 열기"
         className="fixed top-4 left-4 z-20 md:hidden bg-white rounded-lg p-2 shadow-md"
       >
         <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +34,7 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      <main className="flex-1 min-w-0 overflow-auto p-5 lg:p-8 bg-[#f1f5f9]">
+      <main className="flex-1 min-w-0 overflow-auto pt-16 px-5 pb-5 md:pt-5 md:p-5 lg:p-8 bg-[#f1f5f9]">
         {children}
       </main>
     </div>
