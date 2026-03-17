@@ -44,7 +44,7 @@ export function Landing() {
         <div className="px-8 py-10 flex flex-col items-center">
           {/* 로고: 파란 심볼 + CareVia */}
           <div className="flex flex-col items-center mb-6">
-            <img src="/logo-carevia.svg" alt="CareVia" className="w-14 h-14 mb-3" />
+            <img src="/logo-carevia.svg" alt="CareVia" className="w-14 mb-3" />
             <span className="text-2xl sm:text-3xl font-bold text-[#026eff]">CareVia</span>
           </div>
 
