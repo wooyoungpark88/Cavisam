@@ -76,7 +76,7 @@ function TeacherBubble({ msg, name }: { msg: MessageDB; name: string }) {
   return (
     <div className="flex items-start gap-2.5 mb-4">
       <Avatar name={name} size={36} />
-      <div className="max-w-[70%]">
+      <div className="max-w-[80%]">
         <p className="text-xs font-medium text-gray-500 mb-1">{name}</p>
         <div className="bg-white rounded-2xl rounded-tl-md px-4 py-3 shadow-sm border border-gray-100">
           <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">{msg.content}</p>
@@ -91,7 +91,7 @@ function ParentBubble({ msg, parentName }: { msg: MessageDB; parentName: string 
   return (
     <div className="flex flex-col items-end mb-4">
       <p className="text-xs font-medium text-[#026eff] mb-1">{parentName}</p>
-      <div className="max-w-[70%] bg-[#026eff] rounded-2xl rounded-tr-md px-4 py-3 shadow-sm">
+      <div className="max-w-[80%] bg-[#026eff] rounded-2xl rounded-tr-md px-4 py-3 shadow-sm">
         <p className="text-sm text-white leading-relaxed whitespace-pre-wrap">{msg.content}</p>
       </div>
       <p className="text-[11px] text-gray-400 mt-1 mr-1">{formatTime(msg.created_at)}</p>
@@ -301,13 +301,13 @@ export function ParentNotification() {
                   { icon: '😊', label: '평균 컨디션', value: `${condVal}/5`, badge: '지난주 대비 -0.5', delta: '↓', deltaColor: 'text-blue-500' },
                   { icon: '🍽️', label: '평균 식사', value: `${mealPct}%`, badge: '지난주 대비 동일', delta: '→', deltaColor: 'text-gray-400' },
                 ].map((s) => (
-                  <div key={s.label} className="bg-gray-50 rounded-xl p-3.5">
+                  <div key={s.label} className="bg-gray-50 rounded-xl px-4 py-4">
                     <span className="inline-block text-[11px] bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-600">{s.icon} {s.label}</span>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-sm font-bold text-gray-900">{s.value}</span>
-                        <span className={`text-xs font-semibold ${s.deltaColor}`}>{s.delta}</span>
+                        <span className="text-2xl font-bold text-gray-900">{s.value}</span>
+                        <span className={`text-sm font-semibold ${s.deltaColor}`}>{s.delta}</span>
                       </div>
                     </div>
                   </div>
@@ -350,10 +350,10 @@ export function ParentNotification() {
               </div>
 
               {/* Quick replies */}
-              <div className="bg-white border-t border-gray-100 px-4 py-2.5 flex gap-2 overflow-x-auto shrink-0">
+              <div className="bg-white border-t border-gray-100 px-4 py-3 flex flex-wrap gap-2 shrink-0">
                 {quickReplies.map((text) => (
                   <button key={text} onClick={() => setMessageText(text)}
-                    className="whitespace-nowrap bg-gray-50 text-gray-600 text-sm px-4 py-2 rounded-full hover:bg-gray-100 border border-gray-200 transition-colors shrink-0">
+                    className="bg-gray-50 text-gray-600 text-sm px-4 py-2.5 rounded-full hover:bg-gray-100 border border-gray-200 transition-colors">
                     {text}
                   </button>
                 ))}

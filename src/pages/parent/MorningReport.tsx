@@ -10,10 +10,10 @@ type Bowel = 'normal' | 'soft' | 'hard' | 'none';
 type Medication = 'done' | 'request' | 'none';
 
 /* ───── Option Configs ───── */
-const SLEEP_OPTIONS: { value: SleepLevel; label: string; sub: string }[] = [
-  { value: 'good', label: '충분', sub: '7시간 이상' },
-  { value: 'normal', label: '보통', sub: '5~7시간' },
-  { value: 'bad', label: '부족', sub: '5시간 미만' },
+const SLEEP_OPTIONS: { value: SleepLevel; emoji: string; label: string }[] = [
+  { value: 'good', emoji: '😴', label: '충분' },
+  { value: 'normal', emoji: '🌙', label: '보통' },
+  { value: 'bad', emoji: '😵', label: '부족' },
 ];
 
 const SLEEP_QUALITY_OPTIONS: SleepQuality[] = ['숙면', '뒤척임', '자주 깸'];
@@ -93,42 +93,45 @@ function buildAiSummary(
 }
 
 /* ───── Sub-Components ───── */
-function SectionTitle({ icon, title, required }: { icon: string; title: string; required?: boolean }) {
+function SectionLabel({ emoji, title, required }: { emoji: string; title: string; required?: boolean }) {
   return (
-    <h3 className="flex items-center gap-2 text-base font-semibold text-gray-900 mb-3">
-      <span>{icon}</span>
-      {title}
-      {required && <span className="text-xs font-normal text-red-500">*필수</span>}
-    </h3>
+    <div className="flex items-center gap-2 mb-3">
+      <span className="text-lg">{emoji}</span>
+      <span className="text-base font-semibold text-gray-900">{title}</span>
+      {required && (
+        <span className="text-xs font-medium text-red-500 bg-red-50 px-1.5 py-0.5 rounded">*필수</span>
+      )}
+    </div>
   );
 }
 
-function OptionButton({
+function CardButton({
+  emoji,
+  label,
   selected,
   onClick,
-  children,
-  className = '',
 }: {
+  emoji: string;
+  label: string;
   selected: boolean;
   onClick: () => void;
-  children: React.ReactNode;
-  className?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={`
-        flex-1 min-w-0 rounded-xl border-2 py-3 px-2 text-center text-sm font-medium
-        transition-all duration-200
+        flex flex-col items-center justify-center rounded-2xl border-2 py-4 px-2 transition-all duration-200
         ${selected
-          ? 'border-[#026eff] bg-blue-50 text-[#026eff] shadow-sm'
-          : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+          ? 'border-[#026eff] bg-blue-50 shadow-sm'
+          : 'border-gray-200 bg-white hover:border-gray-300'
         }
-        ${className}
       `}
     >
-      {children}
+      <span className="text-2xl mb-1.5">{emoji}</span>
+      <span className={`text-sm font-medium ${selected ? 'text-[#026eff]' : 'text-gray-600'}`}>
+        {label}
+      </span>
     </button>
   );
 }
@@ -163,22 +166,22 @@ export function MorningReport() {
   /* ───── Success Screen ───── */
   if (submitted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-2xl shadow-lg max-w-md w-full p-8 text-center">
-          <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-3xl">✅</span>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
+        <div className="w-full max-w-md text-center">
+          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <span className="text-4xl">✅</span>
           </div>
-          <h2 className="text-xl font-bold text-gray-900 mb-2">아침 보고 완료!</h2>
-          <p className="text-sm text-gray-400 mb-6">선생님에게 전달되었습니다</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">보고 완료!</h2>
+          <p className="text-sm text-gray-400 mb-8">선생님에게 전달되었습니다</p>
 
-          <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 mb-6 text-left">
-            <p className="text-xs font-semibold text-purple-600 mb-1">🤖 AI 요약</p>
+          <div className="bg-purple-50 border border-purple-200 rounded-2xl p-5 mb-8 text-left">
+            <p className="text-xs font-semibold text-purple-600 mb-2">🤖 AI 요약</p>
             <p className="text-sm text-purple-800 leading-relaxed">{aiSummary}</p>
           </div>
 
           <button
             onClick={() => navigate('/parent')}
-            className="w-full bg-[#026eff] text-white font-semibold py-3 rounded-xl hover:opacity-90 transition-opacity"
+            className="w-full bg-[#026eff] text-white font-semibold py-4 rounded-2xl hover:opacity-90 transition-opacity"
           >
             홈으로 돌아가기
           </button>
@@ -189,54 +192,50 @@ export function MorningReport() {
 
   /* ───── Form Screen ───── */
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-8">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <div className="flex items-center justify-between px-4 py-3">
+      <div className="sticky top-0 z-10 bg-white">
+        <div className="flex items-center justify-between px-4 h-14">
           <button
             onClick={() => navigate('/parent')}
-            className="text-gray-400 hover:text-gray-900 transition-colors"
+            className="w-10 h-10 flex items-center justify-center text-gray-600 hover:text-gray-900 transition-colors -ml-2"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
+            <span className="text-2xl font-light">&#8249;</span>
           </button>
           <h1 className="text-base font-bold text-gray-900">아침 보고</h1>
-          <div className="w-6" />
+          <span className="text-sm text-gray-400 font-medium">{filledCount}/{totalRequired} 완료</span>
         </div>
 
         {/* Progress Bar */}
-        <div className="px-4 pb-3">
-          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-            <span>진행률</span>
-            <span>{filledCount}/{totalRequired} 완료</span>
-          </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-[#026eff] rounded-full transition-all duration-500 ease-out"
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
+        <div className="h-1 bg-gray-100">
+          <div
+            className={`h-full bg-[#026eff] transition-all duration-500 ease-out ${progressPercent === 100 ? 'rounded-none' : 'rounded-r-full'}`}
+            style={{ width: `${progressPercent}%` }}
+          />
         </div>
       </div>
 
       {/* Form Body */}
-      <div className="max-w-lg mx-auto px-4 py-6 space-y-6">
+      <div className="px-4 py-6 space-y-5">
         {/* Sleep */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <SectionTitle icon="🌙" title="수면" required />
-          <div className="flex gap-2 mb-3">
+          <SectionLabel emoji="🌙" title="수면" required />
+          <div className="grid grid-cols-3 gap-3">
             {SLEEP_OPTIONS.map((opt) => (
-              <OptionButton key={opt.value} selected={sleep === opt.value} onClick={() => setSleep(opt.value)}>
-                <div className="font-semibold">{opt.label}</div>
-                <div className="text-xs text-gray-400 mt-0.5">{opt.sub}</div>
-              </OptionButton>
+              <CardButton
+                key={opt.value}
+                emoji={opt.emoji}
+                label={opt.label}
+                selected={sleep === opt.value}
+                onClick={() => setSleep(opt.value)}
+              />
             ))}
           </div>
 
+          {/* Sleep Quality sub-options */}
           {sleep && (
-            <div className="mt-3 pt-3 border-t border-gray-100">
-              <p className="text-xs text-gray-400 mb-2">수면 질</p>
+            <div className="mt-4 pt-4 border-t border-gray-100">
+              <p className="text-xs text-gray-400 mb-2">수면의 질</p>
               <div className="flex gap-2">
                 {SLEEP_QUALITY_OPTIONS.map((q) => (
                   <button
@@ -244,10 +243,10 @@ export function MorningReport() {
                     type="button"
                     onClick={() => setSleepQuality(sleepQuality === q ? null : q)}
                     className={`
-                      flex-1 py-2 rounded-lg text-xs font-medium border transition-all
+                      flex-1 py-2 rounded-full text-xs font-medium border transition-all
                       ${sleepQuality === q
                         ? 'border-[#026eff] bg-blue-50 text-[#026eff]'
-                        : 'border-gray-200 bg-gray-50 text-gray-400 hover:border-gray-300'
+                        : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-gray-300'
                       }
                     `}
                   >
@@ -261,59 +260,71 @@ export function MorningReport() {
 
         {/* Condition */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <SectionTitle icon="😊" title="컨디션" required />
-          <div className="flex gap-2">
+          <SectionLabel emoji="😊" title="컨디션" required />
+          <div className="grid grid-cols-3 gap-3">
             {CONDITION_OPTIONS.map((opt) => (
-              <OptionButton key={opt.value} selected={condition === opt.value} onClick={() => setCondition(opt.value)}>
-                <div className="text-xl mb-1">{opt.emoji}</div>
-                <div className="text-sm">{opt.label}</div>
-              </OptionButton>
+              <CardButton
+                key={opt.value}
+                emoji={opt.emoji}
+                label={opt.label}
+                selected={condition === opt.value}
+                onClick={() => setCondition(opt.value)}
+              />
             ))}
           </div>
         </section>
 
         {/* Breakfast */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <SectionTitle icon="🍽️" title="아침식사" required />
-          <div className="grid grid-cols-4 gap-2">
+          <SectionLabel emoji="🍽️" title="아침식사" required />
+          <div className="grid grid-cols-4 gap-2 sm:gap-3">
             {BREAKFAST_OPTIONS.map((opt) => (
-              <OptionButton key={opt.value} selected={breakfast === opt.value} onClick={() => setBreakfast(opt.value)}>
-                <div className="text-lg mb-0.5">{opt.emoji}</div>
-                <div className="text-xs">{opt.label}</div>
-              </OptionButton>
+              <CardButton
+                key={opt.value}
+                emoji={opt.emoji}
+                label={opt.label}
+                selected={breakfast === opt.value}
+                onClick={() => setBreakfast(opt.value)}
+              />
             ))}
           </div>
         </section>
 
         {/* Bowel */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <SectionTitle icon="🚽" title="배변" />
-          <div className="grid grid-cols-4 gap-2">
+          <SectionLabel emoji="🚽" title="배변" />
+          <div className="grid grid-cols-4 gap-2 sm:gap-3">
             {BOWEL_OPTIONS.map((opt) => (
-              <OptionButton key={opt.value} selected={bowel === opt.value} onClick={() => setBowel(opt.value)}>
-                <div className="text-lg mb-0.5">{opt.emoji}</div>
-                <div className="text-xs">{opt.label}</div>
-              </OptionButton>
+              <CardButton
+                key={opt.value}
+                emoji={opt.emoji}
+                label={opt.label}
+                selected={bowel === opt.value}
+                onClick={() => setBowel(opt.value)}
+              />
             ))}
           </div>
         </section>
 
         {/* Medication */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <SectionTitle icon="💊" title="투약" required />
-          <div className="flex gap-2">
+          <SectionLabel emoji="💊" title="투약" required />
+          <div className="grid grid-cols-3 gap-3">
             {MEDICATION_OPTIONS.map((opt) => (
-              <OptionButton key={opt.value} selected={medication === opt.value} onClick={() => setMedication(opt.value)}>
-                <div className="text-lg mb-0.5">{opt.emoji}</div>
-                <div className="text-xs">{opt.label}</div>
-              </OptionButton>
+              <CardButton
+                key={opt.value}
+                emoji={opt.emoji}
+                label={opt.label}
+                selected={medication === opt.value}
+                onClick={() => setMedication(opt.value)}
+              />
             ))}
           </div>
         </section>
 
         {/* Note */}
         <section className="bg-white rounded-2xl p-5 shadow-sm">
-          <SectionTitle icon="📝" title="추가 메모" />
+          <SectionLabel emoji="📝" title="추가 메모" />
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
@@ -337,10 +348,8 @@ export function MorningReport() {
             }
           `}
         >
-          {canSubmit ? '보고 전송하기' : `${totalRequired - filledCount}개 항목을 더 선택해주세요`}
+          {canSubmit ? '선생님에게 전송' : `${totalRequired - filledCount}개 항목을 더 선택해주세요`}
         </button>
-
-        <div className="h-6" />
       </div>
     </div>
   );

@@ -453,13 +453,13 @@ export function ParentCommunication() {
                 { icon: '😊', label: '평균 컨디션', value: '2.5/5', badge: '지난주 대비 -0.5', delta: '↓', deltaColor: 'text-blue-500' },
                 { icon: '🍽️', label: '평균 식사', value: '92%', badge: '지난주 대비 동일', delta: '→', deltaColor: 'text-gray-400' },
               ].map((s) => (
-                <div key={s.label} className="bg-gray-50 rounded-xl p-3.5">
+                <div key={s.label} className="bg-gray-50 rounded-xl px-4 py-4">
                   <span className="inline-block text-[11px] bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-600">{s.icon} {s.label}</span>
                     <div className="flex items-center gap-1.5">
-                      <span className="text-sm font-bold text-gray-900">{s.value}</span>
-                      <span className={`text-xs font-semibold ${s.deltaColor}`}>{s.delta}</span>
+                      <span className="text-2xl font-bold text-gray-900">{s.value}</span>
+                      <span className={`text-sm font-semibold ${s.deltaColor}`}>{s.delta}</span>
                     </div>
                   </div>
                 </div>
@@ -488,10 +488,10 @@ export function ParentCommunication() {
             </div>
 
             {/* Quick replies */}
-            <div className="bg-white border-t border-gray-100 px-4 py-2.5 flex gap-2 overflow-x-auto shrink-0">
+            <div className="bg-white border-t border-gray-100 px-4 py-3 flex flex-wrap gap-2 shrink-0">
               {quickReplies.map((text, i) => (
                 <button key={i} onClick={() => void handleSend(text)}
-                  className="whitespace-nowrap bg-gray-50 text-gray-600 text-sm px-4 py-2 rounded-full hover:bg-gray-100 border border-gray-200 transition-colors shrink-0">
+                  className="bg-gray-50 text-gray-600 text-sm px-4 py-2.5 rounded-full hover:bg-gray-100 border border-gray-200 transition-colors">
                   {text}
                 </button>
               ))}
