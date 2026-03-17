@@ -57,7 +57,7 @@ export function Header({ onHamburgerClick }: HeaderProps) {
           onClick={() => navigate(profile?.role === 'parent' ? '/parent' : '/teacher')}
           className="text-white font-bold text-xl hover:opacity-80 transition-opacity"
         >
-          <span className="text-purple-400">Care</span>Via
+          <span className="text-[#026eff]">Care</span>Via
         </button>
       </div>
 
