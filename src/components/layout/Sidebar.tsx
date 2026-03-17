@@ -9,11 +9,15 @@ interface SidebarProps {
 const teacherMenu = [
   { id: 'dashboard', label: '대시보드', icon: '📋', path: '/teacher' },
   { id: 'communication', label: '소통방', icon: '💬', path: '/teacher/parent-notification' },
+  { id: 'parent-reports', label: '아침보고', icon: '📨', path: '/teacher/parent-reports' },
+  { id: 'behavior-stats', label: '행동 추이', icon: '📊', path: '/teacher/behavior-stats' },
+  { id: 'care-team', label: '돌봄 팀', icon: '👥', path: '/teacher/care-team' },
 ];
 
 const parentMenu = [
-  { id: 'communication', label: '소통방', icon: '💬', path: '/parent' },
-  { id: 'ai-care', label: 'AI 케어', icon: '✨', path: '/parent/ai-care' },
+  { id: 'timeline', label: '타임라인', icon: '🏠', path: '/parent' },
+  { id: 'communication', label: '소통방', icon: '💬', path: '/parent/communication' },
+  { id: 'morning-report', label: '아침 보고', icon: '📋', path: '/parent/morning-report' },
 ];
 
 export function Sidebar({ isOpen = false, onClose }: SidebarProps) {

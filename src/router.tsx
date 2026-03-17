@@ -3,7 +3,8 @@ import {
   Landing, Login, NotFound,
   TeacherDashboard, EventGroupManagement, BehaviorStats,
   RealtimeVideo, BehaviorAnalysis, InterventionReport, ParentNotification,
-  ParentCommunication,
+  ParentReports, CareTeam,
+  ParentCommunication, ParentTimeline, MorningReport,
   StudentManagement, UserManagement, DeviceManagement,
   VideoHistory, SystemLog, SystemError, AiReport,
 } from './pages';
@@ -37,6 +38,16 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: '/teacher/parent-reports',
+    element: (
+      <TeacherGuard>
+        <MainLayout>
+          <ParentReports />
+        </MainLayout>
+      </TeacherGuard>
+    ),
+  },
+  {
     path: '/teacher/event-group',
     element: (
       <TeacherGuard>
@@ -52,6 +63,16 @@ export const router = createBrowserRouter([
       <TeacherGuard>
         <MainLayout>
           <BehaviorStats />
+        </MainLayout>
+      </TeacherGuard>
+    ),
+  },
+  {
+    path: '/teacher/care-team',
+    element: (
+      <TeacherGuard>
+        <MainLayout>
+          <CareTeam />
         </MainLayout>
       </TeacherGuard>
     ),
@@ -93,7 +114,27 @@ export const router = createBrowserRouter([
     element: (
       <ParentGuard>
         <MainLayout>
+          <ParentTimeline />
+        </MainLayout>
+      </ParentGuard>
+    ),
+  },
+  {
+    path: '/parent/communication',
+    element: (
+      <ParentGuard>
+        <MainLayout>
           <ParentCommunication />
+        </MainLayout>
+      </ParentGuard>
+    ),
+  },
+  {
+    path: '/parent/morning-report',
+    element: (
+      <ParentGuard>
+        <MainLayout>
+          <MorningReport />
         </MainLayout>
       </ParentGuard>
     ),
