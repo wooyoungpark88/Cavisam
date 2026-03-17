@@ -425,148 +425,92 @@ export function ParentCommunication() {
   const parentName = profile?.name ?? '보호자';
 
   return (
-    <div className="h-full flex flex-col bg-[#f1f1f1] rounded-lg gap-4 md:gap-5 p-4 sm:p-5 md:p-6 overflow-hidden">
-        {/* Top bar */}
-        <div className="bg-white rounded-lg shadow-md px-4 sm:px-5 py-2.5 h-auto sm:h-[64px] flex items-center justify-between flex-wrap sm:flex-nowrap gap-2">
-          <div className="flex items-center gap-2.5">
-            <div className="bg-[#026eff] rounded-full px-4 py-1.5 flex items-center justify-center shrink-0">
-              <span className="text-white font-bold text-lg sm:text-xl">소통방</span>
-            </div>
-            <span className="text-[#313131] font-bold text-lg sm:text-xl truncate">
-              {selectedStudent?.name ?? '학생 선택'}
-            </span>
-          </div>
-          <button
-            onClick={() => setShowReportModal(true)}
-            className="bg-[#313131] hover:bg-[#444] text-white font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-1.5 transition-colors shrink-0"
-          >
-            📋 일일보고
-          </button>
+    <div className="h-full flex flex-col overflow-hidden rounded-xl bg-white">
+      {/* Top bar */}
+      <div className="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-5 shrink-0">
+        <div className="flex items-center gap-3">
+          <span className="bg-[#026eff] text-white text-xs font-bold px-3 py-1 rounded-full">소통방</span>
+          <span className="text-sm font-semibold text-gray-800">{selectedStudent?.name ?? '학생 선택'}</span>
         </div>
+        <button onClick={() => setShowReportModal(true)}
+          className="flex items-center gap-2 bg-[#026eff] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#0254cc] transition-colors shadow-sm">
+          📋 일일보고
+        </button>
+      </div>
 
-        {/* Two-panel layout */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-5 flex-1 min-h-0 overflow-hidden">
+      {/* Two-panel layout */}
+      <div className="flex flex-1 overflow-hidden">
           {/* Left Panel - Student Info */}
-          <div className="bg-white rounded-xl shadow-md p-5 sm:p-6 w-full md:w-[320px] shrink-0 hidden md:flex flex-col">
-            {/* Student avatar + name */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-full bg-[#e8f0fe] flex items-center justify-center shrink-0">
-                <svg className="w-7 h-7 text-[#026eff]" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" />
-                </svg>
-              </div>
-              <span className="font-bold text-lg text-[#313131]">{selectedStudent?.name ?? '학생'}</span>
+          <div className="w-72 bg-white border-r border-gray-100 p-5 shrink-0 hidden md:flex flex-col overflow-y-auto">
+            <div className="flex flex-col items-center mb-5">
+              <div className="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-2xl">👦</div>
+              <span className="font-bold text-base text-gray-900 mt-2">{selectedStudent?.name ?? '학생'}</span>
             </div>
 
-            <div className="border-t border-gray-200 mb-4" />
-
-            {/* Stats */}
-            <div className="space-y-4 flex-1">
-              {/* Sleep */}
-              <div>
-                <span className="inline-block bg-[#e8f0fe] text-[#026eff] text-xs font-medium px-2.5 py-1 rounded-full mb-1.5">
-                  지난주 대비 +1h
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base">🌙 평균 수면</span>
-                  <span className="font-bold text-base ml-auto">8시간</span>
-                  <span className="text-sm font-bold text-[#026eff]">+1h</span>
-                  <span className="text-red-500 text-sm font-bold">↑</span>
+            <div className="space-y-3 flex-1">
+              {[
+                { icon: '🌙', label: '평균 수면', value: '8시간', badge: '지난주 대비 +1h', delta: '+1h', deltaColor: 'text-red-500' },
+                { icon: '😊', label: '평균 컨디션', value: '2.5/5', badge: '지난주 대비 -0.5', delta: '↓', deltaColor: 'text-blue-500' },
+                { icon: '🍽️', label: '평균 식사', value: '92%', badge: '지난주 대비 동일', delta: '→', deltaColor: 'text-gray-400' },
+              ].map((s) => (
+                <div key={s.label} className="bg-gray-50 rounded-xl p-3.5">
+                  <span className="inline-block text-[11px] bg-blue-50 text-[#026eff] font-medium px-2 py-0.5 rounded-md mb-2">{s.badge}</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-600">{s.icon} {s.label}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm font-bold text-gray-900">{s.value}</span>
+                      <span className={`text-xs font-semibold ${s.deltaColor}`}>{s.delta}</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              {/* Condition */}
-              <div>
-                <span className="inline-block bg-[#e8f0fe] text-[#026eff] text-xs font-medium px-2.5 py-1 rounded-full mb-1.5">
-                  지난주 대비 -0.5
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base">😊 평균 컨디션</span>
-                  <span className="font-bold text-base ml-auto">2.5/5</span>
-                  <span className="text-[#026eff] text-sm font-bold">↓</span>
-                </div>
-              </div>
-
-              {/* Meal */}
-              <div>
-                <span className="inline-block bg-[#e8f0fe] text-[#026eff] text-xs font-medium px-2.5 py-1 rounded-full mb-1.5">
-                  지난주 대비 동일
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-base">🍽️ 평균 식사</span>
-                  <span className="font-bold text-base ml-auto">92%</span>
-                  <span className="text-gray-400 text-sm font-bold">→</span>
-                </div>
-              </div>
+              ))}
             </div>
 
-            {/* AI Care button */}
-            <button
-              onClick={() => alert('AI 케어 기능은 준비 중입니다.')}
-              className="w-full bg-[#026eff] hover:bg-[#0258cc] text-white font-bold py-3 rounded-xl text-base mt-5 transition-colors"
-            >
-              ✨ AI 케어 보기 &gt;
+            <button onClick={() => alert('AI 케어 기능은 준비 중입니다.')}
+              className="w-full mt-5 py-3 bg-[#026eff] text-white text-sm font-semibold rounded-xl hover:bg-[#0254cc] transition-colors shadow-sm">
+              ✨ AI 케어 보기
             </button>
           </div>
 
           {/* Right Panel - Chat Area */}
-          <div className="flex-1 bg-white rounded-xl shadow-md flex flex-col min-w-0 overflow-hidden">
+          <div className="flex-1 flex flex-col min-w-0 bg-[#f8f9fa]">
             {/* Chat header */}
-            <div className="bg-[#313131] rounded-t-xl px-4 py-3">
-              <p className="text-white font-bold text-sm sm:text-base text-center">
-                안녕하세요. {selectedStudent?.name ?? '...'} 이용인 소통방입니다.
-              </p>
+            <div className="bg-[#1e1e1e] px-5 py-3 shrink-0">
+              <p className="text-white text-sm font-medium">안녕하세요. {selectedStudent?.name ?? '...'} 이용인 소통방입니다.</p>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto space-y-4 p-4 sm:p-5">
+            <div className="flex-1 overflow-y-auto space-y-4 px-5 py-5">
               {messages.map((msg) => (
                 <MessageBubble key={msg.id} msg={msg} userId={profile?.id ?? ''} parentName={parentName} />
               ))}
               <div ref={chatEndRef} />
             </div>
 
-            {/* Input bar */}
-            <div className="border-t border-[#e0e0e0]">
-              <div className="flex gap-2 items-center px-3 sm:px-4 py-2.5 bg-[#f8f8f8]">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), void handleSend())}
-                  placeholder="메세지를 입력하세요."
-                  className="flex-1 bg-white border border-[#e0e0e0] rounded-full px-4 py-2 text-sm text-[#313131] placeholder-[#9c9c9c] outline-none focus:border-[#026eff] min-w-0"
-                  disabled={sending}
-                />
-                <button
-                  onClick={() => alert('케비챔 AI 기능은 준비 중입니다.')}
-                  className="shrink-0 px-3 py-2 bg-[#e8e8e8] rounded-full text-sm text-[#636363] font-medium hover:bg-[#ddd] transition-colors"
-                >
-                  ✨ 케비챔
+            {/* Quick replies */}
+            <div className="bg-white border-t border-gray-100 px-4 py-2.5 flex gap-2 overflow-x-auto shrink-0">
+              {quickReplies.map((text, i) => (
+                <button key={i} onClick={() => void handleSend(text)}
+                  className="whitespace-nowrap bg-gray-50 text-gray-600 text-sm px-4 py-2 rounded-full hover:bg-gray-100 border border-gray-200 transition-colors shrink-0">
+                  {text}
                 </button>
-                <button
-                  onClick={() => void handleSend()}
-                  disabled={sending || !inputValue.trim()}
-                  className="w-10 h-10 shrink-0 flex items-center justify-center bg-[#026eff] hover:bg-[#0258cc] rounded-full disabled:opacity-40 transition-colors"
-                >
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
+              ))}
+            </div>
 
-              {/* Quick replies */}
-              <div className="flex flex-wrap gap-1.5 sm:gap-2 px-3 sm:px-4 py-2.5 bg-[#f8f8f8] border-t border-[#eeeeee]">
-                {quickReplies.map((text, i) => (
-                  <button
-                    key={i}
-                    onClick={() => void handleSend(text)}
-                    className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-[#d9d9d9] rounded-full text-[#636363] text-xs sm:text-sm hover:border-[#026eff] hover:text-[#026eff] transition-colors"
-                  >
-                    {text}
-                  </button>
-                ))}
-              </div>
+            {/* Input bar */}
+            <div className="bg-white border-t border-gray-200 px-4 py-3 flex items-center gap-3 shrink-0">
+              <input type="text" value={inputValue} onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && !e.shiftKey && (e.preventDefault(), void handleSend())}
+                placeholder="메시지를 입력하세요" disabled={sending}
+                className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-[#026eff]/20 focus:border-[#026eff] min-w-0" />
+              <button onClick={() => alert('케비챔 AI 기능은 준비 중입니다.')}
+                className="text-sm font-medium px-3 py-2 rounded-full bg-gray-50 text-gray-600 hover:bg-gray-100 border border-gray-200 transition-colors shrink-0">
+                ✨ 케비챔
+              </button>
+              <button onClick={() => void handleSend()} disabled={sending || !inputValue.trim()}
+                className="w-10 h-10 bg-[#026eff] text-white rounded-full flex items-center justify-center hover:bg-[#0254cc] transition-colors disabled:opacity-30 shrink-0 shadow-sm">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" /></svg>
+              </button>
             </div>
           </div>
         </div>
