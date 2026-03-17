@@ -4,11 +4,20 @@ import { supabase } from '../lib/supabase';
 import { useAuth } from '../hooks/useAuth';
 import type { Organization, UserRole } from '../types';
 
+// 기본 시설 목록 (Supabase 조회 실패 시 fallback)
+const DEFAULT_ORGS: Organization[] = [
+  {
+    id: '00000000-0000-0000-0000-000000000001',
+    name: '해오름 발달장애인복지관',
+    created_at: '',
+  },
+];
+
 export function Login() {
   const { profile, loading, signIn } = useAuth();
   const navigate = useNavigate();
 
-  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [organizations, setOrganizations] = useState<Organization[]>(DEFAULT_ORGS);
   const [selectedOrg, setSelectedOrg] = useState<string>('');
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -24,14 +33,16 @@ export function Login() {
     }
   }, [profile, loading, navigate]);
 
-  // 시설 목록 로드
+  // 시설 목록 로드 (Supabase에서 가져오되, 실패 시 기본값 유지)
   useEffect(() => {
     supabase
       .from('organizations')
       .select('*')
       .order('name')
       .then(({ data }) => {
-        setOrganizations((data as Organization[]) ?? []);
+        if (data && data.length > 0) {
+          setOrganizations(data as Organization[]);
+        }
       });
   }, []);
 

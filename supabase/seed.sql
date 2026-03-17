@@ -5,7 +5,7 @@
 
 -- 1. 기관 추가
 insert into public.organizations (id, name) values
-  ('00000000-0000-0000-0000-000000000001', '케어비아 센터')
+  ('00000000-0000-0000-0000-000000000001', '해오름 발달장애인복지관')
 on conflict (id) do nothing;
 
 -- 2. 학생 추가 (교사 계정 생성 후 organization_id 확인 후 실행)
