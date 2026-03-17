@@ -49,6 +49,18 @@ const TIMELINE_DATA: TimelineEntry[] = [
   { id: '8', type: 'ai_insight', time: '18:00', teacher: 'AI 주간 분석', emoji: '🤖', content: null },
 ];
 
+const AI_INSIGHTS = [
+  { label: '도전행동 감소', value: '↓30%', bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
+  { label: '컨디션 상승 추세', value: '📈', bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+  { label: '식사 안정 유지', value: '🍚', bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
+];
+
+const CARE_TEAM = [
+  { name: '김수진 선생님', role: '담당 교사', avatar: '👩‍🏫' },
+  { name: '박미영', role: 'BCBA 치료사', avatar: '👩‍⚕️' },
+  { name: '정민호', role: '활동보조인', avatar: '🧑‍🤝‍🧑' },
+];
+
 /* ───── Sub-Components ───── */
 function ReactionBar({ reactions, onToggle }: { reactions: Reactions; onToggle: (key: keyof Reactions) => void }) {
   const emojis: { key: keyof Reactions; icon: string; activeClass: string }[] = [
@@ -203,8 +215,8 @@ export function ParentTimeline() {
 
   return (
     <div className="space-y-5">
-      {/* Header */}
-      <div className="bg-white rounded-2xl p-5 shadow-sm">
+      {/* ── Header ── */}
+      <div className="bg-white rounded-2xl border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
             <h1 className="text-xl font-bold text-gray-900">서준이의 하루</h1>
@@ -227,10 +239,10 @@ export function ParentTimeline() {
         </div>
       </div>
 
-      {/* Morning Report CTA */}
+      {/* ── Morning Report CTA (full width, above grid) ── */}
       <button
         onClick={() => navigate('/parent/morning-report')}
-        className="w-full bg-white rounded-2xl p-4 flex items-center gap-4 shadow-sm border border-purple-100 hover:border-purple-300 transition-colors"
+        className="w-full bg-white rounded-2xl border border-gray-200 p-4 flex items-center gap-4 hover:border-purple-300 transition-colors"
       >
         <div className="w-11 h-11 bg-purple-100 rounded-xl flex items-center justify-center shrink-0">
           <span className="text-xl">📋</span>
@@ -244,40 +256,82 @@ export function ParentTimeline() {
         </svg>
       </button>
 
-      {/* Timeline */}
-      <div>
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#026eff]" />
-          <h2 className="text-base font-bold text-gray-900">오늘의 타임라인</h2>
+      {/* ── 2-Column Grid (desktop) ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
+        {/* ── Left Column: Timeline ── */}
+        <div>
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#026eff]" />
+              <h2 className="text-base font-bold text-gray-900">오늘의 타임라인</h2>
+            </div>
+
+            <div className="space-y-3">
+              {TIMELINE_DATA.map((entry) => (
+                <div
+                  key={entry.id}
+                  className={`bg-white rounded-2xl border border-gray-200 p-4 ${cardBorderClass(entry.type)}`}
+                >
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{entry.emoji}</span>
+                      <span className="text-sm font-medium text-gray-700">{entry.teacher}</span>
+                    </div>
+                    <span className="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium">
+                      {entry.time}
+                    </span>
+                  </div>
+
+                  {/* Card Body */}
+                  {renderCardContent(entry)}
+
+                  {/* Reactions */}
+                  <ReactionBar
+                    reactions={reactions[entry.id]}
+                    onToggle={(key) => toggleReaction(entry.id, key)}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-3">
-          {TIMELINE_DATA.map((entry) => (
-            <div
-              key={entry.id}
-              className={`bg-white rounded-2xl p-4 shadow-sm ${cardBorderClass(entry.type)}`}
-            >
-              {/* Card Header */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{entry.emoji}</span>
-                  <span className="text-sm font-medium text-gray-700">{entry.teacher}</span>
+        {/* ── Right Column: Sidebar ── */}
+        <div className="space-y-6">
+          {/* AI Weekly Insights */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <h3 className="text-base font-bold text-gray-900 mb-4">🤖 AI 주간 인사이트</h3>
+            <div className="space-y-3">
+              {AI_INSIGHTS.map((item) => (
+                <div
+                  key={item.label}
+                  className={`rounded-xl ${item.bg} border ${item.border} p-4 flex items-center gap-3`}
+                >
+                  <span className={`text-lg font-bold ${item.text}`}>{item.value}</span>
+                  <span className={`text-sm font-medium ${item.text}`}>{item.label}</span>
                 </div>
-                <span className="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium">
-                  {entry.time}
-                </span>
-              </div>
-
-              {/* Card Body */}
-              {renderCardContent(entry)}
-
-              {/* Reactions */}
-              <ReactionBar
-                reactions={reactions[entry.id]}
-                onToggle={(key) => toggleReaction(entry.id, key)}
-              />
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Care Team */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <h3 className="text-base font-bold text-gray-900 mb-4">👥 돌봄 팀</h3>
+            <div className="space-y-3">
+              {CARE_TEAM.map((member) => (
+                <div key={member.name} className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-lg shrink-0">
+                    {member.avatar}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{member.name}</p>
+                    <p className="text-xs text-gray-500">{member.role}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
