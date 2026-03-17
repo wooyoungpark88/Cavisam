@@ -42,10 +42,9 @@ export function Landing() {
 
         {/* 메인 콘텐츠 */}
         <div className="px-8 py-10 flex flex-col items-center">
-          {/* 로고: 파란 심볼 + CareVia */}
+          {/* 로고: 피그마 원본 컬러 로고 */}
           <div className="flex flex-col items-center mb-6">
-            <img src="/logo-carevia.svg" alt="CareVia" className="w-24 mb-4" />
-            <span className="text-4xl sm:text-5xl font-black text-[#026eff]">CareVia</span>
+            <img src="/logo-carevia-figma.png" alt="CareVia" className="h-16 mb-2" />
           </div>
 
           <p className="text-base text-[#515151] mb-1 text-center">
