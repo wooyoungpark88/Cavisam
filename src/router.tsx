@@ -20,8 +20,18 @@ export const router = createBrowserRouter([
     path: '/teacher',
     element: (
       <TeacherGuard>
-        <MainLayout activeMenuItem="dashboard">
+        <MainLayout>
           <TeacherDashboard />
+        </MainLayout>
+      </TeacherGuard>
+    ),
+  },
+  {
+    path: '/teacher/parent-notification',
+    element: (
+      <TeacherGuard>
+        <MainLayout>
+          <ParentNotification />
         </MainLayout>
       </TeacherGuard>
     ),
@@ -66,23 +76,15 @@ export const router = createBrowserRouter([
       </TeacherGuard>
     ),
   },
-  {
-    path: '/teacher/parent-notification',
-    element: (
-      <TeacherGuard>
-        <MainLayout activeMenuItem="parent-notification">
-          <ParentNotification />
-        </MainLayout>
-      </TeacherGuard>
-    ),
-  },
 
   // 보호자 영역
   {
     path: '/parent',
     element: (
       <ParentGuard>
-        <ParentCommunication />
+        <MainLayout>
+          <ParentCommunication />
+        </MainLayout>
       </ParentGuard>
     ),
   },
