@@ -11,7 +11,7 @@ interface MenuItem {
 
 const menuItems: MenuItem[] = [
   { key: "timeline", label: "홈 타임라인", icon: "ri-home-5-line" },
-  { key: "morning", label: "아침 보고", icon: "ri-sun-line" },
+  { key: "morning", label: "등원 전 한마디", icon: "ri-sun-line" },
   { key: "incidents", label: "소통방", icon: "ri-chat-3-line" },
   { key: "behavior-stats", label: "행동 추이", icon: "ri-bar-chart-2-line" },
   { key: "care-team", label: "돌봄 팀", icon: "ri-team-line" },

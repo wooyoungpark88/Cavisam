@@ -10,7 +10,7 @@ import { mockChild, mockNotifications } from "../../mocks/parentDashboard";
 
 const MOBILE_MENU: { key: MenuKey; label: string; icon: string }[] = [
   { key: "timeline", label: "홈", icon: "ri-home-5-line" },
-  { key: "morning", label: "아침보고", icon: "ri-sun-line" },
+  { key: "morning", label: "등원 전 한마디", icon: "ri-sun-line" },
   { key: "incidents", label: "소통방", icon: "ri-alarm-warning-line" },
   { key: "behavior-stats", label: "행동추이", icon: "ri-bar-chart-2-line" },
   { key: "care-team", label: "돌봄팀", icon: "ri-team-line" },

@@ -139,7 +139,7 @@ export function Landing() {
           hoverShadow="hover:shadow-[0_8px_28px_rgba(234,88,12,0.12)]"
           title="보호자용"
           desc="자녀의 하루를 담임 선생님과 함께 확인하는 보호자용 대시보드"
-          features={["홈 타임라인", "아침 보고", "소통방", "돌봄 팀"]}
+          features={["홈 타임라인", "등원 전 한마디", "소통방", "돌봄 팀"]}
           featureBg="#fff7ed"
           featureColor="#ea580c"
         />

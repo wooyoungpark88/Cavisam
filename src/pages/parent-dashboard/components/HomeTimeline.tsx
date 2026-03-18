@@ -177,7 +177,7 @@ function MorningFormModal({
               <i className="ri-sun-line text-base" style={{ color: "#f97316" }} />
             </div>
             <div>
-              <p className="text-sm font-bold text-gray-900 leading-tight">오늘 아침 보고</p>
+              <p className="text-sm font-bold text-gray-900 leading-tight">오늘 등원 전 한마디</p>
               <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
                 박지영 선생님께 전달돼요
               </p>
@@ -219,7 +219,7 @@ function MorningReportBanner({
           <i className="ri-checkbox-circle-fill text-[#10b981] text-sm" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-[#10b981] leading-tight">오늘 아침 보고 완료</p>
+          <p className="text-sm font-bold text-[#10b981] leading-tight">오늘 등원 전 한마디 완료</p>
           <p className="text-[11px] text-gray-400 mt-0.5">박지영 선생님께 전달됐어요</p>
         </div>
         <span
@@ -268,7 +268,7 @@ function MorningReportBanner({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-0.5 flex-wrap">
               <p className="text-sm font-bold text-gray-900 leading-tight">
-                오늘 아침 보고가 아직 전달되지 않았어요
+                오늘 등원 전 한마디가 아직 전달되지 않았어요
               </p>
               <span
                 className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
@@ -282,7 +282,7 @@ function MorningReportBanner({
               </span>
             </div>
             <p className="text-xs text-gray-500 leading-relaxed">
-              선생님이 오늘 자녀의 상태를 파악하려면 아침 보고가 필요해요. 등원 전이나 오전 중에 꼭 보내주세요.
+              선생님이 오늘 자녀의 상태를 파악하려면 등원 전 한마디가 필요해요. 등원 전이나 오전 중에 꼭 보내주세요.
             </p>
           </div>
         </div>
@@ -316,10 +316,10 @@ function MorningReportBanner({
             style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", minWidth: 180 }}
           >
             <i className="ri-edit-2-line text-sm" />
-            지금 아침 보고 작성하기
+            지금 등원 전 한마디 작성하기
           </button>
           <p className="text-[11px] text-gray-400 leading-tight">
-            선생님은 아침 보고를 확인 후<br className="hidden sm:block" />
+            선생님은 등원 전 한마디를 확인 후<br className="hidden sm:block" />
             당일 수업 계획에 반영해요
           </p>
         </div>
@@ -351,7 +351,7 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
           className="text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: "rgba(2,110,255,0.12)", color: "#026eff" }}
         >
-          아침 보고
+          등원 전 한마디
         </span>
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
           <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
@@ -762,7 +762,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
       <div className="flex items-center gap-4 mb-5 flex-wrap">
         <span className="text-[11px] text-gray-400 font-medium">항목 유형</span>
         {[
-          { color: "#026eff", label: "아침 보고 (보호자)" },
+          { color: "#026eff", label: "등원 전 한마디 (보호자)" },
           { color: "#10b981", label: "선생님 메시지" },
           { color: "#f59e0b", label: "AI 감지" },
         ].map((item) => (

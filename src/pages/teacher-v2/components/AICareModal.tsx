@@ -362,7 +362,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
               <i className="ri-information-line text-xs text-gray-400" />
             </div>
             <p className="text-gray-400 text-[11px] leading-relaxed">
-              AI 분석은 축적된 아침 보고·행동 기록·발송 보고를 기반으로 생성됩니다. 최종 판단은 담당 교사의 전문적 소견을 따라 주세요.
+              AI 분석은 축적된 등원 전 한마디·행동 기록·발송 보고를 기반으로 생성됩니다. 최종 판단은 담당 교사의 전문적 소견을 따라 주세요.
             </p>
           </div>
         </div>

@@ -132,7 +132,7 @@ export function ParentReports() {
     <div className="h-full max-w-5xl mx-auto space-y-5">
       {/* 헤더 */}
       <div>
-        <h2 className="text-xl font-bold text-gray-800">보호자 아침 보고</h2>
+        <h2 className="text-xl font-bold text-gray-800">보호자 등원 전 한마디</h2>
         <p className="text-sm text-gray-500 mt-1">
           해오름반 · <span className="font-semibold text-[#026eff]">{receivedCount}/{totalCount}명</span> 수신
         </p>
@@ -316,7 +316,7 @@ export function ParentReports() {
               <div>
                 <span className="font-bold text-gray-600">{r.studentName}</span>
                 <p className="text-xs text-gray-400">{r.parentName}</p>
-                <span className="text-xs text-gray-400 font-medium">아침 보고 미수신</span>
+                <span className="text-xs text-gray-400 font-medium">등원 전 한마디 미수신</span>
               </div>
             </div>
             <button className="text-xs font-bold text-[#026eff] bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">

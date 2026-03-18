@@ -234,7 +234,7 @@ export function ParentTimeline() {
       >
         <span className="text-lg">📋</span>
         <p className="text-sm text-gray-700">
-          <span className="font-semibold">오늘 아침 보고:</span>{' '}
+          <span className="font-semibold">오늘 등원 전 한마디:</span>{' '}
           수면·컨디션·식사·약 복용을 선생님께 전달
         </p>
       </button>

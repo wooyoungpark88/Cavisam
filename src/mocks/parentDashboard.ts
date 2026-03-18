@@ -486,7 +486,7 @@ export const mockParentChatMessages: ParentChatMessage[] = [
     id: 5,
     sender: "teacher",
     senderName: "박지영 선생님",
-    text: "맞아요, 지우는 수면 패턴과 컨디션 상관관계가 꽤 있더라고요. 오늘 오후 쉬는 시간을 좀 더 드릴게요. 아침 보고에 수면 시간 적어주시면 수업 계획에 반영할게요!",
+    text: "맞아요, 지우는 수면 패턴과 컨디션 상관관계가 꽤 있더라고요. 오늘 오후 쉬는 시간을 좀 더 드릴게요. 등원 전 한마디에 수면 시간 적어주시면 수업 계획에 반영할게요!",
     time: "3월 14일 오전 10:35",
     type: "text",
   },

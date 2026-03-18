@@ -396,7 +396,7 @@ export const mockAiCareReports: AiCareReport[] = [
         icon: "ri-user-voice-line",
         title: "보호자에게 소화기 관찰 요청",
         detail:
-          "가정에서도 배변 및 복통 관련 증상을 관찰하도록 보호자에게 아침 보고에 배변 항목 세밀히 기록 요청을 해보세요.",
+          "가정에서도 배변 및 복통 관련 증상을 관찰하도록 보호자에게 등원 전 한마디에 배변 항목 세밀히 기록 요청을 해보세요.",
       },
     ],
     weeklyBehavior: [

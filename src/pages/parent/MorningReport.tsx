@@ -126,7 +126,7 @@ export function MorningReport() {
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h1 className="text-xl font-bold text-gray-900">오늘 아침 보고</h1>
+          <h1 className="text-xl font-bold text-gray-900">오늘 등원 전 한마디</h1>
           <p className="text-sm text-gray-400 mt-0.5">서준이 → 김태희 선생님</p>
         </div>
         <span className={`text-sm font-bold px-3 py-1 rounded-lg transition-colors duration-300 ${canSubmit ? 'bg-emerald-50 text-emerald-600' : 'bg-blue-50 text-[#026eff]'}`}>

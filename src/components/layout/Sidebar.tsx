@@ -17,7 +17,7 @@ const teacherMenu = [
 
 const parentMenu = [
   { id: 'timeline', label: '홈 타임라인', icon: '🏠', path: '/parent' },
-  { id: 'morning-report', label: '아침 보고', icon: '📋', path: '/parent/morning-report' },
+  { id: 'morning-report', label: '등원 전 한마디', icon: '📋', path: '/parent/morning-report' },
   { id: 'communication', label: '소통방', icon: '💬', path: '/parent/communication' },
   { id: 'behavior-stats', label: '행동 추이', icon: '📊', path: '/parent/behavior-stats' },
   { id: 'care-team', label: '돌봄 팀', icon: '👥', path: '/parent/care-team' },

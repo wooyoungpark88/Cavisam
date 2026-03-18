@@ -14,7 +14,7 @@ export default function MorningReport() {
       <div className="px-4 sm:px-7 pt-4 sm:pt-7 pb-0">
         <div className="flex items-start sm:items-center justify-between mb-4 sm:mb-5 gap-3">
           <div>
-            <h1 className="text-base sm:text-lg font-bold text-gray-900">아침 보고</h1>
+            <h1 className="text-base sm:text-lg font-bold text-gray-900">등원 전 한마디</h1>
             <p className="text-xs text-gray-400 mt-0.5">
               매일 등원 전 아이의 상태를 선생님께 전달해요
             </p>
@@ -51,7 +51,7 @@ export default function MorningReport() {
           <div className="mb-4 px-4 py-3 rounded-xl flex items-center gap-3" style={{ background: "#10b98115" }}>
             <i className="ri-checkbox-circle-fill text-[#10b981] text-base flex-shrink-0" />
             <p className="text-xs font-semibold text-[#10b981]">
-              선생님께 아침 보고가 성공적으로 전달됐어요! 오늘도 좋은 하루 되세요 😊
+              선생님께 등원 전 한마디가 성공적으로 전달됐어요! 오늘도 좋은 하루 되세요 😊
             </p>
           </div>
         )}

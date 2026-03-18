@@ -27,7 +27,7 @@ interface ReportDetailPanelProps {
 }
 
 const TYPE_META: Record<string, { label: string; icon: string; color: string; bg: string }> = {
-  parent:   { label: "아침 보고", icon: "ri-sun-line",             color: "#026eff", bg: "rgba(2,110,255,0.08)" },
+  parent:   { label: "등원 전 한마디", icon: "ri-sun-line",             color: "#026eff", bg: "rgba(2,110,255,0.08)" },
   teacher:  { label: "선생님 메시지", icon: "ri-chat-3-line",      color: "#10b981", bg: "rgba(16,185,129,0.08)" },
   report:   { label: "선생님 보고서", icon: "ri-file-text-line",   color: "#10b981", bg: "rgba(16,185,129,0.08)" },
   ai:       { label: "AI 감지",    icon: "ri-robot-2-line",        color: "#f59e0b", bg: "rgba(245,158,11,0.08)" },
