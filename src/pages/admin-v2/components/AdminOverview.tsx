@@ -55,14 +55,14 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
     .sort((a, b) => b.registeredAt.localeCompare(a.registeredAt));
 
   return (
-    <div className="flex-1 overflow-y-auto p-8">
+    <div className="flex-1 overflow-y-auto p-4 sm:p-8">
       <div className="mb-7">
         <h1 className="text-xl font-bold text-gray-900">운영 대시보드</h1>
         <p className="text-sm text-gray-500 mt-0.5">전체 사용자 현황과 가입 승인 요청을 확인하세요.</p>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
         <StatCard
           icon="ri-group-line"
           iconBg="#f0f4ff"
@@ -103,7 +103,7 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
 
       {/* 최근 가입 승인 대기 */}
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden mb-6">
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <div>
             <p className="text-sm font-bold text-gray-900">최근 승인 대기 요청</p>
             <p className="text-[11px] text-gray-400 mt-0.5">신규 가입자의 역할을 지정해 주세요</p>
@@ -129,7 +129,7 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
         ) : (
           <div className="divide-y divide-gray-50">
             {recentPending.slice(0, 5).map((u) => (
-              <div key={u.id} className="flex items-center gap-4 px-6 py-3.5">
+              <div key={u.id} className="flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-3.5">
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
                   style={{ background: "#9ca3af" }}
@@ -138,9 +138,9 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800">{u.name}</p>
-                  <p className="text-[11px] text-gray-400">{u.email}</p>
+                  <p className="text-[11px] text-gray-400 truncate">{u.email}</p>
                 </div>
-                <span className="text-[11px] text-gray-400">{u.registeredAt} 가입</span>
+                <span className="hidden sm:block text-[11px] text-gray-400 flex-shrink-0">{u.registeredAt} 가입</span>
                 <span className="px-2.5 py-1 rounded-full bg-orange-50 text-orange-500 text-[11px] font-semibold whitespace-nowrap">
                   역할 미지정
                 </span>
@@ -151,9 +151,9 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
       </div>
 
       {/* 상태 요약 */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* 역할 분포 */}
-        <div className="bg-white rounded-2xl border border-gray-100 px-6 py-5">
+        <div className="bg-white rounded-2xl border border-gray-100 px-5 sm:px-6 py-5">
           <p className="text-sm font-bold text-gray-900 mb-4">역할 분포</p>
           <div className="space-y-3">
             {[
@@ -185,7 +185,7 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
         </div>
 
         {/* 최근 승인된 사용자 */}
-        <div className="bg-white rounded-2xl border border-gray-100 px-6 py-5">
+        <div className="bg-white rounded-2xl border border-gray-100 px-5 sm:px-6 py-5">
           <p className="text-sm font-bold text-gray-900 mb-4">최근 승인된 사용자</p>
           <div className="space-y-3">
             {users

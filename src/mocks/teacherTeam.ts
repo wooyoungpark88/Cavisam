@@ -286,7 +286,7 @@ export const mockTeamActivities: TeamActivity[] = [
     memberName: "김수진",
     memberColor: "#026eff",
     memberInitial: "김",
-    action: "보호자 보고 발송",
+    action: "생활 알리미 발송",
     target: "정도현 이용인 — 특이사항 보고",
     time: "오늘 오전 10:35",
     type: "report",

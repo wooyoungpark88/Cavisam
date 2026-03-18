@@ -181,15 +181,16 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
   });
 
   return (
-    <div className="flex-1 overflow-y-auto p-8">
+    <div className="flex-1 overflow-y-auto p-4 sm:p-8">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-900">사용자 관리</h1>
         <p className="text-sm text-gray-500 mt-0.5">가입된 사용자의 역할을 확인하고 변경할 수 있습니다.</p>
       </div>
 
-      {/* 필터 바 */}
-      <div className="flex items-center gap-3 mb-5">
-        <div className="relative flex-1 max-w-xs">
+      {/* 필터 바 - 모바일에서 세로 스택 */}
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-5">
+        {/* 검색 */}
+        <div className="relative w-full sm:flex-1 sm:max-w-xs">
           <i className="ri-search-line absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm" />
           <input
             type="text"
@@ -200,49 +201,52 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
           />
         </div>
 
-        {/* 역할 필터 */}
-        <div className="flex gap-1.5 bg-gray-100 rounded-xl p-1">
-          {(["all", "teacher", "parent", "unassigned"] as FilterRole[]).map((r) => (
-            <button
-              key={r}
-              onClick={() => setFilterRole(r)}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap transition-all"
-              style={{
-                background: filterRole === r ? "white" : "transparent",
-                color: filterRole === r ? "#111827" : "#6b7280",
-                boxShadow: filterRole === r ? "0 1px 3px rgba(0,0,0,0.07)" : "none",
-              }}
-            >
-              {r === "all" ? "전체" : ROLE_LABEL[r]}
-            </button>
-          ))}
-        </div>
+        {/* 필터 그룹 - 모바일에서 스크롤 가능 */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-0.5 sm:pb-0">
+          {/* 역할 필터 */}
+          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 flex-shrink-0">
+            {(["all", "teacher", "parent", "unassigned"] as FilterRole[]).map((r) => (
+              <button
+                key={r}
+                onClick={() => setFilterRole(r)}
+                className="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap transition-all"
+                style={{
+                  background: filterRole === r ? "white" : "transparent",
+                  color: filterRole === r ? "#111827" : "#6b7280",
+                  boxShadow: filterRole === r ? "0 1px 3px rgba(0,0,0,0.07)" : "none",
+                }}
+              >
+                {r === "all" ? "전체" : ROLE_LABEL[r]}
+              </button>
+            ))}
+          </div>
 
-        {/* 상태 필터 */}
-        <div className="flex gap-1.5 bg-gray-100 rounded-xl p-1">
-          {(["all", "approved", "pending", "suspended"] as FilterStatus[]).map((s) => (
-            <button
-              key={s}
-              onClick={() => setFilterStatus(s)}
-              className="px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap transition-all"
-              style={{
-                background: filterStatus === s ? "white" : "transparent",
-                color: filterStatus === s ? "#111827" : "#6b7280",
-                boxShadow: filterStatus === s ? "0 1px 3px rgba(0,0,0,0.07)" : "none",
-              }}
-            >
-              {s === "all" ? "전체" : STATUS_LABEL[s]}
-            </button>
-          ))}
-        </div>
+          {/* 상태 필터 */}
+          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 flex-shrink-0">
+            {(["all", "approved", "pending", "suspended"] as FilterStatus[]).map((s) => (
+              <button
+                key={s}
+                onClick={() => setFilterStatus(s)}
+                className="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer whitespace-nowrap transition-all"
+                style={{
+                  background: filterStatus === s ? "white" : "transparent",
+                  color: filterStatus === s ? "#111827" : "#6b7280",
+                  boxShadow: filterStatus === s ? "0 1px 3px rgba(0,0,0,0.07)" : "none",
+                }}
+              >
+                {s === "all" ? "전체" : STATUS_LABEL[s]}
+              </button>
+            ))}
+          </div>
 
-        <span className="text-xs text-gray-400 ml-auto whitespace-nowrap">
-          {filtered.length}명
-        </span>
+          <span className="text-xs text-gray-400 whitespace-nowrap flex-shrink-0">
+            {filtered.length}명
+          </span>
+        </div>
       </div>
 
-      {/* 테이블 */}
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+      {/* 테이블 - 데스크탑 */}
+      <div className="hidden sm:block bg-white rounded-2xl border border-gray-100 overflow-hidden">
         {/* thead */}
         <div className="grid grid-cols-[2fr_2.5fr_1.5fr_1fr_1fr_1fr] gap-0 px-5 py-2.5 bg-gray-50 border-b border-gray-100">
           {["이름", "이메일 / 전화번호", "연결 이용인", "역할", "상태", ""].map((h) => (
@@ -266,7 +270,6 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                 key={u.id}
                 className="grid grid-cols-[2fr_2.5fr_1.5fr_1fr_1fr_1fr] gap-0 px-5 py-3.5 items-center hover:bg-gray-50/50 transition-colors"
               >
-                {/* 이름 */}
                 <div className="flex items-center gap-3 px-1">
                   <div
                     className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
@@ -281,14 +284,10 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                     )}
                   </div>
                 </div>
-
-                {/* 이메일/전화 */}
                 <div className="px-1 min-w-0">
                   <p className="text-xs text-gray-600 truncate">{u.email}</p>
                   <p className="text-[10px] text-gray-400 mt-0.5">{u.phone}</p>
                 </div>
-
-                {/* 연결 이용인 */}
                 <div className="px-1">
                   {u.linkedStudents && u.linkedStudents.length > 0 ? (
                     <div className="flex flex-wrap gap-1">
@@ -305,8 +304,6 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                     <span className="text-[11px] text-gray-300">—</span>
                   )}
                 </div>
-
-                {/* 역할 뱃지 */}
                 <div className="px-1">
                   <span
                     className="text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
@@ -315,8 +312,6 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                     {ROLE_LABEL[u.role]}
                   </span>
                 </div>
-
-                {/* 상태 뱃지 */}
                 <div className="px-1">
                   <span
                     className="text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
@@ -325,8 +320,6 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                     {STATUS_LABEL[u.status]}
                   </span>
                 </div>
-
-                {/* 수정 */}
                 <div className="px-1 flex justify-end">
                   <button
                     onClick={() => setEditUser(u)}
@@ -339,6 +332,71 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
               </div>
             ))}
           </div>
+        )}
+      </div>
+
+      {/* 카드 뷰 - 모바일 */}
+      <div className="sm:hidden space-y-3">
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center py-16 text-center bg-white rounded-2xl border border-gray-100">
+            <div className="w-10 h-10 rounded-2xl bg-gray-50 flex items-center justify-center mb-3">
+              <i className="ri-user-search-line text-gray-300 text-lg" />
+            </div>
+            <p className="text-sm text-gray-400">검색 결과가 없어요</p>
+          </div>
+        ) : (
+          filtered.map((u) => (
+            <div key={u.id} className="bg-white rounded-2xl border border-gray-100 px-4 py-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+                  style={{ background: u.avatarColor }}
+                >
+                  {u.initial}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-900 truncate">{u.name}</p>
+                  <p className="text-[11px] text-gray-400 truncate">{u.email}</p>
+                </div>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <span
+                    className="text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
+                    style={ROLE_STYLE[u.role]}
+                  >
+                    {ROLE_LABEL[u.role]}
+                  </span>
+                  <span
+                    className="text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
+                    style={STATUS_STYLE[u.status]}
+                  >
+                    {STATUS_LABEL[u.status]}
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-wrap gap-1">
+                  {u.linkedStudents && u.linkedStudents.length > 0
+                    ? u.linkedStudents.map((s) => (
+                        <span
+                          key={s}
+                          className="text-[10px] px-2 py-0.5 bg-orange-50 text-orange-500 rounded-full font-medium whitespace-nowrap"
+                        >
+                          {s}
+                        </span>
+                      ))
+                    : <span className="text-[11px] text-gray-300">연결 이용인 없음</span>
+                  }
+                </div>
+                <button
+                  onClick={() => setEditUser(u)}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-semibold text-gray-500 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors flex-shrink-0 ml-2"
+                >
+                  <i className="ri-edit-line text-xs" />
+                  수정
+                </button>
+              </div>
+            </div>
+          ))
         )}
       </div>
 

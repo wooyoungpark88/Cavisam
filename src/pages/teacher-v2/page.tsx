@@ -14,11 +14,13 @@ const FACILITIES = [
 
 const MOBILE_MENU: { key: TeacherMenuKey; label: string; icon: string }[] = [
   { key: "children", label: "이용인", icon: "ri-user-heart-line" },
-  { key: "parent-reports", label: "보호자보고", icon: "ri-file-text-line" },
-  { key: "messages", label: "소통방", icon: "ri-chat-3-line" },
+  { key: "parent-reports", label: "생활알리미", icon: "ri-file-text-line" },
+  { key: "messages", label: "케어톡", icon: "ri-chat-3-line" },
   { key: "behavior", label: "행동추이", icon: "ri-line-chart-line" },
   { key: "team", label: "돌봄팀", icon: "ri-team-line" },
 ];
+
+// PlaceholderView reserved for future use
 
 function TeacherDashboard({ onLogout }: { onLogout: () => void }) {
   const [activeMenu, setActiveMenu] = useState<TeacherMenuKey>("children");
@@ -81,7 +83,7 @@ function TeacherDashboard({ onLogout }: { onLogout: () => void }) {
         </header>
 
         {/* Content */}
-        <main className="flex-1 overflow-hidden pb-16 lg:pb-0">
+        <main className="flex-1 flex flex-col overflow-hidden pb-16 lg:pb-0">
           {renderContent()}
         </main>
       </div>
@@ -103,7 +105,7 @@ function TeacherDashboard({ onLogout }: { onLogout: () => void }) {
               <div className="w-5 h-5 flex items-center justify-center">
                 <i className={`${item.icon} text-base`} />
               </div>
-              <span className="text-[9px] font-medium leading-tight">{item.label}</span>
+              <span className="text-[9px] font-medium leading-none whitespace-nowrap">{item.label}</span>
             </button>
           );
         })}
@@ -122,30 +124,63 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
       {/* Left panel */}
       <div
         className="hidden lg:flex flex-col justify-between w-[420px] min-h-screen px-12 py-14 relative overflow-hidden"
-        style={{ background: "linear-gradient(160deg, #0a2a4a 0%, #1a5c8a 60%, #2b86c5 100%)" }}
+        style={{
+          background: "linear-gradient(160deg, #dce8ff 0%, #e8f0ff 45%, #eef4ff 100%)",
+          borderRight: "1px solid rgba(2,110,255,0.1)",
+        }}
       >
-        <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, #fff 0%, transparent 70%)" }} />
-        <div className="absolute bottom-10 -right-16 w-64 h-64 rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, #fff 0%, transparent 70%)" }} />
+        {/* 도트 패턴 */}
+        <div
+          className="absolute inset-0 opacity-[0.30] pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, #a5b4fc 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+        {/* 블루 오브 상단 */}
+        <div
+          className="absolute -top-32 -left-32 w-[420px] h-[420px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 40% 40%, rgba(2,110,255,0.20) 0%, transparent 65%)",
+            filter: "blur(40px)",
+          }}
+        />
+        {/* 블루 오브 하단 */}
+        <div
+          className="absolute -bottom-20 -right-20 w-[300px] h-[300px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 60% 60%, rgba(2,110,255,0.12) 0%, transparent 65%)",
+            filter: "blur(32px)",
+          }}
+        />
 
         {/* Logo */}
-        <div className="relative z-10 flex items-center gap-2">
-          <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/20">
+        <div className="relative z-10 flex items-center gap-2.5">
+          <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#026eff]">
             <i className="ri-heart-pulse-line text-white text-base" />
           </div>
-          <span className="text-white font-bold text-lg tracking-tight">CareVia</span>
+          <span className="font-bold text-lg tracking-tight" style={{ color: "#0f172a" }}>CareVia</span>
         </div>
 
         {/* Center content */}
         <div className="relative z-10 flex flex-col gap-8">
           <div>
-            <p className="text-white/60 text-sm font-medium mb-3 tracking-widest uppercase">교사용 서비스</p>
-            <h2 className="text-white text-3xl font-bold leading-snug">
+            <span
+              className="text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full inline-block mb-4"
+              style={{
+                background: "rgba(2,110,255,0.08)",
+                color: "#026eff",
+                border: "1px solid rgba(2,110,255,0.18)",
+                letterSpacing: "0.12em",
+              }}
+            >
+              교사용 서비스
+            </span>
+            <h2 className="text-3xl font-bold leading-snug" style={{ color: "#0f172a" }}>
               학생과 함께<br />성장하는<br />교사의 파트너
             </h2>
           </div>
-          <p className="text-white/70 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
             케어비아와 함께 학생의<br />행동 변화를 체계적으로<br />기록하고 분석하세요.
           </p>
 
@@ -156,17 +191,20 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
               { icon: "ri-file-chart-line", text: "AI 기반 행동 분석 리포트" },
             ].map((item) => (
               <div key={item.text} className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/15">
-                  <i className={`${item.icon} text-white text-sm`} />
+                <div
+                  className="w-8 h-8 flex items-center justify-center rounded-lg flex-shrink-0"
+                  style={{ background: "rgba(2,110,255,0.10)", color: "#026eff" }}
+                >
+                  <i className={`${item.icon} text-sm`} />
                 </div>
-                <span className="text-white/80 text-sm">{item.text}</span>
+                <span className="text-sm" style={{ color: "#334155" }}>{item.text}</span>
               </div>
             ))}
           </div>
         </div>
 
         <div className="relative z-10">
-          <p className="text-white/40 text-xs">해오름 발달장애인복지관</p>
+          <p className="text-xs" style={{ color: "rgba(2,110,255,0.45)" }}>해오름 발달장애인복지관</p>
         </div>
       </div>
 
@@ -186,10 +224,18 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
           <button
             type="button"
             onClick={() => navigate("/")}
-            className="flex items-center gap-1.5 text-sm text-gray-400 hover:text-gray-700 transition-colors mb-6 cursor-pointer whitespace-nowrap"
+            className="flex items-center gap-2 mb-6 cursor-pointer whitespace-nowrap transition-all group"
+            style={{ color: "#475569" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#1a5c8a"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#475569"; }}
           >
-            <i className="ri-arrow-left-s-line text-base" />
-            홈으로 돌아가기
+            <div
+              className="w-7 h-7 flex items-center justify-center rounded-lg flex-shrink-0 transition-all"
+              style={{ background: "rgba(26,92,138,0.08)" }}
+            >
+              <i className="ri-arrow-left-line text-sm" />
+            </div>
+            <span className="text-sm font-semibold">홈으로 돌아가기</span>
           </button>
 
           <div className="bg-white rounded-2xl p-8 border border-gray-100" style={{ boxShadow: "0 4px 24px rgba(26,92,138,0.07)" }}>

@@ -22,32 +22,64 @@ export default function ParentPage() {
       {/* Left panel */}
       <div
         className="hidden lg:flex flex-col justify-between w-[420px] min-h-screen px-12 py-14 relative overflow-hidden"
-        style={{ background: "linear-gradient(160deg, #013ea0 0%, #026eff 60%, #4da3ff 100%)" }}
+        style={{
+          background: "linear-gradient(160deg, #fff0e6 0%, #fef3ea 45%, #fff8f5 100%)",
+          borderRight: "1px solid rgba(234,88,12,0.1)",
+        }}
       >
-        {/* Background circles */}
-        <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, #fff 0%, transparent 70%)" }} />
-        <div className="absolute bottom-10 -right-16 w-64 h-64 rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, #fff 0%, transparent 70%)" }} />
+        {/* 도트 패턴 */}
+        <div
+          className="absolute inset-0 opacity-[0.28] pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(circle, #fdba74 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+        {/* 오렌지 오브 상단 */}
+        <div
+          className="absolute -top-32 -left-32 w-[420px] h-[420px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 40% 40%, rgba(234,88,12,0.18) 0%, transparent 65%)",
+            filter: "blur(40px)",
+          }}
+        />
+        {/* 오렌지 오브 하단 */}
+        <div
+          className="absolute -bottom-20 -right-20 w-[300px] h-[300px] rounded-full pointer-events-none"
+          style={{
+            background: "radial-gradient(circle at 60% 60%, rgba(234,88,12,0.10) 0%, transparent 65%)",
+            filter: "blur(32px)",
+          }}
+        />
 
         {/* Logo */}
         <div className="relative z-10">
           <img
             src="https://cavisam-production.up.railway.app/logo-carevia-figma.png"
             alt="CareVia"
-            className="h-10 brightness-0 invert"
+            className="h-10"
           />
         </div>
 
         {/* Center content */}
         <div className="relative z-10 flex flex-col gap-8">
           <div>
-            <p className="text-white/60 text-sm font-medium mb-3 tracking-widest uppercase">보호자 서비스</p>
-            <h2 className="text-white text-3xl font-bold leading-snug">
+            <span
+              className="text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full inline-block mb-4"
+              style={{
+                background: "rgba(234,88,12,0.08)",
+                color: "#ea580c",
+                border: "1px solid rgba(234,88,12,0.18)",
+                letterSpacing: "0.12em",
+              }}
+            >
+              보호자 서비스
+            </span>
+            <h2 className="text-3xl font-bold leading-snug" style={{ color: "#0f172a" }}>
               어제보다 나은<br />내일을 만드는,<br />케어비아
             </h2>
           </div>
-          <p className="text-white/70 text-sm leading-relaxed">
+          <p className="text-sm leading-relaxed" style={{ color: "#475569" }}>
             자녀의 하루를 교사와 함께<br />실시간으로 확인하세요.
           </p>
 
@@ -59,10 +91,13 @@ export default function ParentPage() {
               { icon: "ri-bar-chart-2-line", text: "AI 기반 성장 리포트" },
             ].map((item) => (
               <div key={item.text} className="flex items-center gap-3">
-                <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-white/15">
-                  <i className={`${item.icon} text-white text-sm`} />
+                <div
+                  className="w-9 h-9 flex items-center justify-center rounded-lg flex-shrink-0"
+                  style={{ background: "rgba(234,88,12,0.10)", color: "#ea580c" }}
+                >
+                  <i className={`${item.icon} text-sm`} />
                 </div>
-                <span className="text-white/80 text-sm">{item.text}</span>
+                <span className="text-sm" style={{ color: "#334155" }}>{item.text}</span>
               </div>
             ))}
           </div>
@@ -70,7 +105,7 @@ export default function ParentPage() {
 
         {/* Footer */}
         <div className="relative z-10">
-          <p className="text-white/40 text-xs">해오름 발달장애인복지관</p>
+          <p className="text-xs" style={{ color: "rgba(234,88,12,0.45)" }}>해오름 발달장애인복지관</p>
         </div>
       </div>
 
@@ -88,6 +123,23 @@ export default function ParentPage() {
         </div>
 
         <div className="w-full max-w-[400px]">
+          {/* 뒤로 가기 버튼 */}
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-2 mb-6 cursor-pointer whitespace-nowrap transition-all"
+            style={{ color: "#475569" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#026eff"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#475569"; }}
+          >
+            <div
+              className="w-7 h-7 flex items-center justify-center rounded-lg flex-shrink-0"
+              style={{ background: "rgba(2,110,255,0.08)" }}
+            >
+              <i className="ri-arrow-left-line text-sm" />
+            </div>
+            <span className="text-sm font-semibold">홈으로 돌아가기</span>
+          </button>
+
           {/* Card */}
           <div className="bg-white rounded-2xl p-8 border border-gray-100" style={{ boxShadow: "0 4px 24px rgba(2,110,255,0.06)" }}>
 

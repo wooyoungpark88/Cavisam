@@ -5,11 +5,11 @@ import AICareModal from "./AICareModal";
 
 function conditionStyle(level: ConditionLevel): { color: string; bg: string; label: string } {
   switch (level) {
-    case "매우좋음": return { color: "#059669", bg: "#f0fdf4", label: "매우 좋음" };
+    case "매우좋음": return { color: "#059669", bg: "#f0fdf4", label: "매우좋음" };
     case "좋음":     return { color: "#10b981", bg: "#f0fdf4", label: "좋음" };
     case "보통":     return { color: "#6b7280", bg: "#f9fafb", label: "보통" };
     case "나쁨":     return { color: "#d97706", bg: "#fffbeb", label: "나쁨" };
-    case "매우나쁨": return { color: "#ef4444", bg: "#fef2f2", label: "매우 나쁨" };
+    case "매우나쁨": return { color: "#ef4444", bg: "#fef2f2", label: "매우나쁨" };
   }
 }
 
@@ -145,7 +145,7 @@ export default function StudentCard({ student }: StudentCardProps) {
             className="flex-1 flex items-center justify-center gap-1 py-1.5 rounded-lg text-[10px] font-semibold text-gray-600 bg-gray-100 cursor-pointer whitespace-nowrap transition-colors hover:bg-gray-200"
           >
             <i className="ri-chat-3-line text-[10px]" />
-            소통방
+            케어톡
           </button>
         </div>
       </div>

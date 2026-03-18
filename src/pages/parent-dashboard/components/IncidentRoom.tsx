@@ -6,11 +6,13 @@ import {
   parentQuickReplies,
   mockChild,
 } from "../../../mocks/parentDashboard";
+import CabiSaemModal from "../../../components/feature/CabiSaemModal";
 
 interface IncidentRoomProps {
   memberId?: number;
 }
 
+/* ────────────────────────────────── report card ── */
 function ReportCard({ card }: { card: NonNullable<ParentChatMessage["reportCard"]> }) {
   return (
     <div
@@ -49,6 +51,7 @@ function ReportCard({ card }: { card: NonNullable<ParentChatMessage["reportCard"
   );
 }
 
+/* ────────────────────────────────── message bubble ── */
 function MessageBubble({
   msg,
   teacherInitial,
@@ -93,20 +96,16 @@ function MessageBubble({
         </div>
       )}
       <div
-        className={`flex flex-col ${isTeacher ? "items-start" : "items-end"} max-w-[68%]`}
+        className={`flex flex-col ${isTeacher ? "items-start" : "items-end"} max-w-[80%] sm:max-w-[68%]`}
       >
         {isTeacher && (
           <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
         )}
         <div
-          className="px-4 py-2.5 rounded-2xl text-sm leading-relaxed"
+          className="px-4 py-2.5 rounded-2xl text-sm leading-relaxed break-words"
           style={
             isTeacher
-              ? {
-                  background: "#f3f4f6",
-                  color: "#1f2937",
-                  borderBottomLeftRadius: 6,
-                }
+              ? { background: "#f3f4f6", color: "#1f2937", borderBottomLeftRadius: 6 }
               : {
                   background: "linear-gradient(135deg, #026eff, #0243c2)",
                   color: "white",
@@ -132,18 +131,118 @@ function DateDivider({ label }: { label: string }) {
   );
 }
 
-export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
+/* ────────────────────────────────── member list ── */
+function MemberList({
+  selectedId,
+  onSelect,
+}: {
+  selectedId: number;
+  onSelect: (id: number) => void;
+}) {
+  return (
+    <div className="flex flex-col h-full overflow-hidden bg-white">
+      {/* header */}
+      <div className="flex-shrink-0 px-5 py-4 border-b border-gray-100">
+        <h2 className="text-sm font-bold text-gray-900">케어톡</h2>
+        <p className="text-[11px] text-gray-400 mt-0.5">{mockChild.name} · 돌봄 팀 채팅</p>
+      </div>
+
+      {/* list */}
+      <div className="flex-1 overflow-y-auto py-2">
+        {mockCareTeam.map((member) => {
+          const messages = mockCareTeamMessages[member.id] ?? [];
+          const last = messages[messages.length - 1];
+          const unread = member.id === 1 ? 2 : 0;
+          const isSelected = member.id === selectedId;
+
+          return (
+            <button
+              key={member.id}
+              onClick={() => onSelect(member.id)}
+              className="w-full flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer text-left"
+              style={{ background: isSelected ? "rgba(2,110,255,0.06)" : "transparent" }}
+            >
+              {/* avatar */}
+              <div className="relative flex-shrink-0">
+                <div
+                  className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                  style={{ background: member.color }}
+                >
+                  {member.initial}
+                </div>
+                {member.id === 1 && (
+                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
+                )}
+                {unread > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-[9px] font-bold">
+                    {unread}
+                  </span>
+                )}
+              </div>
+
+              {/* info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between mb-0.5 gap-1">
+                  <p className="text-sm font-semibold text-gray-900 break-words leading-snug">
+                    {member.name} 선생님
+                  </p>
+                  {last && (
+                    <span className="text-[10px] text-gray-400 flex-shrink-0 mt-0.5">
+                      {last.time.startsWith("오늘")
+                        ? last.time.replace("오늘 ", "")
+                        : last.time.split(" ").slice(-1)[0]}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-start justify-between gap-1">
+                  <p className="text-[11px] text-gray-500 break-words leading-snug line-clamp-2 flex-1">
+                    {last
+                      ? last.type === "report-card"
+                        ? "[활동 보고카드]"
+                        : last.text
+                      : "메시지 없음"}
+                  </p>
+                  <span
+                    className="flex-shrink-0 text-[9px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap mt-0.5"
+                    style={{ background: `${member.color}14`, color: member.color }}
+                  >
+                    {member.role}
+                  </span>
+                </div>
+              </div>
+
+              {/* arrow (mobile only) */}
+              <div className="w-4 h-4 flex items-center justify-center md:hidden flex-shrink-0">
+                <i className="ri-arrow-right-s-line text-gray-400 text-base" />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ────────────────────────────────── chat panel ── */
+function ChatPanel({
+  memberId,
+  onBack,
+  showBackButton,
+}: {
+  memberId: number;
+  onBack: () => void;
+  showBackButton: boolean;
+}) {
   const member = mockCareTeam.find((m) => m.id === memberId) ?? mockCareTeam[0];
   const initialMessages = mockCareTeamMessages[member.id] ?? [];
 
   const [messages, setMessages] = useState<ParentChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
+  const [showCabiSaem, setShowCabiSaem] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  // Reset messages when memberId changes
   useEffect(() => {
-    const newInitial = mockCareTeamMessages[member.id] ?? [];
-    setMessages(newInitial);
+    setMessages(mockCareTeamMessages[member.id] ?? []);
     setInput("");
   }, [member.id]);
 
@@ -169,10 +268,6 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
     setInput("");
   };
 
-  const handleQuickReply = (text: string) => {
-    setInput(text);
-  };
-
   const groupedMessages = (() => {
     const groups: { dateLabel: string; msgs: ParentChatMessage[] }[] = [];
     const dateMap: Record<string, ParentChatMessage[]> = {};
@@ -182,20 +277,13 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
       const t = msg.time;
       const dateKey = t.startsWith("오늘") || t.startsWith("방금")
         ? "오늘"
-        : t.includes("3월 10일")
-        ? "3월 10일"
-        : t.includes("3월 11일")
-        ? "3월 11일"
-        : t.includes("3월 12일")
-        ? "3월 12일"
-        : t.includes("3월 13일")
-        ? "3월 13일"
-        : t.includes("3월 14일")
-        ? "3월 14일"
-        : t.includes("3월 15일")
-        ? "3월 15일"
-        : t.includes("3월 16일")
-        ? "3월 16일"
+        : t.includes("3월 10일") ? "3월 10일"
+        : t.includes("3월 11일") ? "3월 11일"
+        : t.includes("3월 12일") ? "3월 12일"
+        : t.includes("3월 13일") ? "3월 13일"
+        : t.includes("3월 14일") ? "3월 14일"
+        : t.includes("3월 15일") ? "3월 15일"
+        : t.includes("3월 16일") ? "3월 16일"
         : "기타";
 
       if (!dateMap[dateKey]) {
@@ -205,68 +293,86 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
       dateMap[dateKey].push(msg);
     });
 
-    dateOrder.forEach((key) => {
-      groups.push({ dateLabel: key, msgs: dateMap[key] });
-    });
-
+    dateOrder.forEach((key) => groups.push({ dateLabel: key, msgs: dateMap[key] }));
     return groups;
   })();
 
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* ── Chat Header ── */}
-      <div className="flex-shrink-0 px-6 py-4 border-b border-gray-100 bg-white flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold"
-              style={{ background: member.color }}
-            >
-              {member.initial}
-            </div>
-            {/* Online dot — only for main teacher */}
-            {member.id === 1 && (
-              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
+      <div className="flex-shrink-0 px-4 py-3 border-b border-gray-100 bg-white flex items-center gap-3">
+        {/* back button (mobile) */}
+        {showBackButton && (
+          <button
+            onClick={onBack}
+            className="w-8 h-8 flex items-center justify-center rounded-xl hover:bg-gray-50 transition-colors cursor-pointer flex-shrink-0"
+          >
+            <i className="ri-arrow-left-s-line text-gray-600 text-xl" />
+          </button>
+        )}
+
+        {/* avatar */}
+        <div className="relative flex-shrink-0">
+          <div
+            className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold"
+            style={{ background: member.color }}
+          >
+            {member.initial}
+          </div>
+          {member.id === 1 && (
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
+          )}
+        </div>
+
+        {/* name / role */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <p className="text-gray-900 text-sm font-bold break-words">{member.name} 선생님</p>
+            {member.id === 1 ? (
+              <span className="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+                온라인
+              </span>
+            ) : (
+              <span
+                className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap hidden sm:inline"
+                style={{ background: `${member.color}14`, color: member.color }}
+              >
+                {member.role}
+              </span>
             )}
           </div>
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <p className="text-gray-900 text-sm font-bold">{member.name} 선생님</p>
-              {member.id === 1 ? (
-                <span className="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded-full whitespace-nowrap">
-                  온라인
-                </span>
-              ) : (
-                <span
-                  className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap"
-                  style={{ background: `${member.color}14`, color: member.color }}
-                >
-                  {member.role}
-                </span>
-              )}
-            </div>
-            <p className="text-gray-400 text-[11px]">
-              {member.id === 1
-                ? `${mockChild.name} 담임 · ${mockChild.facility}`
-                : `${member.department}`}
-            </p>
-          </div>
+          <p className="text-gray-400 text-[11px] break-words leading-snug">
+            {member.id === 1
+              ? `${mockChild.name} 담임 · ${mockChild.facility}`
+              : member.department}
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors">
+
+        {/* action buttons */}
+        <div className="flex items-center gap-1.5 flex-shrink-0">
+          {/* 캐비쌤 */}
+          <button
+            onClick={() => setShowCabiSaem(true)}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-bold cursor-pointer whitespace-nowrap transition-all hover:opacity-90"
+            style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)", color: "white" }}
+          >
+            <i className="ri-sparkling-2-fill text-sm" />
+            <span className="hidden sm:inline">캐비쌤</span>
+          </button>
+          <button className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors">
             <i className="ri-phone-line text-xs" />
             전화하기
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 text-xs font-medium text-gray-600 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors">
-            <i className="ri-file-list-3-line text-xs" />
-            기록 보기
+          {/* phone icon only on mobile */}
+          <button className="sm:hidden w-8 h-8 flex items-center justify-center rounded-xl border border-gray-200 hover:bg-gray-50 cursor-pointer transition-colors">
+            <i className="ri-phone-line text-gray-500 text-sm" />
           </button>
         </div>
       </div>
 
       {/* ── Notice bar ── */}
       <div
-        className="flex-shrink-0 px-5 py-2.5 flex items-center gap-2 border-b border-gray-100"
+        className="flex-shrink-0 px-4 py-2 flex items-center gap-2 border-b border-gray-100"
         style={{ background: "#fffbeb" }}
       >
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
@@ -278,7 +384,7 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
       </div>
 
       {/* ── Messages area ── */}
-      <div className="flex-1 overflow-y-auto px-6 py-5">
+      <div className="flex-1 overflow-y-auto px-4 py-4">
         {groupedMessages.map((group) => (
           <div key={group.dateLabel}>
             <DateDivider label={group.dateLabel} />
@@ -296,11 +402,11 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
       </div>
 
       {/* ── Quick replies ── */}
-      <div className="flex-shrink-0 px-5 pt-3 pb-1 flex gap-2 overflow-x-auto border-t border-gray-100 bg-white">
+      <div className="flex-shrink-0 px-4 pt-2.5 pb-1 flex gap-2 overflow-x-auto border-t border-gray-100 bg-white">
         {parentQuickReplies.map((reply) => (
           <button
             key={reply}
-            onClick={() => handleQuickReply(reply)}
+            onClick={() => setInput(reply)}
             className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           >
             {reply}
@@ -309,7 +415,7 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
       </div>
 
       {/* ── Input bar ── */}
-      <div className="flex-shrink-0 px-5 py-3 bg-white">
+      <div className="flex-shrink-0 px-4 py-3 bg-white">
         <div className="flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-2.5 border border-gray-100">
           <input
             value={input}
@@ -328,6 +434,80 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
             <i className="ri-send-plane-fill text-xs" />
           </button>
         </div>
+      </div>
+
+      {/* 캐비쌤 Modal */}
+      {showCabiSaem && (
+        <CabiSaemModal mode="parent" onClose={() => setShowCabiSaem(false)} />
+      )}
+    </div>
+  );
+}
+
+/* ────────────────────────────────── main component ── */
+export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
+  const [selectedId, setSelectedId] = useState(memberId);
+  // mobile: "list" | "chat"
+  const [mobileView, setMobileView] = useState<"list" | "chat">("list");
+  const isFirstMount = useRef(true);
+
+  // Sync incoming memberId prop (but only navigate to chat when prop changes externally)
+  useEffect(() => {
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    setSelectedId(memberId);
+    setMobileView("chat");
+  }, [memberId]);
+
+  const handleSelectMember = (id: number) => {
+    setSelectedId(id);
+    setMobileView("chat");
+  };
+
+  const handleBack = () => {
+    setMobileView("list");
+  };
+
+  return (
+    <div className="h-full flex overflow-hidden">
+      {/* ── Desktop: member list panel (always visible md+) ── */}
+      <div
+        className={`
+          md:flex md:flex-col md:border-r md:border-gray-100
+          ${mobileView === "list" ? "flex flex-col flex-1" : "hidden"}
+          md:w-64 lg:w-72 md:flex-shrink-0
+        `}
+        style={{ background: "#fff" }}
+      >
+        {/* Mobile header for list view */}
+        <div className="md:hidden flex-shrink-0 px-4 py-3 border-b border-gray-100 flex items-center gap-3">
+          <div className="w-6 h-6 flex items-center justify-center rounded-md bg-[#026eff]">
+            <i className="ri-chat-3-line text-white text-xs" />
+          </div>
+          <span className="text-sm font-bold text-gray-900">케어톡</span>
+        </div>
+
+        <MemberList
+          selectedId={selectedId}
+          onSelect={handleSelectMember}
+        />
+      </div>
+
+      {/* ── Desktop: chat panel (always visible md+) / Mobile: conditional ── */}
+      <div
+        className={`
+          flex-1 flex flex-col overflow-hidden min-w-0
+          ${mobileView === "chat" ? "flex" : "hidden md:flex"}
+        `}
+        style={{ background: "#fafbfc" }}
+      >
+        <ChatPanel
+          memberId={selectedId}
+          onBack={handleBack}
+          showBackButton={mobileView === "chat"}
+        />
       </div>
     </div>
   );

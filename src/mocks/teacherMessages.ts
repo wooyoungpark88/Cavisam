@@ -65,7 +65,7 @@ export const mockConversations: StudentConversation[] = [
         id: 1,
         sender: "teacher",
         senderName: "김태의 선생님",
-        text: "안녕하세요, 김민준 이용인 소통방입니다.",
+        text: "안녕하세요, 김민준 이용인 케어톡입니다.",
         time: "오전 1:45",
         type: "text",
       },
@@ -287,10 +287,10 @@ export const mockConversations: StudentConversation[] = [
 ];
 
 export const quickReplies = [
-  "어제 밤에 잠을 잘 못 잤어요",
-  "오늘 아침에 짜증을 많이 내더라고요",
-  "약을 먹이지 못했어요",
-  "오늘 컨디션이 좋아 보여요",
-  "감사합니다 선생님 🙏",
-  "알겠습니다, 잘 챙겨볼게요",
+  "오늘 활동 중 특이사항을 알려드립니다",
+  "점심 식사 잘 마쳤습니다",
+  "약 복용 완료했습니다",
+  "오늘 컨디션이 좋았어요 😊",
+  "확인해 주셔서 감사합니다 🙏",
+  "내일도 잘 부탁드립니다",
 ];

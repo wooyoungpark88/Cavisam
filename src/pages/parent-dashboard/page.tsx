@@ -8,12 +8,12 @@ import CareTeam from "./components/CareTeam";
 import HomeTimeline from "./components/HomeTimeline";
 import { mockChild, mockNotifications } from "../../mocks/parentDashboard";
 
-const MOBILE_MENU: { key: MenuKey; label: string; icon: string }[] = [
-  { key: "timeline", label: "홈", icon: "ri-home-5-line" },
-  { key: "morning", label: "등원 전 한마디", icon: "ri-sun-line" },
-  { key: "incidents", label: "소통방", icon: "ri-alarm-warning-line" },
-  { key: "behavior-stats", label: "행동추이", icon: "ri-bar-chart-2-line" },
-  { key: "care-team", label: "돌봄팀", icon: "ri-team-line" },
+const MOBILE_MENU: { key: MenuKey; label: string[]; icon: string }[] = [
+  { key: "timeline",       label: ["홈"],            icon: "ri-home-5-line" },
+  { key: "morning",        label: ["등원 전", "한마디"], icon: "ri-sun-line" },
+  { key: "incidents",      label: ["케어톡"],          icon: "ri-alarm-warning-line" },
+  { key: "behavior-stats", label: ["우리 아이", "이야기"], icon: "ri-heart-3-line" },
+  { key: "care-team",      label: ["돌봄팀"],          icon: "ri-team-line" },
 ];
 
 function TopBar({
@@ -25,6 +25,7 @@ function TopBar({
   activeMenu: MenuKey;
   onMenuSelect: (k: MenuKey) => void;
 }) {
+  const navigate = useNavigate();
   const [notiOpen, setNotiOpen] = useState(false);
   const [notifications, setNotifications] = useState(mockNotifications);
   const notiRef = useRef<HTMLDivElement>(null);
@@ -47,12 +48,15 @@ function TopBar({
   return (
     <header className="h-14 bg-white border-b border-gray-100 flex-shrink-0 flex items-center justify-between px-4 sm:px-6 gap-3">
       {/* Mobile: brand logo (visible only when sidebar is hidden) */}
-      <div className="flex items-center gap-2 lg:hidden">
+      <button
+        onClick={() => navigate("/")}
+        className="flex items-center gap-2 lg:hidden cursor-pointer"
+      >
         <div className="w-6 h-6 flex items-center justify-center rounded-md bg-[#026eff]">
           <i className="ri-heart-pulse-line text-white text-xs" />
         </div>
         <span className="text-sm font-bold text-gray-900 tracking-tight">CareVia</span>
-      </div>
+      </button>
 
       {/* Desktop: spacer */}
       <div className="hidden lg:block" />
@@ -159,11 +163,29 @@ export default function ParentDashboardPage() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<MenuKey>("timeline");
   const [selectedMemberId, setSelectedMemberId] = useState<number>(1);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const mainRef = useRef<HTMLElement>(null);
 
   const handleMemberMessage = (memberId: number) => {
     setSelectedMemberId(memberId);
     setActiveMenu("incidents");
   };
+
+  const handleScroll = () => {
+    if (mainRef.current) {
+      setShowScrollTop(mainRef.current.scrollTop > 280);
+    }
+  };
+
+  const scrollToTop = () => {
+    mainRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // 탭 전환 시 스크롤 초기화
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0 });
+    setShowScrollTop(false);
+  }, [activeMenu]);
 
   const renderContent = () => {
     switch (activeMenu) {
@@ -200,13 +222,34 @@ export default function ParentDashboardPage() {
           onMenuSelect={setActiveMenu}
         />
 
-        {/* Main scroll area — extra bottom padding on mobile for nav bar */}
-        <main className="flex-1 overflow-y-auto pb-16 lg:pb-0">
+        {/* Main scroll area */}
+        <main
+          ref={mainRef}
+          onScroll={handleScroll}
+          className="flex-1 overflow-y-auto pb-16 lg:pb-0"
+        >
           {renderContent()}
         </main>
       </div>
 
-      {/* Mobile bottom navigation — hidden on lg+ */}
+      {/* 맨 위로 플로팅 버튼 */}
+      <button
+        onClick={scrollToTop}
+        aria-label="맨 위로"
+        className="fixed right-4 z-40 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 lg:right-6"
+        style={{
+          bottom: showScrollTop ? "calc(env(safe-area-inset-bottom) + 72px)" : "calc(env(safe-area-inset-bottom) + 60px)",
+          background: "#12192b",
+          opacity: showScrollTop ? 1 : 0,
+          transform: showScrollTop ? "scale(1) translateY(0)" : "scale(0.8) translateY(12px)",
+          pointerEvents: showScrollTop ? "auto" : "none",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.22)",
+        }}
+      >
+        <i className="ri-arrow-up-line text-white text-base" />
+      </button>
+
+      {/* Mobile bottom navigation */}
       <nav
         className="lg:hidden fixed bottom-0 left-0 right-0 z-30 flex items-stretch"
         style={{ background: "#12192b", paddingBottom: "env(safe-area-inset-bottom)" }}
@@ -217,13 +260,17 @@ export default function ParentDashboardPage() {
             <button
               key={item.key}
               onClick={() => setActiveMenu(item.key)}
-              className="flex-1 flex flex-col items-center justify-center py-2.5 gap-0.5 cursor-pointer transition-all"
+              className="flex-1 flex flex-col items-center justify-center py-2 gap-1 cursor-pointer transition-all relative"
               style={{ color: isActive ? "#6aaeff" : "rgba(255,255,255,0.4)" }}
             >
-              <div className="w-5 h-5 flex items-center justify-center">
-                <i className={`${item.icon} text-base`} />
+              <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                <i className={`${item.icon} text-base leading-none`} />
               </div>
-              <span className="text-[9px] font-medium leading-tight">{item.label}</span>
+              <div className="flex flex-col items-center justify-center gap-0 text-[9px] font-medium leading-[1.2] text-center min-h-[18px]">
+                {item.label.map((line, i) => (
+                  <span key={i} className="block">{line}</span>
+                ))}
+              </div>
               {isActive && (
                 <span className="absolute bottom-0 w-6 h-0.5 rounded-full" style={{ background: "#6aaeff" }} />
               )}

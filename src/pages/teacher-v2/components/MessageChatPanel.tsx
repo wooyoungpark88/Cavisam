@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { type ChatMessage, type StudentConversation, quickReplies } from "../../../mocks/teacherMessages";
+import CabiSaemModal from "../../../components/feature/CabiSaemModal";
 
 interface Props {
   conversation: StudentConversation;
+  onBack?: () => void;
 }
 
+// ── Daily report card ──────────────────────────────────────
 function DailyReportCard({ data }: { data: NonNullable<ChatMessage["reportData"]> }) {
   return (
     <div
@@ -16,38 +19,25 @@ function DailyReportCard({ data }: { data: NonNullable<ChatMessage["reportData"]
     >
       <div className="px-4 py-3 border-b border-white/15 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="w-4 h-4 flex items-center justify-center">
-            <i className="ri-file-list-2-line text-white text-xs" />
-          </div>
+          <i className="ri-file-list-2-line text-white text-xs" />
           <span className="text-white text-xs font-bold">일일 보고서</span>
         </div>
         <span className="text-white/60 text-[10px]">2026. 03. 18</span>
       </div>
       <div className="px-4 py-3 grid grid-cols-2 gap-x-4 gap-y-2">
-        <div>
-          <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
-            <i className="ri-moon-line text-[9px]" /> 수면
-          </p>
-          <p className="text-white text-[11px] font-semibold">{data.sleep}</p>
-        </div>
-        <div>
-          <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
-            <i className="ri-drop-line text-[9px]" /> 배변
-          </p>
-          <p className="text-white text-[11px] font-semibold">{data.bowel}</p>
-        </div>
-        <div>
-          <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
-            <i className="ri-emotion-happy-line text-[9px]" /> 컨디션
-          </p>
-          <p className="text-white text-[11px] font-semibold">{data.condition}</p>
-        </div>
-        <div>
-          <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
-            <i className="ri-restaurant-line text-[9px]" /> 식사량
-          </p>
-          <p className="text-white text-[11px] font-semibold">{data.meal}</p>
-        </div>
+        {[
+          { icon: "ri-moon-line", label: "수면", value: data.sleep },
+          { icon: "ri-drop-line", label: "배변", value: data.bowel },
+          { icon: "ri-emotion-happy-line", label: "컨디션", value: data.condition },
+          { icon: "ri-restaurant-line", label: "식사량", value: data.meal },
+        ].map((item) => (
+          <div key={item.label}>
+            <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
+              <i className={`${item.icon} text-[9px]`} /> {item.label}
+            </p>
+            <p className="text-white text-[11px] font-semibold">{item.value}</p>
+          </div>
+        ))}
         {data.note && (
           <div className="col-span-2">
             <p className="text-white/50 text-[9px] font-medium mb-0.5">특이사항</p>
@@ -62,49 +52,46 @@ function DailyReportCard({ data }: { data: NonNullable<ChatMessage["reportData"]
   );
 }
 
+// ── Message bubble ─────────────────────────────────────────
 function MessageBubble({ msg }: { msg: ChatMessage }) {
-  const isTeacher = msg.sender === "teacher";
+  const isMe = msg.sender === "teacher";
 
   if (msg.type === "daily-report" && msg.reportData) {
     return (
-      <div className={`flex ${isTeacher ? "justify-start" : "justify-end"} mb-4`}>
-        {isTeacher && (
-          <div className="w-7 h-7 rounded-full bg-[#026eff]/10 flex items-center justify-center text-[#026eff] text-[10px] font-bold flex-shrink-0 mr-2 mt-1 self-start">
-            師
+      <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-4`}>
+        {!isMe && (
+          <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-bold flex-shrink-0 mr-2 mt-1 self-start">
+            보
           </div>
         )}
-        <div>
-          {isTeacher && (
-            <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
-          )}
+        <div className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
+          {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
           <DailyReportCard data={msg.reportData} />
-          <p className="text-[10px] text-gray-400 mt-1 ml-1">{msg.time}</p>
+          <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`flex ${isTeacher ? "flex-row" : "flex-row-reverse"} items-end gap-2 mb-3`}>
-      {isTeacher && (
-        <div className="w-7 h-7 rounded-full bg-[#026eff]/10 flex items-center justify-center text-[#026eff] text-[10px] font-bold flex-shrink-0 self-end">
-          師
+    <div className={`flex ${isMe ? "flex-row-reverse" : "flex-row"} items-end gap-2 mb-3`}>
+      {!isMe && (
+        <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-bold flex-shrink-0 self-end">
+          보
         </div>
       )}
-      <div className={`flex flex-col ${isTeacher ? "items-start" : "items-end"} max-w-[68%]`}>
-        {isTeacher && (
-          <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
-        )}
+      <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} max-w-[72%]`}>
+        {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
         <div
           className="px-4 py-2.5 rounded-2xl text-sm leading-relaxed"
           style={
-            isTeacher
-              ? { background: "#f3f4f6", color: "#1f2937", borderBottomLeftRadius: 6 }
-              : {
+            isMe
+              ? {
                   background: "linear-gradient(135deg, #026eff, #0243c2)",
                   color: "white",
                   borderBottomRightRadius: 6,
                 }
+              : { background: "#f3f4f6", color: "#1f2937", borderBottomLeftRadius: 6 }
           }
         >
           {msg.text}
@@ -115,9 +102,40 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
   );
 }
 
-export default function MessageChatPanel({ conversation }: Props) {
+// ── Compact stat badge (mobile) ────────────────────────────
+function MiniStat({
+  emoji,
+  value,
+  change,
+  positive,
+}: {
+  emoji: string;
+  value: string;
+  change: string;
+  positive: boolean;
+}) {
+  const isNeutral = change === "→";
+  return (
+    <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-gray-50 border border-gray-100">
+      <span className="text-sm flex-shrink-0">{emoji}</span>
+      <span className="text-xs font-bold text-gray-800 whitespace-nowrap">{value}</span>
+      {!isNeutral && (
+        <span
+          className="text-[10px] font-semibold whitespace-nowrap"
+          style={{ color: positive ? "#10b981" : "#ef4444" }}
+        >
+          {positive ? "↑" : "↓"}{change}
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ── Main chat panel ────────────────────────────────────────
+export default function MessageChatPanel({ conversation, onBack }: Props) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(conversation.messages);
+  const [showCabiSaem, setShowCabiSaem] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -142,70 +160,130 @@ export default function MessageChatPanel({ conversation }: Props) {
     setInput("");
   };
 
-  const handleQuickReply = (text: string) => {
-    setInput(text);
-  };
+  const { weeklyStats: s } = conversation;
 
   return (
-    <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-      {/* Chat header */}
-      <div className="flex-shrink-0 px-6 py-3.5 border-b border-gray-100 bg-white flex items-center justify-between">
-        <div>
-          <p className="text-sm font-bold text-gray-900">
-            {conversation.studentName} 소통방
-          </p>
-          <p className="text-[11px] text-gray-400">{conversation.parentName}와 대화 중</p>
+    <>
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0 h-full">
+
+        {/* ── Header ── */}
+        <div className="flex-shrink-0 px-4 md:px-5 py-3 border-b border-gray-100 bg-white">
+          <div className="flex items-center gap-3">
+
+            {/* Back button — mobile only */}
+            {onBack && (
+              <button
+                onClick={onBack}
+                className="md:hidden w-8 h-8 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0"
+              >
+                <i className="ri-arrow-left-s-line text-gray-700 text-xl" />
+              </button>
+            )}
+
+            {/* Avatar + name */}
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+              style={{ background: conversation.avatarColor }}
+            >
+              {conversation.initial}
+            </div>
+            <div className="min-w-0 flex-shrink-0">
+              <p className="text-sm font-bold text-gray-900 leading-tight">{conversation.studentName}</p>
+              <p className="text-[10px] text-gray-400">{conversation.parentName}</p>
+            </div>
+
+            {/* Divider */}
+            <div className="hidden md:block w-px h-8 bg-gray-100 flex-shrink-0 mx-1" />
+
+            {/* Weekly stats chips — desktop */}
+            <div className="hidden md:flex items-center gap-2 flex-1 min-w-0">
+              <MiniStat emoji="🌙" value={s.sleep} change={s.sleepChange} positive={s.sleepPositive} />
+              <MiniStat emoji="😊" value={s.condition} change={s.conditionChange} positive={s.conditionPositive} />
+              <MiniStat emoji="🍱" value={s.meal} change={s.mealChange} positive={s.mealPositive} />
+            </div>
+
+            {/* Spacer — mobile */}
+            <div className="flex-1 md:hidden" />
+
+            {/* AI 케어 button — desktop */}
+            <button
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold text-white cursor-pointer whitespace-nowrap transition-opacity hover:opacity-85 flex-shrink-0"
+              style={{ background: "linear-gradient(135deg, #026eff 0%, #0243c2 100%)" }}
+            >
+              <i className="ri-sparkling-2-line text-xs" />
+              AI 케어
+            </button>
+
+            {/* 캐비쌤 button */}
+            <button
+              onClick={() => setShowCabiSaem(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold cursor-pointer whitespace-nowrap transition-all hover:opacity-90 flex-shrink-0"
+              style={{
+                background: "linear-gradient(135deg, #f59e0b, #d97706)",
+                color: "white",
+              }}
+            >
+              <i className="ri-sparkling-2-fill text-sm" />
+              <span className="hidden sm:inline">캐비쌤</span>
+            </button>
+          </div>
+
+          {/* Mobile stats row */}
+          <div className="md:hidden flex items-center gap-2 mt-2.5 overflow-x-auto pb-0.5">
+            <MiniStat emoji="🌙" value={s.sleep} change={s.sleepChange} positive={s.sleepPositive} />
+            <MiniStat emoji="😊" value={s.condition} change={s.conditionChange} positive={s.conditionPositive} />
+            <MiniStat emoji="🍱" value={s.meal} change={s.mealChange} positive={s.mealPositive} />
+          </div>
         </div>
-        <button
-          className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
-        >
-          <i className="ri-file-list-2-line text-xs" />
-          일일보고
-        </button>
-      </div>
 
-      {/* Messages area */}
-      <div className="flex-1 overflow-y-auto px-6 py-5">
-        {messages.map((msg) => (
-          <MessageBubble key={msg.id} msg={msg} />
-        ))}
-        <div ref={bottomRef} />
-      </div>
+        {/* ── Messages area ── */}
+        <div className="flex-1 overflow-y-auto px-4 md:px-6 py-5">
+          {messages.map((msg) => (
+            <MessageBubble key={msg.id} msg={msg} />
+          ))}
+          <div ref={bottomRef} />
+        </div>
 
-      {/* Quick replies */}
-      <div className="flex-shrink-0 px-5 pt-2.5 pb-1 flex gap-2 overflow-x-auto">
-        {quickReplies.map((reply) => (
-          <button
-            key={reply}
-            onClick={() => handleQuickReply(reply)}
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
-          >
-            {reply}
-          </button>
-        ))}
-      </div>
+        {/* ── Quick replies ── */}
+        <div className="flex-shrink-0 px-4 md:px-5 pt-2.5 pb-1 flex gap-2 overflow-x-auto border-t border-gray-100 bg-white">
+          {quickReplies.map((reply) => (
+            <button
+              key={reply}
+              onClick={() => setInput(reply)}
+              className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+            >
+              {reply}
+            </button>
+          ))}
+        </div>
 
-      {/* Input bar */}
-      <div className="flex-shrink-0 px-5 py-3 border-t border-gray-100 bg-white">
-        <div className="flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-2.5">
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
-            type="text"
-            placeholder="자리비움  메시지를 입력하세요"
-            className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 focus:outline-none"
-          />
-          <button
-            onClick={handleSend}
-            disabled={!input.trim()}
-            className="w-8 h-8 flex items-center justify-center rounded-xl text-white cursor-pointer whitespace-nowrap transition-all disabled:opacity-30 flex-shrink-0"
-            style={{ background: "#026eff" }}
-          >
-            <i className="ri-send-plane-fill text-xs" />
-          </button>
+        {/* ── Input bar ── */}
+        <div className="flex-shrink-0 px-4 md:px-5 py-3 border-t border-gray-100 bg-white">
+          <div className="flex items-center gap-2 md:gap-3 bg-gray-50 rounded-2xl px-4 py-2.5">
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
+              type="text"
+              placeholder="보호자에게 메시지를 입력하세요"
+              className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 focus:outline-none min-w-0"
+            />
+            <button
+              onClick={handleSend}
+              disabled={!input.trim()}
+              className="w-8 h-8 flex items-center justify-center rounded-xl text-white cursor-pointer whitespace-nowrap transition-all disabled:opacity-30 flex-shrink-0"
+              style={{ background: "#026eff" }}
+            >
+              <i className="ri-send-plane-fill text-xs" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* 캐비쌤 modal */}
+      {showCabiSaem && (
+        <CabiSaemModal mode="teacher" onClose={() => setShowCabiSaem(false)} />
+      )}
+    </>
   );
 }

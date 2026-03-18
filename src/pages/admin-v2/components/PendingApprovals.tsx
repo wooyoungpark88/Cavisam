@@ -158,7 +158,7 @@ export default function PendingApprovals({ users, onApprove, onReject }: Pending
   const pending = users.filter((u) => u.status === "pending");
 
   return (
-    <div className="flex-1 overflow-y-auto p-8">
+    <div className="flex-1 overflow-y-auto p-4 sm:p-8">
       <div className="mb-6">
         <h1 className="text-xl font-bold text-gray-900">승인 대기</h1>
         <p className="text-sm text-gray-500 mt-0.5">
@@ -185,7 +185,7 @@ export default function PendingApprovals({ users, onApprove, onReject }: Pending
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {pending.map((u) => (
               <ApproveCard
                 key={u.id}

@@ -76,7 +76,7 @@ function getSortedEntries(period: string): TimelineEntry[] {
 function StatusCards({ visible }: { visible: boolean }) {
   return (
     <div
-      className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 transition-all duration-500"
+      className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 transition-all duration-500"
       style={{
         opacity: visible ? 1 : 0,
         transform: visible ? "translateY(0)" : "translateY(-8px)",
@@ -89,15 +89,15 @@ function StatusCards({ visible }: { visible: boolean }) {
       {mockDailyStatus.map((s) => (
         <div
           key={s.key}
-          className="rounded-2xl px-4 py-3 flex items-center gap-3"
+          className="rounded-xl px-3 py-2.5 sm:rounded-2xl sm:px-4 sm:py-3 flex items-center gap-2 sm:gap-3"
           style={{ background: s.bg }}
         >
-          <span className="text-xl leading-none">{s.emoji}</span>
+          <span className="text-lg sm:text-xl leading-none">{s.emoji}</span>
           <div>
-            <p className="text-sm font-bold leading-tight" style={{ color: s.color }}>
+            <p className="text-xs sm:text-sm font-bold leading-tight" style={{ color: s.color }}>
               {s.value}
             </p>
-            <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{s.label}</p>
+            <p className="text-[10px] sm:text-[11px] text-gray-400 leading-tight mt-0.5">{s.label}</p>
           </div>
         </div>
       ))}
@@ -212,14 +212,14 @@ function MorningReportBanner({
   if (isSent) {
     return (
       <div
-        className="flex items-center gap-3 px-4 py-3 rounded-2xl mb-6 transition-all"
+        className="flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 transition-all"
         style={{ background: "rgba(16,185,129,0.07)", border: "1px solid rgba(16,185,129,0.2)" }}
       >
         <div className="w-7 h-7 flex items-center justify-center rounded-full flex-shrink-0" style={{ background: "rgba(16,185,129,0.15)" }}>
           <i className="ri-checkbox-circle-fill text-[#10b981] text-sm" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-bold text-[#10b981] leading-tight">오늘 등원 전 한마디 완료</p>
+          <p className="text-xs sm:text-sm font-bold text-[#10b981] leading-tight">오늘 등원 전 한마디 완료</p>
           <p className="text-[11px] text-gray-400 mt-0.5">박지영 선생님께 전달됐어요</p>
         </div>
         <span
@@ -234,7 +234,7 @@ function MorningReportBanner({
 
   return (
     <div
-      className="rounded-2xl mb-6 overflow-hidden"
+      className="rounded-xl sm:rounded-2xl mb-4 sm:mb-6 overflow-hidden"
       style={{
         border: "2px solid #fb923c",
         background: "linear-gradient(135deg, #fff7ed 0%, #fff3e0 100%)",
@@ -256,18 +256,18 @@ function MorningReportBanner({
       {/* Top accent bar */}
       <div className="h-1 w-full" style={{ background: "linear-gradient(90deg, #fb923c, #f97316)" }} />
 
-      <div className="px-5 py-4">
+      <div className="px-3 py-3 sm:px-5 sm:py-4">
         {/* Header row */}
-        <div className="flex items-start gap-3 mb-3">
+        <div className="flex items-start gap-2.5 sm:gap-3 mb-2.5 sm:mb-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
             style={{ background: "rgba(251,146,60,0.15)" }}
           >
-            <i className="ri-alarm-warning-fill text-xl" style={{ color: "#f97316" }} />
+            <i className="ri-alarm-warning-fill text-lg sm:text-xl" style={{ color: "#f97316" }} />
           </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-              <p className="text-sm font-bold text-gray-900 leading-tight">
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-0.5 flex-wrap">
+              <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">
                 오늘 등원 전 한마디가 아직 전달되지 않았어요
               </p>
               <span
@@ -281,14 +281,17 @@ function MorningReportBanner({
                 미발송
               </span>
             </div>
-            <p className="text-xs text-gray-500 leading-relaxed">
+            <p className="text-[11px] text-gray-500 leading-relaxed hidden sm:block">
               선생님이 오늘 자녀의 상태를 파악하려면 등원 전 한마디가 필요해요. 등원 전이나 오전 중에 꼭 보내주세요.
+            </p>
+            <p className="text-[11px] text-gray-500 leading-relaxed sm:hidden">
+              선생님이 오늘 수업 계획에 반영할 수 있도록 보내주세요.
             </p>
           </div>
         </div>
 
         {/* Checklist */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
           {[
             { icon: "ri-moon-line", label: "수면 상태" },
             { icon: "ri-heart-pulse-line", label: "컨디션" },
@@ -297,29 +300,30 @@ function MorningReportBanner({
           ].map((item) => (
             <div
               key={item.label}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl"
+              className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl"
               style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(251,146,60,0.2)" }}
             >
-              <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                <i className={`${item.icon} text-sm`} style={{ color: "#f97316" }} />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center flex-shrink-0">
+                <i className={`${item.icon} text-xs sm:text-sm`} style={{ color: "#f97316" }} />
               </div>
-              <span className="text-[11px] font-semibold text-gray-600 whitespace-nowrap">{item.label}</span>
+              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-600 whitespace-nowrap">{item.label}</span>
             </div>
           ))}
         </div>
 
         {/* CTA */}
-        <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <button
             onClick={onOpenForm}
-            className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white transition-all cursor-pointer whitespace-nowrap hover:opacity-90 active:scale-[0.98]"
-            style={{ background: "linear-gradient(135deg, #fb923c, #f97316)", minWidth: 180 }}
+            className="flex-1 inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-bold text-white transition-all cursor-pointer whitespace-nowrap hover:opacity-90 active:scale-[0.98]"
+            style={{ background: "linear-gradient(135deg, #fb923c, #f97316)" }}
           >
-            <i className="ri-edit-2-line text-sm" />
-            지금 등원 전 한마디 작성하기
+            <i className="ri-edit-2-line text-xs sm:text-sm" />
+            <span className="hidden sm:inline">지금 등원 전 한마디 작성하기</span>
+            <span className="sm:hidden">등원 전 한마디 작성하기</span>
           </button>
-          <p className="text-[11px] text-gray-400 leading-tight">
-            선생님은 등원 전 한마디를 확인 후<br className="hidden sm:block" />
+          <p className="text-[11px] text-gray-400 leading-tight hidden sm:block">
+            선생님은 등원 전 한마디를 확인 후<br />
             당일 수업 계획에 반영해요
           </p>
         </div>
@@ -333,13 +337,13 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
   return (
     <div
       onClick={onClick}
-      className="rounded-2xl p-4 cursor-pointer transition-all hover:scale-[1.01]"
+      className="rounded-xl sm:rounded-2xl p-3 sm:p-4 cursor-pointer transition-all active:scale-[0.99]"
       style={{
         background: "rgba(2,110,255,0.05)",
         border: "1px solid rgba(2,110,255,0.12)",
       }}
     >
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-2 sm:mb-3">
         <div
           className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
           style={{ background: "#026eff" }}
@@ -348,7 +352,7 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         </div>
         <span className="text-xs font-semibold text-gray-700 flex-1 truncate">{entry.actor}</span>
         <span
-          className="text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+          className="text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: "rgba(2,110,255,0.12)", color: "#026eff" }}
         >
           등원 전 한마디
@@ -357,7 +361,7 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
           <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
         </div>
       </div>
-      <div className="bg-white rounded-xl px-3 py-2.5 mb-2.5">
+      <div className="bg-white rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 mb-2 sm:mb-2.5">
         <p className="text-[10px] font-semibold text-gray-400 mb-1">AI 요약</p>
         <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{entry.aiSummary}</p>
       </div>
@@ -368,7 +372,7 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         <span className="text-[11px] text-gray-500 flex-1 truncate">{entry.teacherConfirmed}</span>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="text-[10px] border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
             color: confirmed ? "#10b981" : "#9ca3af",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
@@ -387,7 +391,7 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-2xl p-4 border border-gray-100 cursor-pointer transition-all hover:scale-[1.01]"
+      className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-gray-100 cursor-pointer transition-all active:scale-[0.99]"
     >
       <div className="flex items-center gap-2 mb-2">
         <div
@@ -401,9 +405,9 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
           <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
         </div>
       </div>
-      <p className="text-xs text-gray-700 leading-relaxed mb-2.5 line-clamp-2">{entry.content}</p>
+      <p className="text-xs text-gray-700 leading-relaxed mb-2 sm:mb-2.5 line-clamp-2">{entry.content}</p>
       {entry.hasPhoto && entry.photoUrl && (
-        <div className="w-full h-28 rounded-xl overflow-hidden mb-2.5 bg-gray-100">
+        <div className="w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 sm:mb-2.5 bg-gray-100">
           <img
             src={entry.photoUrl}
             alt="활동 사진"
@@ -416,7 +420,7 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
         <span className="text-sm leading-none ml-0.5">👍</span>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="ml-auto text-[10px] border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="ml-auto text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
             color: confirmed ? "#10b981" : "#9ca3af",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
@@ -437,11 +441,11 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
   return (
     <div
       onClick={onClick}
-      className="rounded-2xl p-4 bg-white cursor-pointer transition-all hover:scale-[1.01]"
+      className="rounded-xl sm:rounded-2xl p-3 sm:p-4 bg-white cursor-pointer transition-all active:scale-[0.99]"
       style={{ border: `1.5px solid ${entry.reportTypeColor ?? "#e5e7eb"}30` }}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 mb-2.5">
+      <div className="flex items-center gap-2 mb-2 sm:mb-2.5">
         <div
           className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
           style={{ background: entry.actorColor }}
@@ -451,7 +455,7 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         <span className="text-xs font-semibold text-gray-700 flex-1 truncate">{entry.actor}</span>
         {/* Type badge */}
         <span
-          className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+          className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: badgeBg, color: entry.reportTypeColor ?? "#6b7280" }}
         >
           {entry.reportTypeIcon && <i className={`${entry.reportTypeIcon} text-[11px]`} />}
@@ -463,7 +467,7 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
       </div>
 
       {/* Content preview */}
-      <p className="text-xs text-gray-700 leading-relaxed mb-3 line-clamp-2">{entry.content}</p>
+      <p className="text-xs text-gray-700 leading-relaxed mb-2 sm:mb-3 line-clamp-2">{entry.content}</p>
 
       {/* Reactions + confirm */}
       <div className="flex items-center gap-1.5">
@@ -487,7 +491,7 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         ) : (
           <button
             onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-            className="text-[10px] border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+            className="text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
             style={{ color: "#9ca3af", borderColor: "#e5e7eb", background: "white" }}
           >
             확인
@@ -503,13 +507,13 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
   return (
     <div
       onClick={onClick}
-      className="rounded-2xl p-4 cursor-pointer transition-all hover:scale-[1.01]"
+      className="rounded-xl sm:rounded-2xl p-3 sm:p-4 cursor-pointer transition-all active:scale-[0.99]"
       style={{
         background: "rgba(245,158,11,0.06)",
         border: "1px solid rgba(245,158,11,0.2)",
       }}
     >
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-2 sm:mb-3">
         <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
           <i className="ri-alert-line text-[#f59e0b] text-sm" />
         </div>
@@ -519,7 +523,7 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="text-[10px] border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
             color: confirmed ? "#10b981" : "#9ca3af",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
@@ -530,12 +534,12 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
         </button>
       </div>
       <p
-        className="text-xs font-semibold text-gray-800 leading-relaxed px-3 py-2 rounded-lg mb-2.5 line-clamp-2"
+        className="text-xs font-semibold text-gray-800 leading-relaxed px-2.5 sm:px-3 py-2 rounded-lg mb-2 sm:mb-2.5 line-clamp-2"
         style={{ background: "rgba(245,158,11,0.12)" }}
       >
         {entry.content}
       </p>
-      <div className="bg-white rounded-xl px-3 py-2.5">
+      <div className="bg-white rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5">
         <p className="text-[10px] font-semibold text-gray-400 mb-1">AI Insight</p>
         <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{entry.aiInsight}</p>
       </div>
@@ -620,18 +624,25 @@ function AISidebar({ onMemberMessage }: { onMemberMessage?: (id: number) => void
         <div className="space-y-3.5">
           {mockAIWeeklyInsights.map((insight, i) => (
             <div key={i}>
+              {/* 라벨 + 변화율 배지 */}
               <div className="flex items-center justify-between mb-1.5">
                 <span className="text-[11px] text-gray-600">{insight.label}</span>
-                <span className="text-xs font-bold" style={{ color: insight.color }}>
+                <span
+                  className="text-[11px] font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
+                  style={{ background: `${insight.color}15`, color: insight.color }}
+                >
                   {insight.badge}
                 </span>
               </div>
-              <div className="w-full h-1.5 rounded-full bg-gray-100">
+              {/* 진행 막대 */}
+              <div className="w-full h-1.5 rounded-full bg-gray-100 mb-1">
                 <div
                   className="h-1.5 rounded-full"
                   style={{ width: `${insight.progress}%`, background: insight.color }}
                 />
               </div>
+              {/* 막대 의미 설명 */}
+              <p className="text-[9px] text-gray-400 leading-relaxed">{insight.subLabel}</p>
             </div>
           ))}
         </div>
@@ -642,18 +653,18 @@ function AISidebar({ onMemberMessage }: { onMemberMessage?: (id: number) => void
           <h3 className="text-xs font-bold text-gray-800">돌봄 팀</h3>
           <span className="text-[10px] text-gray-400 font-medium">클릭 시 대화</span>
         </div>
-        <div className="space-y-1">
+        <div className="flex gap-2 sm:block sm:space-y-1 overflow-x-auto pb-1 sm:pb-0">
           {mockCareTeam.slice(0, 3).map((member) => (
             <button
               key={member.id}
               onClick={() => onMemberMessage?.(member.id)}
-              className="group w-full flex items-center gap-2.5 px-2 py-2 rounded-xl hover:bg-gray-50 transition-all cursor-pointer text-left -mx-2"
-              style={{ width: "calc(100% + 16px)" }}
+              className="group flex-shrink-0 sm:flex-shrink flex items-center gap-2 sm:gap-2.5 px-3 py-2.5 sm:px-2 sm:py-2 rounded-xl hover:bg-gray-50 transition-all cursor-pointer text-left sm:-mx-2 flex-col sm:flex-row min-w-[72px] sm:min-w-0 sm:w-[calc(100%+16px)]"
+              style={{}}
             >
-              {/* Avatar with online dot for main teacher */}
+              {/* Avatar */}
               <div className="relative flex-shrink-0">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                  className="w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
                   style={{ background: member.color }}
                 >
                   {member.initial}
@@ -662,18 +673,16 @@ function AISidebar({ onMemberMessage }: { onMemberMessage?: (id: number) => void
                   <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-white" />
                 )}
               </div>
-
               {/* Name / role */}
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 text-center sm:text-left">
                 <p className="text-xs font-semibold text-gray-800 leading-tight truncate">
                   {member.name}
                 </p>
-                <p className="text-[10px] text-gray-400 leading-tight">{member.role}</p>
+                <p className="text-[10px] text-gray-400 leading-tight hidden sm:block">{member.role}</p>
               </div>
-
-              {/* Chat icon — appears on hover */}
+              {/* Chat icon */}
               <div
-                className="w-6 h-6 flex items-center justify-center rounded-full flex-shrink-0 opacity-0 group-hover:opacity-100 transition-all"
+                className="w-6 h-6 items-center justify-center rounded-full flex-shrink-0 hidden sm:flex opacity-0 group-hover:opacity-100 transition-all"
                 style={{ background: `${member.color}18` }}
               >
                 <i
@@ -698,6 +707,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
   const [morningReportSent, setMorningReportSent] = useState(false);
   const [showMorningModal, setShowMorningModal] = useState(false);
   const [statusCardsVisible, setStatusCardsVisible] = useState(false);
+  const [aiSidebarOpen, setAiSidebarOpen] = useState(false);
 
   // 발송 완료 후 약간의 딜레이를 두고 StatusCards를 부드럽게 나타냄
   const handleMorningReportSent = () => {
@@ -726,68 +736,71 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
   });
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="p-3 sm:p-4 lg:p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-3">
-          <h1 className="text-lg font-bold text-gray-900">홈 타임라인</h1>
+      <div className="flex items-center justify-between mb-4 sm:mb-5">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <h1 className="text-base sm:text-lg font-bold text-gray-900">타임라인</h1>
           {reportCount > 0 && (
             <span
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full"
+              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 sm:px-2.5 py-1 rounded-full"
               style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}
             >
               <i className="ri-mail-send-line text-[12px]" />
-              선생님 보고 {reportCount}건
+              보고 {reportCount}건
             </span>
           )}
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-gray-400">
+        <div className="flex items-center gap-1 sm:gap-1.5 text-xs text-gray-400">
           <div className="w-4 h-4 flex items-center justify-center">
             <i className="ri-calendar-line text-xs" />
           </div>
-          <span>2026년 3월 17일 (화)</span>
+          <span className="hidden sm:inline">2026년 3월 17일 (화)</span>
+          <span className="sm:hidden">3월 17일 (화)</span>
         </div>
       </div>
 
-      {/* Morning report banner — 미발송이면 크게, 발송 완료면 컴팩트하게 */}
+      {/* Morning report banner */}
       <MorningReportBanner
         isSent={morningReportSent}
         onOpenForm={() => setShowMorningModal(true)}
       />
 
-      {/* Status cards — 발송 완료 후에만 표시 */}
+      {/* Status cards */}
       <StatusCards visible={statusCardsVisible} />
 
-      {/* Legend */}
-      <div className="flex items-center gap-4 mb-5 flex-wrap">
-        <span className="text-[11px] text-gray-400 font-medium">항목 유형</span>
-        {[
-          { color: "#026eff", label: "등원 전 한마디 (보호자)" },
-          { color: "#10b981", label: "선생님 메시지" },
-          { color: "#f59e0b", label: "AI 감지" },
-        ].map((item) => (
-          <span key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-500">
-            <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.color }} />
-            {item.label}
+      {/* Legend — scrollable on mobile */}
+      <div className="mb-4 sm:mb-5">
+        <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+          <span className="text-[11px] text-gray-400 font-medium whitespace-nowrap flex-shrink-0">항목 유형</span>
+          {[
+            { color: "#026eff", label: "등원 전 한마디" },
+            { color: "#10b981", label: "선생님 메시지" },
+            { color: "#f59e0b", label: "AI 감지" },
+          ].map((item) => (
+            <span key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-500 whitespace-nowrap flex-shrink-0">
+              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.color }} />
+              {item.label}
+            </span>
+          ))}
+          <span className="flex items-center gap-1.5 text-[11px] text-gray-500 whitespace-nowrap flex-shrink-0">
+            <span className="w-2 h-2 rounded-full flex-shrink-0 bg-gradient-to-r from-[#10b981] to-[#06b6d4]" />
+            선생님 보고서
           </span>
-        ))}
-        <span className="flex items-center gap-1.5 text-[11px] text-gray-500">
-          <span className="w-2 h-2 rounded-full flex-shrink-0 bg-gradient-to-r from-[#10b981] to-[#06b6d4]" />
-          선생님 보고서
-        </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-gray-400 ml-auto">
-          <i className="ri-cursor-line text-[11px]" />
-          항목 클릭 시 상세 보기
-        </span>
+          <span className="hidden sm:flex items-center gap-1.5 text-[11px] text-gray-400 ml-auto flex-shrink-0">
+            <i className="ri-cursor-line text-[11px]" />
+            항목 클릭 시 상세 보기
+          </span>
+        </div>
       </div>
 
       {/* Main layout */}
-      <div className="flex gap-4 xl:gap-5 items-stretch">
+      <div className="flex gap-3 xl:gap-5 items-stretch">
         {/* Primary panel: Timeline */}
-        <div className="flex-1 min-w-0 bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div className="flex-1 min-w-0 bg-white rounded-xl sm:rounded-2xl border border-gray-100 overflow-hidden">
           {/* Primary label bar */}
           <div
-            className="flex items-center gap-2.5 px-4 xl:px-5 py-3 border-b border-gray-50"
+            className="flex items-center gap-2.5 px-3 sm:px-4 xl:px-5 py-2.5 sm:py-3 border-b border-gray-50"
             style={{ background: "rgba(255,255,255,0.9)" }}
           >
             <div className="w-1 h-[15px] rounded-full flex-shrink-0" style={{ background: "#1f2937" }} />
@@ -799,21 +812,21 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
               메인
             </span>
           </div>
-          <div className="p-4 xl:p-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+          <div className="p-3 sm:p-4 xl:p-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <p className="text-xs font-bold text-gray-300 uppercase tracking-widest mb-4">오전</p>
+                <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
                 <TimelineColumn entries={amEntries} onSelect={setSelectedEntry} />
               </div>
               <div>
-                <p className="text-xs font-bold text-gray-300 uppercase tracking-widest mb-4">오후</p>
+                <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
                 <TimelineColumn entries={pmEntries} onSelect={setSelectedEntry} />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Secondary panel: AI Insights + Care Team */}
+        {/* Secondary panel: AI Insights + Care Team — xl only */}
         <div
           className="hidden xl:flex flex-col w-52 flex-shrink-0 rounded-2xl border border-gray-100 overflow-hidden"
           style={{ background: "#f8fafc" }}
@@ -838,8 +851,45 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
         </div>
       </div>
 
-      <div className="xl:hidden mt-6">
-        <AISidebar onMemberMessage={onMemberMessage} />
+      {/* AI Sidebar for mobile/tablet — collapsible */}
+      <div className="xl:hidden mt-4 sm:mt-5">
+        <button
+          onClick={() => setAiSidebarOpen((v) => !v)}
+          className="w-full flex items-center justify-between px-4 py-3 bg-white rounded-xl border border-gray-100 cursor-pointer mb-2"
+        >
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 flex items-center justify-center">
+              <i className="ri-bar-chart-2-line text-sm text-gray-500" />
+            </div>
+            <span className="text-xs font-bold text-gray-700">AI 인사이트 &amp; 돌봄 팀</span>
+          </div>
+          <div className="w-5 h-5 flex items-center justify-center">
+            <i className={`ri-arrow-${aiSidebarOpen ? "up" : "down"}-s-line text-gray-400 text-sm transition-transform`} />
+          </div>
+        </button>
+        {aiSidebarOpen && (
+          <div
+            style={{
+              animation: "fadeSlideDown 0.22s ease",
+            }}
+          >
+            <style>{`
+              @keyframes fadeSlideDown {
+                from { opacity: 0; transform: translateY(-6px); }
+                to { opacity: 1; transform: translateY(0); }
+              }
+              .no-scrollbar::-webkit-scrollbar { display: none; }
+              .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            `}</style>
+            <AISidebar onMemberMessage={onMemberMessage} />
+          </div>
+        )}
+        {!aiSidebarOpen && (
+          <style>{`
+            .no-scrollbar::-webkit-scrollbar { display: none; }
+            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+          `}</style>
+        )}
       </div>
 
       {/* Detail panel */}

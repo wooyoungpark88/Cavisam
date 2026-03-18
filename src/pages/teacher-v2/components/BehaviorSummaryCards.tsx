@@ -1,6 +1,10 @@
 import { mockBehaviorSummary } from "../../../mocks/teacherBehavior";
 
-export default function BehaviorSummaryCards() {
+interface Props {
+  onShowCCTV: (studentName?: string, behaviorType?: string, count?: number) => void;
+}
+
+export default function BehaviorSummaryCards({ onShowCCTV }: Props) {
   const s = mockBehaviorSummary;
 
   const cards = [
@@ -13,6 +17,7 @@ export default function BehaviorSummaryCards() {
       subIcon: s.changeRate < 0 ? "ri-arrow-down-line" : "ri-arrow-up-line",
       bg: "rgba(2,110,255,0.06)",
       iconColor: "#026eff",
+      cctvHint: true,
     },
     {
       icon: "ri-arrow-down-circle-line",
@@ -23,6 +28,7 @@ export default function BehaviorSummaryCards() {
       subIcon: "",
       bg: "rgba(16,185,129,0.06)",
       iconColor: "#10b981",
+      cctvHint: false,
     },
     {
       icon: "ri-alert-line",
@@ -33,6 +39,7 @@ export default function BehaviorSummaryCards() {
       subIcon: "",
       bg: "rgba(239,68,68,0.06)",
       iconColor: s.mostFrequentTypeColor,
+      cctvHint: true,
     },
     {
       icon: "ri-user-star-line",
@@ -43,16 +50,34 @@ export default function BehaviorSummaryCards() {
       subIcon: "",
       bg: "rgba(139,92,246,0.06)",
       iconColor: "#8b5cf6",
+      cctvHint: true,
     },
   ];
 
   return (
     <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
       {cards.map((card) => (
-        <div
+        <button
           key={card.label}
-          className="bg-white rounded-2xl px-5 py-4 border border-gray-100"
+          onClick={() => onShowCCTV(
+            card.label === "가장 많이 개선" ? s.mostImprovedName : undefined,
+            card.label === "가장 많은 유형" ? s.mostFrequentType : undefined,
+            card.label === "이번 주 도전행동" ? s.totalThisWeek : undefined
+          )}
+          className="group bg-white rounded-2xl px-5 py-4 border border-gray-100 text-left transition-all hover:border-[#026eff]/30 hover:-translate-y-0.5 cursor-pointer relative overflow-hidden"
+          style={{ boxShadow: "none" }}
         >
+          {/* CCTV hint badge */}
+          {card.cctvHint && (
+            <div
+              className="absolute top-2.5 right-2.5 flex items-center gap-1 px-1.5 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-all"
+              style={{ background: "rgba(2,110,255,0.1)" }}
+            >
+              <i className="ri-vidicon-2-line text-[#026eff]" style={{ fontSize: 10 }} />
+              <span className="text-[9px] font-bold text-[#026eff] whitespace-nowrap">영상 보기</span>
+            </div>
+          )}
+
           <div className="flex items-center gap-2.5 mb-3">
             <div
               className="w-8 h-8 flex items-center justify-center rounded-xl flex-shrink-0"
@@ -67,7 +92,7 @@ export default function BehaviorSummaryCards() {
             {card.subIcon && <i className={`${card.subIcon} text-[10px] mr-0.5`} />}
             {card.sub}
           </p>
-        </div>
+        </button>
       ))}
     </div>
   );

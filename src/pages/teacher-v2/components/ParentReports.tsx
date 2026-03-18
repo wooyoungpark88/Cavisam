@@ -99,19 +99,89 @@ function AttachmentPreview({
 
 /* ── Left: 이용인 선택 패널 ───────────────────────────── */
 function UserList({
-  selectedId: _selectedId,
-  onSelect: _onSelect,
-  sentReports: _sentReports,
+  selectedId,
+  onSelect,
+  sentReports,
 }: {
   selectedId: number;
   onSelect: (id: number) => void;
   sentReports: SentReport[];
 }) {
-  return null;
+  return (
+    <div className="flex flex-col flex-1 min-h-0 border-r border-gray-100 bg-white w-full md:w-[190px] md:flex-shrink-0">
+      {/* Header */}
+      <div className="flex-shrink-0 px-4 py-3.5 border-b border-gray-100">
+        <p className="text-xs font-bold text-gray-900">생활알리미</p>
+        <p className="text-[10px] text-gray-400 mt-0.5">이용인 선택 후 작성</p>
+      </div>
+
+      {/* Student list */}
+      <div className="flex-1 overflow-y-auto py-2">
+        {mockStudents.map((student) => {
+          const isActive = student.id === selectedId;
+          const studentReports = sentReports.filter((r) => r.studentId === student.id);
+          const latest = studentReports[0];
+          const unconfirmed = studentReports.filter((r) => !r.confirmed).length;
+
+          return (
+            <button
+              key={student.id}
+              onClick={() => onSelect(student.id)}
+              className="w-full flex items-center gap-3 px-4 py-3.5 md:py-3 transition-colors cursor-pointer text-left"
+              style={{
+                background: isActive ? "rgba(2,110,255,0.07)" : "transparent",
+                borderLeft: isActive ? "3px solid #026eff" : "3px solid transparent",
+              }}
+            >
+              {/* Avatar */}
+              <div className="relative flex-shrink-0">
+                <div
+                  className="w-10 h-10 md:w-8 md:h-8 rounded-full flex items-center justify-center text-white text-sm md:text-xs font-bold"
+                  style={{ background: student.avatarColor }}
+                >
+                  {student.initial}
+                </div>
+                {unconfirmed > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-orange-400 border border-white flex items-center justify-center text-white text-[9px] font-bold">
+                    {unconfirmed}
+                  </span>
+                )}
+              </div>
+
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-1">
+                  <p
+                    className="text-sm md:text-xs font-semibold truncate"
+                    style={{ color: isActive ? "#026eff" : "#111827" }}
+                  >
+                    {student.name}
+                  </p>
+                  {latest && (
+                    <span className="text-[10px] text-gray-400 flex-shrink-0 whitespace-nowrap">
+                      {latest.sentAt}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs md:text-[10px] text-gray-400 truncate mt-0.5">
+                  {latest
+                    ? `${latest.type} · ${studentReports.length}건`
+                    : "발송 내역 없음"}
+                </p>
+              </div>
+
+              {/* Arrow — mobile only */}
+              <i className="ri-arrow-right-s-line text-gray-300 text-base flex-shrink-0 md:hidden" />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 /* ── Right: 작성 + 이력 패널 ──────────────────────────── */
-function ReportPanel({ studentId }: { studentId: number }) {
+function ReportPanel({ studentId, onBack }: { studentId: number; onBack?: () => void }) {
   const student = mockStudents.find((s) => s.id === studentId)!;
   const [selectedType, setSelectedType] = useState<ReportTypeKey>("positive");
   const [content, setContent] = useState("");
@@ -187,28 +257,38 @@ function ReportPanel({ studentId }: { studentId: number }) {
   return (
     <div className="flex-1 flex flex-col overflow-hidden min-w-0">
       {/* Header */}
-      <div className="flex-shrink-0 px-6 py-3.5 border-b border-gray-100 bg-white flex items-center gap-3">
+      <div className="flex-shrink-0 px-4 sm:px-6 py-3.5 border-b border-gray-100 bg-white flex items-center gap-3">
+        {/* Back button — mobile only */}
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="md:hidden w-8 h-8 flex items-center justify-center rounded-xl hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0"
+          >
+            <i className="ri-arrow-left-s-line text-gray-700 text-xl" />
+          </button>
+        )}
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
           style={{ background: student.avatarColor }}
         >
           {student.initial}
         </div>
-        <div>
+        <div className="flex-1 min-w-0">
           <p className="text-sm font-bold text-gray-900">{student.name} 이용인</p>
           <p className="text-[11px] text-gray-400">보호자 타임라인에 전달됩니다</p>
         </div>
         {sent && (
-          <span className="ml-auto flex items-center gap-1.5 text-xs text-[#10b981] font-semibold">
+          <span className="flex items-center gap-1.5 text-xs text-[#10b981] font-semibold whitespace-nowrap">
             <i className="ri-checkbox-circle-fill text-sm" />
-            보호자에게 전송됐습니다
+            <span className="hidden sm:inline">보호자에게 전송됐습니다</span>
+            <span className="sm:hidden">전송완료</span>
           </span>
         )}
       </div>
 
       <div className="flex-1 overflow-y-auto">
         {/* ── 새 보고 작성 ── */}
-        <div className="px-6 pt-5 pb-5 border-b border-gray-100">
+        <div className="px-4 sm:px-6 pt-5 pb-5 border-b border-gray-100">
           <p className="text-xs font-bold text-gray-700 mb-3">새 보고 작성</p>
 
           {/* Type selector */}
@@ -255,9 +335,8 @@ function ReportPanel({ studentId }: { studentId: number }) {
           )}
 
           {/* 하단 바: 파일 업로드 + 글자수 + 전송 */}
-          <div className="flex items-center justify-between mt-3">
+          <div className="flex items-center justify-between mt-3 gap-2 flex-wrap">
             <div className="flex items-center gap-2">
-              {/* 파일 업로드 버튼 */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -290,23 +369,24 @@ function ReportPanel({ studentId }: { studentId: number }) {
               )}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <span className="text-[11px] text-gray-400">{content.length}/500</span>
               <button
                 onClick={handleSend}
                 disabled={!content.trim() && attachments.length === 0}
-                className="flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-bold text-white cursor-pointer whitespace-nowrap transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-4 sm:px-5 py-2 rounded-xl text-xs font-bold text-white cursor-pointer whitespace-nowrap transition-all disabled:opacity-30 disabled:cursor-not-allowed"
                 style={{ background: selectedTypeMeta.color }}
               >
                 <i className="ri-send-plane-fill text-xs" />
-                보호자에게 전송
+                <span className="hidden sm:inline">보호자에게 전송</span>
+                <span className="sm:hidden">전송</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* ── 발송 이력 ── */}
-        <div className="px-6 pt-4 pb-6">
+        <div className="px-4 sm:px-6 pt-4 pb-6">
           <p className="text-xs font-bold text-gray-700 mb-3">
             최근 발송 내역
             <span className="ml-1.5 text-[11px] font-normal text-gray-400">
@@ -399,15 +479,48 @@ function ReportPanel({ studentId }: { studentId: number }) {
 export default function ParentReports() {
   const [selectedId, setSelectedId] = useState(mockStudents[0].id);
   const [reports] = useState(mockSentReports);
+  const [mobileView, setMobileView] = useState<"list" | "report">("list");
+
+  const handleSelect = (id: number) => {
+    setSelectedId(id);
+    setMobileView("report");
+  };
+
+  const handleBack = () => {
+    setMobileView("list");
+  };
 
   return (
-    <div className="flex h-full bg-white overflow-hidden">
-      <UserList
-        selectedId={selectedId}
-        onSelect={setSelectedId}
-        sentReports={reports}
-      />
-      <ReportPanel key={selectedId} studentId={selectedId} />
+    <div className="flex flex-1 min-h-0 bg-white overflow-hidden">
+      {/* 이용인 목록 — 모바일: 뷰 전환 / 데스크탑: 항상 표시 */}
+      <div
+        className={[
+          "flex-col min-h-0 w-full md:w-auto",
+          mobileView === "list" ? "flex" : "hidden",
+          "md:flex md:flex-shrink-0",
+        ].join(" ")}
+      >
+        <UserList
+          selectedId={selectedId}
+          onSelect={handleSelect}
+          sentReports={reports}
+        />
+      </div>
+
+      {/* 작성 + 이력 패널 — 모바일: 뷰 전환 / 데스크탑: 항상 표시 */}
+      <div
+        className={[
+          "flex-1 flex-col overflow-hidden min-w-0 min-h-0",
+          mobileView === "report" ? "flex" : "hidden",
+          "md:flex",
+        ].join(" ")}
+      >
+        <ReportPanel
+          key={selectedId}
+          studentId={selectedId}
+          onBack={handleBack}
+        />
+      </div>
     </div>
   );
 }

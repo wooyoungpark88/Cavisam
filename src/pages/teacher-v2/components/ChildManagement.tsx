@@ -33,17 +33,19 @@ export default function ChildManagement() {
   return (
     <div className="flex flex-col h-full">
       {/* Sub top bar */}
-      <div className="flex-shrink-0 flex items-center justify-between px-6 py-3 border-b border-gray-100 bg-white gap-4">
+      <div className="flex-shrink-0 flex flex-wrap items-center justify-between px-4 sm:px-6 py-3 border-b border-gray-100 bg-white gap-2">
         {/* Left: date */}
         <div className="flex items-center gap-2 flex-shrink-0">
           <div className="w-4 h-4 flex items-center justify-center">
             <i className="ri-calendar-2-line text-[#026eff] text-sm" />
           </div>
-          <span className="text-gray-700 text-sm font-semibold">2026년 3월 18일 수요일</span>
+          {/* 데스크톱: 풀 날짜 / 모바일: 짧은 날짜 */}
+          <span className="hidden sm:inline text-gray-700 text-sm font-semibold whitespace-nowrap">2026년 3월 18일 수요일</span>
+          <span className="sm:hidden text-gray-700 text-sm font-semibold whitespace-nowrap">3월 18일 (수)</span>
         </div>
 
         {/* Right: controls */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           {/* 관심 필요 badge-button */}
           <button
             onClick={() => setAttentionOnly((v) => !v)}
@@ -70,7 +72,7 @@ export default function ChildManagement() {
               {attentionCount}
             </span>
             {attentionOnly && (
-              <span className="ml-0.5 text-[10px] text-red-400 font-medium">필터 중</span>
+              <span className="ml-0.5 text-[10px] text-red-400 font-medium hidden sm:inline">필터 중</span>
             )}
           </button>
 
@@ -110,7 +112,7 @@ export default function ChildManagement() {
       </div>
 
       {/* Search bar */}
-      <div className="flex-shrink-0 px-5 py-2.5 border-b border-gray-100 bg-white">
+      <div className="flex-shrink-0 px-4 sm:px-5 py-2.5 border-b border-gray-100 bg-white">
         <div
           className="flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all"
           style={{
@@ -171,7 +173,7 @@ export default function ChildManagement() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-3 p-5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))" }}>
+          <div className="grid gap-3 p-4 sm:p-5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
             {displayed.map((student) => (
               <StudentCard key={student.id} student={student} />
             ))}
