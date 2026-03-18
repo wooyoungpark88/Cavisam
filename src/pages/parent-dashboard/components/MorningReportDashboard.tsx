@@ -480,8 +480,18 @@ function HistoryList({ data }: { data: HistoryItem[] }) {
 // Main Dashboard
 // ──────────────────────────────────────────
 export default function MorningReportDashboard() {
-  const { morningReports } = useParentData();
+  const { morningReports, loading } = useParentData();
   const [range, setRange] = useState<RangeKey>("7일");
+
+  if (!loading && morningReports.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+        <i className="ri-bar-chart-2-line text-3xl text-gray-200 mb-3" />
+        <p className="text-sm text-gray-500 font-medium mb-1">아직 발송 통계가 없습니다</p>
+        <p className="text-xs text-gray-400">등원 전 한마디를 보내면 통계가 쌓입니다</p>
+      </div>
+    );
+  }
 
   // DB 데이터를 HistoryItem 형식으로 변환
   const allData: HistoryItem[] = useMemo(() =>

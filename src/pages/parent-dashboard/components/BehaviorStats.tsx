@@ -1061,8 +1061,23 @@ function InsightBanner({ data }: { data: HistoryEntry[] }) {
    MAIN PAGE
 ════════════════════════════════════════ */
 export default function BehaviorStats() {
-  const { behaviorEvents, morningReports, activeChild } = useParentData();
+  const { behaviorEvents, morningReports, activeChild, loading } = useParentData();
   const childName = activeChild?.name ?? "자녀";
+
+  // 데이터 없으면 빈 상태 표시
+  if (!loading && behaviorEvents.length === 0 && morningReports.length === 0) {
+    return (
+      <div className="p-5 sm:p-7">
+        <h1 className="text-lg font-black text-gray-900 mb-2">우리 아이 이야기</h1>
+        <p className="text-xs text-gray-400 mb-8">{childName}의 30일 생활 알리미 기록 분석</p>
+        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center">
+          <i className="ri-bar-chart-2-line text-4xl text-gray-200 mb-3" />
+          <p className="text-sm text-gray-500 font-medium mb-1">아직 분석할 데이터가 없습니다</p>
+          <p className="text-xs text-gray-400">행동 기록과 등원 전 한마디가 쌓이면 분석이 시작됩니다</p>
+        </div>
+      </div>
+    );
+  }
 
   // 행동 이벤트 → 일별 차트 데이터
   const daily = useMemo(() => {

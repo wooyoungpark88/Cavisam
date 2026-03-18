@@ -18,6 +18,15 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  if (data.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 p-5 text-center py-10">
+        <i className="ri-line-chart-line text-2xl text-gray-200 mb-2" />
+        <p className="text-xs text-gray-400">행동 기록이 없습니다</p>
+      </div>
+    );
+  }
+
   const getColor = (v: number) => (v >= 5 ? "#ef4444" : v >= 3 ? "#f59e0b" : "#10b981");
   const getSeverity = (v: number) => (v >= 5 ? "주의" : v >= 3 ? "보통" : "양호");
 
