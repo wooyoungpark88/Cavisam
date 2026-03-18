@@ -51,7 +51,7 @@ export function useParentData(): ParentData {
 }
 
 export function ParentDataProvider({ children: reactChildren }: { children: ReactNode }) {
-  const { profile } = useAuth();
+  const { session, profile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [childList, setChildList] = useState<StudentDB[]>([]);
   const [messages, setMessages] = useState<MessageDB[]>([]);
@@ -62,8 +62,13 @@ export function ParentDataProvider({ children: reactChildren }: { children: Reac
 
   const activeChild = childList[0] ?? null;
 
+  const isDemo = !session && !!profile;
+
   async function fetchAll() {
-    if (!profile) return;
+    if (!profile || isDemo) {
+      setLoading(false);
+      return;
+    }
 
     const kids = await getStudentsByParent(profile.id);
     setChildList(kids);

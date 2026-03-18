@@ -37,7 +37,7 @@ export function useTeacherData(): TeacherData {
 }
 
 export function TeacherDataProvider({ children }: { children: ReactNode }) {
-  const { profile } = useAuth();
+  const { session, profile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [students, setStudents] = useState<Student[]>([]);
   const [behaviorStats, setBehaviorStats] = useState<TeacherData['behaviorStats']>(null);
@@ -45,9 +45,10 @@ export function TeacherDataProvider({ children }: { children: ReactNode }) {
 
   const orgId = profile?.organization_id ?? '';
   const teacherName = profile?.name ?? '선생님';
+  const isDemo = !session && !!profile; // 데모 모드: Supabase 세션 없이 localStorage 프로필만 있는 경우
 
   async function fetchAll() {
-    if (!profile || !orgId) {
+    if (!profile || !orgId || isDemo) {
       setLoading(false);
       return;
     }
