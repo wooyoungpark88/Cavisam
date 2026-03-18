@@ -1,4 +1,4 @@
-import { type StudentConversation } from "../../../mocks/teacherMessages";
+import { type StudentConversation } from "../../../types/messages";
 
 interface Props {
   conversation: StudentConversation;

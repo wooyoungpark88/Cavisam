@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { mockAdminUsers } from "../../../mocks/adminUsers";
-import { type TeamMember, type MemberRole } from "../../../mocks/teacherTeam";
+import { useState, useEffect } from "react";
+import { type TeamMember, type MemberRole } from "../../../types/team";
+import { supabase } from "../../../lib/supabase";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
 
 const ROLE_OPTIONS: MemberRole[] = [
   "담임교사",
@@ -26,32 +27,54 @@ const AVATAR_COLORS = [
 ];
 
 interface Props {
-  existingMemberIds: number[];
+  existingMemberIds: (number | string)[];
   onAdd: (member: TeamMember) => void;
   onClose: () => void;
 }
 
 export default function AddTeamMemberModal({ existingMemberIds, onAdd, onClose }: Props) {
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const { orgId } = useTeacherData();
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<MemberRole | null>(null);
+  const [availableTeachers, setAvailableTeachers] = useState<{id: string; name: string; initial: string; avatarColor: string; email: string; phone: string; department: string}[]>([]);
 
-  // 교사로 등록된 승인 완료 사용자 중 이미 팀에 없는 사람만 표시
-  const availableTeachers = mockAdminUsers.filter(
-    (u) => u.role === "teacher" && u.status === "approved" && !existingMemberIds.includes(u.id + 1000)
-  );
+  useEffect(() => {
+    if (!orgId) return;
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('organization_id', orgId)
+      .eq('role', 'teacher')
+      .eq('status', 'approved')
+      .then(({ data }) => {
+        if (!data) return;
+        setAvailableTeachers(data
+          .filter((p: any) => !existingMemberIds.includes(p.id))
+          .map((p: any, i: number) => ({
+            id: p.id,
+            name: p.name || "이름 없음",
+            initial: (p.name || "?").charAt(0),
+            avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+            email: "",
+            phone: "",
+            department: "",
+          }))
+        );
+      });
+  }, [orgId, existingMemberIds]);
 
   const selectedUser = availableTeachers.find((u) => u.id === selectedUserId);
 
   const handleAdd = () => {
     if (!selectedUser || !selectedRole) return;
-    const colorIndex = (selectedUser.id - 1) % AVATAR_COLORS.length;
+    const colorIndex = availableTeachers.indexOf(selectedUser) % AVATAR_COLORS.length;
     const newMember: TeamMember = {
-      id: selectedUser.id + 1000,
+      id: selectedUser.id,
       name: selectedUser.name,
       initial: selectedUser.initial,
       avatarColor: AVATAR_COLORS[colorIndex],
       role: selectedRole,
-      department: selectedUser.department ?? "소속 미지정",
+      department: selectedUser.department || "소속 미지정",
       phone: selectedUser.phone,
       email: selectedUser.email,
       assignedStudentIds: [],

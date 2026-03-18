@@ -1,11 +1,95 @@
-import { mockBehaviorSummary } from "../../../mocks/teacherBehavior";
+import { useMemo } from "react";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
+import { BEHAVIOR_COLORS } from "../../../types/behavior";
+import type { BehaviorSummary } from "../../../types/behavior";
 
 interface Props {
   onShowCCTV: (studentName?: string, behaviorType?: string, count?: number) => void;
 }
 
+function getWeekRange(offset: number): [Date, Date] {
+  const now = new Date();
+  const day = now.getDay();
+  const diffToMon = day === 0 ? -6 : 1 - day;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + diffToMon + offset * 7);
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+  return [monday, sunday];
+}
+
+const TYPE_MAP: Record<string, string> = {
+  self_harm: "자해행동",
+  harm_others: "타해행동",
+  obsession: "집착행동",
+};
+
 export default function BehaviorSummaryCards({ onShowCCTV }: Props) {
-  const s = mockBehaviorSummary;
+  const { behaviorStats, students } = useTeacherData();
+
+  const s: BehaviorSummary = useMemo(() => {
+    if (!behaviorStats) {
+      return {
+        totalThisWeek: 0,
+        totalLastWeek: 0,
+        changeRate: 0,
+        mostFrequentType: "—",
+        mostFrequentTypeColor: "#6b7280",
+        needsAttentionCount: 0,
+        mostImprovedName: "—",
+        mostImprovedChange: 0,
+      };
+    }
+
+    const [thisMonday, thisSunday] = getWeekRange(0);
+    const [lastMonday, lastSunday] = getWeekRange(-1);
+
+    let totalThisWeek = 0;
+    let totalLastWeek = 0;
+
+    behaviorStats.byDate.forEach((count, dateStr) => {
+      const d = new Date(dateStr + "T00:00:00");
+      if (d >= thisMonday && d <= thisSunday) totalThisWeek += count;
+      if (d >= lastMonday && d <= lastSunday) totalLastWeek += count;
+    });
+
+    const changeRate = totalLastWeek > 0
+      ? Math.round(((totalThisWeek - totalLastWeek) / totalLastWeek) * 100)
+      : 0;
+
+    const typeCounts: Record<string, number> = {
+      self_harm: behaviorStats.self_harm,
+      harm_others: behaviorStats.harm_others,
+      obsession: behaviorStats.obsession,
+    };
+
+    let maxKey = "self_harm";
+    let maxVal = 0;
+    for (const [key, val] of Object.entries(typeCounts)) {
+      if (val > maxVal) {
+        maxVal = val;
+        maxKey = key;
+      }
+    }
+
+    const mostFrequentType = TYPE_MAP[maxKey] ?? "—";
+    const mostFrequentTypeColor = BEHAVIOR_COLORS[mostFrequentType] ?? "#6b7280";
+
+    const mostImprovedName = students.length > 0 ? students[0].name : "—";
+
+    return {
+      totalThisWeek,
+      totalLastWeek,
+      changeRate,
+      mostFrequentType,
+      mostFrequentTypeColor,
+      needsAttentionCount: 0,
+      mostImprovedName,
+      mostImprovedChange: 0,
+    };
+  }, [behaviorStats, students]);
 
   const cards = [
     {
@@ -34,7 +118,7 @@ export default function BehaviorSummaryCards({ onShowCCTV }: Props) {
       icon: "ri-alert-line",
       label: "가장 많은 유형",
       value: s.mostFrequentType,
-      sub: "이번 주 22건",
+      sub: `이번 주 ${s.totalThisWeek}건`,
       subColor: s.mostFrequentTypeColor,
       subIcon: "",
       bg: "rgba(239,68,68,0.06)",

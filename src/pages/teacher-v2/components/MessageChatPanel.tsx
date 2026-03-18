@@ -1,6 +1,16 @@
 import { useState, useRef, useEffect } from "react";
-import { type ChatMessage, type StudentConversation, quickReplies } from "../../../mocks/teacherMessages";
+import { type ChatMessage, type StudentConversation } from "../../../types/messages";
+import { useAuth } from "../../../hooks/useAuth";
 import CabiSaemModal from "../../../components/feature/CabiSaemModal";
+
+const quickReplies = [
+  "오늘 활동 중 특이사항을 알려드립니다",
+  "점심 식사 잘 마쳤습니다",
+  "약 복용 완료했습니다",
+  "오늘 컨디션이 좋았어요",
+  "확인해 주셔서 감사합니다",
+  "내일도 잘 부탁드립니다",
+];
 
 interface Props {
   conversation: StudentConversation;
@@ -133,6 +143,7 @@ function MiniStat({
 
 // ── Main chat panel ────────────────────────────────────────
 export default function MessageChatPanel({ conversation, onBack }: Props) {
+  const { profile } = useAuth();
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(conversation.messages);
   const [showCabiSaem, setShowCabiSaem] = useState(false);
@@ -147,11 +158,11 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
   }, [messages]);
 
   const handleSend = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !profile) return;
     const newMsg: ChatMessage = {
-      id: messages.length + 1,
+      id: Date.now(),
       sender: "teacher",
-      senderName: "김태의 선생님",
+      senderName: profile.name || "선생님",
       text: input.trim(),
       time: "방금",
       type: "text",

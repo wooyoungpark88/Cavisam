@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import StudentCard from "./StudentCard";
 import StatsDropdown from "./StatsDropdown";
 import { useTeacherData } from "../../../contexts/TeacherDataContext";
-import type { StudentDailyReport, ConditionLevel, MealLevel, SleepLevel } from "../../../mocks/teacherDashboard";
+import type { StudentDailyReport, ConditionLevel, MealLevel, SleepLevel } from "../../../types/teacher";
 
 const COND_MAP: Record<string, ConditionLevel> = { good: "좋음", normal: "보통", bad: "나쁨", very_bad: "매우나쁨" };
 const MEAL_MAP: Record<string, MealLevel> = { good: "완식", normal: "평소처럼", none: "안먹음" };

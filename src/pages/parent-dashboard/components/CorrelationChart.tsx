@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { mockBehaviorHistory30, mockMorningReportHistory } from "../../../mocks/parentDashboard";
+import { useState, useMemo } from "react";
+import { useParentData } from "../../../contexts/ParentDataContext";
 
 // scoring helpers (reserved for future analysis)
 void function cScore(v: string) { return v === "좋음" ? 3 : v === "보통" ? 2 : 1; };
@@ -8,14 +8,6 @@ void function sScore(v: string) { return v === "충분" ? 3 : v === "보통" ? 2
 type JoinedDay = {
   date: string; count: number; condition: string; sleep: string; meal: string;
 };
-
-function joinData(): JoinedDay[] {
-  const histMap = new Map(mockMorningReportHistory.map((h) => [h.date, h]));
-  return mockBehaviorHistory30.map((b) => {
-    const h = histMap.get(b.date);
-    return { date: b.date, count: b.count, condition: h?.condition ?? "보통", sleep: h?.sleep ?? "보통", meal: h?.meal ?? "대부분" };
-  });
-}
 
 function avg(arr: number[]) {
   return arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
@@ -431,7 +423,80 @@ function KeyFindings({ data }: { data: JoinedDay[] }) {
    MAIN EXPORT
 ════════════════════════════════════════ */
 export default function CorrelationChart() {
-  const data = joinData();
+  const { behaviorEvents, morningReports, loading } = useParentData();
+
+  const behaviorHistory30 = useMemo(() => {
+    const days: { date: string; count: number }[] = [];
+    for (let i = 0; i < 30; i++) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const fullDate = d.toISOString().slice(0, 10);
+      const count = behaviorEvents.filter(e => e.occurred_at.startsWith(fullDate)).length;
+      days.push({ date: dateStr, count });
+    }
+    return days.reverse();
+  }, [behaviorEvents]);
+
+  const morningReportHistory = useMemo(() => {
+    return morningReports.map(r => {
+      const d = new Date(r.created_at);
+      const dateStr = `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const conditionMap: Record<string, string> = { good: "좋음", normal: "보통", bad: "안좋음", very_bad: "매우나쁨" };
+      const mealMap: Record<string, string> = { good: "전부", normal: "대부분", none: "안먹음" };
+      const bowelMap: Record<string, string> = { normal: "정상", none: "없음" };
+      return {
+        date: dateStr,
+        sleep: r.sleep_time || "보통",
+        condition: conditionMap[r.condition || ""] || "보통",
+        meal: mealMap[r.meal || ""] || "대부분",
+        bowel: bowelMap[r.bowel || ""] || "정상",
+        medication: r.medication || "",
+        note: r.note || "",
+      };
+    });
+  }, [morningReports]);
+
+  const data = useMemo(() => {
+    const histMap = new Map(morningReportHistory.map((h) => [h.date, h]));
+    return behaviorHistory30.map((b) => {
+      const h = histMap.get(b.date);
+      return { date: b.date, count: b.count, condition: h?.condition ?? "보통", sleep: h?.sleep ?? "보통", meal: h?.meal ?? "대부분" };
+    });
+  }, [behaviorHistory30, morningReportHistory]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[200px]">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#026eff] rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-400">교차 분석 데이터를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (behaviorEvents.length === 0 && morningReports.length === 0) {
+    return (
+      <div className="space-y-5">
+        <div className="flex items-center gap-3 pt-1">
+          <div className="flex-1 h-px bg-gray-100" />
+          <span className="text-[11px] text-gray-500 font-bold whitespace-nowrap flex items-center gap-1.5">
+            <i className="ri-bar-chart-grouped-line text-xs" />
+            도전행동 × 생활 알리미 교차 분석
+          </span>
+          <div className="flex-1 h-px bg-gray-100" />
+        </div>
+        <div className="bg-white rounded-2xl border border-gray-100 p-8 text-center">
+          <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-3">
+            <i className="ri-bar-chart-grouped-line text-gray-300 text-lg" />
+          </div>
+          <p className="text-sm text-gray-400">아직 분석할 데이터가 없어요</p>
+          <p className="text-[11px] text-gray-300 mt-1">기록이 쌓이면 교차 분석이 시작돼요</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-5">

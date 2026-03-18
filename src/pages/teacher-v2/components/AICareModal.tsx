@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import { type AiCareReport, type CareLevel } from "../../../mocks/aiCareAnalysis";
-import { type StudentDailyReport } from "../../../mocks/teacherDashboard";
+import { type AiCareReport, type CareLevel } from "../../../types/ai-care";
+import { type StudentDailyReport } from "../../../types/teacher";
 
 interface AICareModalProps {
   student: StudentDailyReport;

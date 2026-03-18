@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { type AdminUser, type UserRole, type UserStatus } from "../../mocks/adminUsers";
+import { type AdminUser, type UserRole, type UserStatus } from "../../types/admin";
 import AdminSidebar, { type AdminTab } from "./components/AdminSidebar";
 import AdminOverview from "./components/AdminOverview";
 import UserManagement from "./components/UserManagement";
@@ -49,7 +49,7 @@ export default function AdminPage() {
   const pendingCount = users.filter((u) => u.status === "pending").length;
 
   const handleUpdate = async (
-    id: number,
+    id: number | string,
     role: UserRole,
     status: UserStatus,
     linkedStudents?: string[]
@@ -80,11 +80,11 @@ export default function AdminPage() {
     );
   };
 
-  const handleApprove = (id: number, role: UserRole, linkedStudents?: string[]) => {
+  const handleApprove = (id: number | string, role: UserRole, linkedStudents?: string[]) => {
     handleUpdate(id, role, "approved", linkedStudents);
   };
 
-  const handleReject = async (id: number) => {
+  const handleReject = async (id: number | string) => {
     const user = users.find((u) => u.id === id);
     const profileId = (user as AdminUser & { _profileId?: string })?._profileId;
     if (profileId) {

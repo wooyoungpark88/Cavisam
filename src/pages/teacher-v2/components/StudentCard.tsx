@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { type StudentDailyReport, type ConditionLevel, type MealLevel, type SleepLevel } from "../../../mocks/teacherDashboard";
-import { mockAiCareReports } from "../../../mocks/aiCareAnalysis";
+import { type StudentDailyReport, type ConditionLevel, type MealLevel, type SleepLevel } from "../../../types/teacher";
 import AICareModal from "./AICareModal";
 
 function conditionStyle(level: ConditionLevel): { color: string; bg: string; label: string } {
@@ -39,7 +38,7 @@ export default function StudentCard({ student }: StudentCardProps) {
   const [showAI, setShowAI] = useState(false);
   const condStyle = conditionStyle(student.condition);
   const mlStyle = mealStyle(student.meal);
-  const aiReport = mockAiCareReports.find((r) => r.studentId === student.id);
+  const aiReport = null;
 
   const hasNote = student.note && student.note !== "-";
   const hasMed  = student.medication && student.medication !== "-";

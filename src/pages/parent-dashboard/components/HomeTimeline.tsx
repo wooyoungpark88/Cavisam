@@ -1,11 +1,5 @@
-import { useState, useEffect } from "react";
-import {
-  mockDailyStatus,
-  mockTimelineEntries,
-  mockAIWeeklyInsights,
-  mockCareTeam,
-} from "../../../mocks/parentDashboard";
-import { mockSentReports } from "../../../mocks/teacherReports";
+import { useState, useEffect, useMemo } from "react";
+import { useParentData } from "../../../contexts/ParentDataContext";
 import ReportDetailPanel, { type ReportDetail } from "./ReportDetailPanel";
 import MorningReportForm from "./MorningReportForm";
 
@@ -35,45 +29,9 @@ function timeToMinutes(time: string): number {
   return h * 60 + m;
 }
 
-/** Convert teacher sent reports for 김지우 (studentId 6) into TimelineEntry format */
-const reportTimeMap: Record<number, { time: string; period: string }> = {
-  7: { time: "10:30", period: "am" },
-  8: { time: "13:15", period: "pm" },
-  9: { time: "14:20", period: "pm" },
-  10: { time: "11:40", period: "am" },
-};
-
-const teacherReportEntries: TimelineEntry[] = mockSentReports
-  .filter((r) => r.studentId === 6)
-  .map((r) => ({
-    id: 200 + r.id,
-    time: reportTimeMap[r.id]?.time ?? "12:00",
-    period: reportTimeMap[r.id]?.period ?? "pm",
-    type: "report",
-    actor: "박지영 선생님",
-    actorInitial: "박",
-    actorColor: "#10b981",
-    content: r.content,
-    hasPhoto: false,
-    photoUrl: "",
-    aiSummary: "",
-    teacherConfirmed: "",
-    aiInsight: "",
-    reportType: r.type,
-    reportTypeColor: r.typeColor,
-    reportTypeIcon: r.typeIcon,
-    isConfirmed: r.confirmed,
-  }));
-
-function getSortedEntries(period: string): TimelineEntry[] {
-  const base = mockTimelineEntries.filter((e) => e.period === period) as TimelineEntry[];
-  const reports = teacherReportEntries.filter((e) => e.period === period);
-  return [...base, ...reports].sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
-}
-
 /* ─── Sub-components ─────────────────────────────────────── */
 
-function StatusCards({ visible }: { visible: boolean }) {
+function StatusCards({ visible, dailyStatus }: { visible: boolean; dailyStatus: { key: string; label: string; value: string; emoji: string; bg: string; color: string }[] }) {
   return (
     <div
       className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-4 transition-all duration-500"
@@ -86,7 +44,7 @@ function StatusCards({ visible }: { visible: boolean }) {
         pointerEvents: visible ? "auto" : "none",
       }}
     >
-      {mockDailyStatus.map((s) => (
+      {dailyStatus.map((s) => (
         <div
           key={s.key}
           className="rounded-xl px-3 py-2.5 sm:rounded-2xl sm:px-4 sm:py-3 flex items-center gap-2 sm:gap-3"
@@ -616,36 +574,48 @@ function TimelineColumn({
   );
 }
 
-function AISidebar({ onMemberMessage }: { onMemberMessage?: (id: number) => void }) {
+function AISidebar({
+  onMemberMessage,
+  aiWeeklyInsights,
+  careTeamDisplay,
+}: {
+  onMemberMessage?: (id: number) => void;
+  aiWeeklyInsights: { label: string; badge: string; color: string; progress: number; subLabel: string }[];
+  careTeamDisplay: { id: number; name: string; initial: string; role: string; department: string; color: string; contact: string[] }[];
+}) {
   return (
     <div className="space-y-3">
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
         <h3 className="text-xs font-bold text-gray-800 mb-3">AI 주간 인사이트</h3>
-        <div className="space-y-3.5">
-          {mockAIWeeklyInsights.map((insight, i) => (
-            <div key={i}>
-              {/* 라벨 + 변화율 배지 */}
-              <div className="flex items-center justify-between mb-1.5">
-                <span className="text-[11px] text-gray-600">{insight.label}</span>
-                <span
-                  className="text-[11px] font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
-                  style={{ background: `${insight.color}15`, color: insight.color }}
-                >
-                  {insight.badge}
-                </span>
+        {aiWeeklyInsights.length === 0 ? (
+          <p className="text-[11px] text-gray-400">아직 분석할 데이터가 없어요</p>
+        ) : (
+          <div className="space-y-3.5">
+            {aiWeeklyInsights.map((insight, i) => (
+              <div key={i}>
+                {/* 라벨 + 변화율 배지 */}
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[11px] text-gray-600">{insight.label}</span>
+                  <span
+                    className="text-[11px] font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
+                    style={{ background: `${insight.color}15`, color: insight.color }}
+                  >
+                    {insight.badge}
+                  </span>
+                </div>
+                {/* 진행 막대 */}
+                <div className="w-full h-1.5 rounded-full bg-gray-100 mb-1">
+                  <div
+                    className="h-1.5 rounded-full"
+                    style={{ width: `${insight.progress}%`, background: insight.color }}
+                  />
+                </div>
+                {/* 막대 의미 설명 */}
+                <p className="text-[9px] text-gray-400 leading-relaxed">{insight.subLabel}</p>
               </div>
-              {/* 진행 막대 */}
-              <div className="w-full h-1.5 rounded-full bg-gray-100 mb-1">
-                <div
-                  className="h-1.5 rounded-full"
-                  style={{ width: `${insight.progress}%`, background: insight.color }}
-                />
-              </div>
-              {/* 막대 의미 설명 */}
-              <p className="text-[9px] text-gray-400 leading-relaxed">{insight.subLabel}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
@@ -653,55 +623,175 @@ function AISidebar({ onMemberMessage }: { onMemberMessage?: (id: number) => void
           <h3 className="text-xs font-bold text-gray-800">돌봄 팀</h3>
           <span className="text-[10px] text-gray-400 font-medium">클릭 시 대화</span>
         </div>
-        <div className="flex gap-2 sm:block sm:space-y-1 overflow-x-auto pb-1 sm:pb-0">
-          {mockCareTeam.slice(0, 3).map((member) => (
-            <button
-              key={member.id}
-              onClick={() => onMemberMessage?.(member.id)}
-              className="group flex-shrink-0 sm:flex-shrink flex items-center gap-2 sm:gap-2.5 px-3 py-2.5 sm:px-2 sm:py-2 rounded-xl hover:bg-gray-50 transition-all cursor-pointer text-left sm:-mx-2 flex-col sm:flex-row min-w-[72px] sm:min-w-0 sm:w-[calc(100%+16px)]"
-              style={{}}
-            >
-              {/* Avatar */}
-              <div className="relative flex-shrink-0">
-                <div
-                  className="w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                  style={{ background: member.color }}
-                >
-                  {member.initial}
-                </div>
-                {member.id === 1 && (
-                  <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-white" />
-                )}
-              </div>
-              {/* Name / role */}
-              <div className="min-w-0 flex-1 text-center sm:text-left">
-                <p className="text-xs font-semibold text-gray-800 leading-tight truncate">
-                  {member.name}
-                </p>
-                <p className="text-[10px] text-gray-400 leading-tight hidden sm:block">{member.role}</p>
-              </div>
-              {/* Chat icon */}
-              <div
-                className="w-6 h-6 items-center justify-center rounded-full flex-shrink-0 hidden sm:flex opacity-0 group-hover:opacity-100 transition-all"
-                style={{ background: `${member.color}18` }}
+        {careTeamDisplay.length === 0 ? (
+          <p className="text-[11px] text-gray-400">돌봄 팀 정보가 없어요</p>
+        ) : (
+          <div className="flex gap-2 sm:block sm:space-y-1 overflow-x-auto pb-1 sm:pb-0">
+            {careTeamDisplay.slice(0, 3).map((member) => (
+              <button
+                key={member.id}
+                onClick={() => onMemberMessage?.(member.id)}
+                className="group flex-shrink-0 sm:flex-shrink flex items-center gap-2 sm:gap-2.5 px-3 py-2.5 sm:px-2 sm:py-2 rounded-xl hover:bg-gray-50 transition-all cursor-pointer text-left sm:-mx-2 flex-col sm:flex-row min-w-[72px] sm:min-w-0 sm:w-[calc(100%+16px)]"
+                style={{}}
               >
-                <i
-                  className="ri-chat-1-line text-[11px]"
-                  style={{ color: member.color }}
-                />
-              </div>
-            </button>
-          ))}
-        </div>
+                {/* Avatar */}
+                <div className="relative flex-shrink-0">
+                  <div
+                    className="w-9 h-9 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                    style={{ background: member.color }}
+                  >
+                    {member.initial}
+                  </div>
+                  {member.id === 1 && (
+                    <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-white" />
+                  )}
+                </div>
+                {/* Name / role */}
+                <div className="min-w-0 flex-1 text-center sm:text-left">
+                  <p className="text-xs font-semibold text-gray-800 leading-tight truncate">
+                    {member.name}
+                  </p>
+                  <p className="text-[10px] text-gray-400 leading-tight hidden sm:block">{member.role}</p>
+                </div>
+                {/* Chat icon */}
+                <div
+                  className="w-6 h-6 items-center justify-center rounded-full flex-shrink-0 hidden sm:flex opacity-0 group-hover:opacity-100 transition-all"
+                  style={{ background: `${member.color}18` }}
+                >
+                  <i
+                    className="ri-chat-1-line text-[11px]"
+                    style={{ color: member.color }}
+                  />
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
 export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (id: number) => void }) {
-  const amEntries = getSortedEntries("am");
-  const pmEntries = getSortedEntries("pm");
-  const reportCount = teacherReportEntries.length;
+  const { todayRecord, messages, behaviorEvents, careTeam, morningReports, activeChild, loading } = useParentData();
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  const dailyStatus = todayRecord ? [
+    { key: "condition", label: "컨디션", value: todayRecord.condition || "\u2014", emoji: "☀️", bg: "#f0fdf4", color: "#16a34a" },
+    { key: "challenge", label: "도전행동", value: `${behaviorEvents.filter(e => e.occurred_at.startsWith(todayStr)).length}회`, emoji: "⚠️", bg: "#fffbeb", color: "#d97706" },
+    { key: "meal", label: "식사", value: todayRecord.meal || "\u2014", emoji: "🍱", bg: "#eff6ff", color: "#2563eb" },
+    { key: "medicine", label: "약", value: todayRecord.medication ? "완료" : "\u2014", emoji: "💊", bg: "#faf5ff", color: "#7c3aed" },
+  ] : [];
+
+  const timelineEntries = useMemo(() => {
+    const entries: TimelineEntry[] = [];
+
+    const todayReport = morningReports.find(r => r.created_at.startsWith(todayStr));
+    if (todayReport) {
+      entries.push({
+        id: 1,
+        time: new Date(todayReport.created_at).toTimeString().slice(0, 5),
+        period: "am",
+        type: "parent",
+        actor: "보호자",
+        actorInitial: "보",
+        actorColor: "#026eff",
+        aiSummary: `컨디션 ${({good:"좋음",normal:"보통",bad:"안좋음",very_bad:"매우나쁨"} as Record<string,string>)[todayReport.condition || ""] || "\u2014"}. 수면 ${todayReport.sleep_time || "\u2014"}. 식사 ${({good:"전부",normal:"대부분",none:"안먹음"} as Record<string,string>)[todayReport.meal || ""] || "\u2014"}.`,
+        teacherConfirmed: "",
+        content: todayReport.note || "",
+        hasPhoto: false,
+        photoUrl: "",
+        aiInsight: "",
+      });
+    }
+
+    messages.filter(m => m.created_at.startsWith(todayStr) && m.message_type === 'text').forEach((m, i) => {
+      entries.push({
+        id: 100 + i,
+        time: new Date(m.created_at).toTimeString().slice(0, 5),
+        period: parseInt(new Date(m.created_at).toTimeString().slice(0, 2)) < 12 ? "am" : "pm",
+        type: m.sender_id !== activeChild?.parent_id ? "teacher" : "parent",
+        actor: m.sender?.name || "선생님",
+        actorInitial: (m.sender?.name || "?").charAt(0),
+        actorColor: "#10b981",
+        content: m.content,
+        hasPhoto: false,
+        photoUrl: "",
+        aiSummary: "",
+        teacherConfirmed: "",
+        aiInsight: "",
+      });
+    });
+
+    const reportEntries: TimelineEntry[] = messages
+      .filter(m => m.message_type === 'daily_report' && m.created_at.startsWith(todayStr))
+      .map((m, i) => ({
+        id: 200 + i,
+        time: new Date(m.created_at).toTimeString().slice(0, 5),
+        period: parseInt(new Date(m.created_at).toTimeString().slice(0, 2)) < 12 ? "am" : "pm",
+        type: "report" as string,
+        actor: m.sender?.name || "선생님",
+        actorInitial: (m.sender?.name || "?").charAt(0),
+        actorColor: "#026eff",
+        content: m.content,
+        hasPhoto: false,
+        photoUrl: "",
+        aiSummary: "",
+        teacherConfirmed: "",
+        aiInsight: "",
+        reportType: "행동기록",
+        reportTypeColor: "#026eff",
+        reportTypeIcon: "ri-file-list-3-line",
+        isConfirmed: m.is_read,
+      }));
+
+    entries.push(...reportEntries);
+    entries.sort((a, b) => timeToMinutes(a.time) - timeToMinutes(b.time));
+    return entries;
+  }, [messages, morningReports, behaviorEvents, activeChild, todayStr]);
+
+  const amEntries = timelineEntries.filter(e => e.period === "am");
+  const pmEntries = timelineEntries.filter(e => e.period === "pm");
+  const reportCount = timelineEntries.filter(e => e.type === "report").length;
+
+  const aiWeeklyInsights = useMemo(() => {
+    if (behaviorEvents.length === 0) return [];
+    const thisWeek = behaviorEvents.filter(e => {
+      const d = new Date(e.occurred_at);
+      const now = new Date();
+      const diff = (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24);
+      return diff <= 7;
+    }).length;
+    const lastWeek = behaviorEvents.filter(e => {
+      const d = new Date(e.occurred_at);
+      const now = new Date();
+      const diff = (now.getTime() - d.getTime()) / (1000 * 60 * 60 * 24);
+      return diff > 7 && diff <= 14;
+    }).length;
+    const change = lastWeek > 0 ? Math.round((thisWeek - lastWeek) / lastWeek * 100) : 0;
+    return [
+      {
+        label: "도전행동",
+        badge: change <= 0 ? `\u2193 ${Math.abs(change)}%` : `\u2191 ${change}%`,
+        color: change <= 0 ? "#10b981" : "#ef4444",
+        progress: Math.max(0, 100 - thisWeek * 5),
+        subLabel: `전주 대비 ${Math.abs(change)}% ${change <= 0 ? "감소" : "증가"} \u00b7 이번 주 ${thisWeek}건`,
+      },
+    ];
+  }, [behaviorEvents]);
+
+  const careTeamDisplay = useMemo(() => {
+    return careTeam.map((ct, i) => ({
+      id: i + 1,
+      name: ct.member?.name || "팀원",
+      initial: (ct.member?.name || "?").charAt(0),
+      role: ct.role === 'lead' ? '담당 교사' : ct.role === 'support' ? '보조 교사' : '관찰자',
+      department: "",
+      color: ["#026eff", "#10b981", "#f59e0b", "#8b5cf6"][i % 4],
+      contact: [] as string[],
+    }));
+  }, [careTeam]);
 
   const [selectedEntry, setSelectedEntry] = useState<TimelineEntry | null>(null);
   const [morningReportSent, setMorningReportSent] = useState(false);
@@ -709,7 +799,6 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
   const [statusCardsVisible, setStatusCardsVisible] = useState(false);
   const [aiSidebarOpen, setAiSidebarOpen] = useState(false);
 
-  // 발송 완료 후 약간의 딜레이를 두고 StatusCards를 부드럽게 나타냄
   const handleMorningReportSent = () => {
     setMorningReportSent(true);
     setTimeout(() => setStatusCardsVisible(true), 150);
@@ -735,6 +824,22 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
     sentAt: entry.time,
   });
 
+  if (loading) {
+    return (
+      <div className="p-3 sm:p-4 lg:p-6 flex items-center justify-center min-h-[200px]">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#026eff] rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-400">타임라인을 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const dateObj = new Date();
+  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+  const dateLabel = `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 (${dayNames[dateObj.getDay()]})`;
+  const dateLabelShort = `${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일 (${dayNames[dateObj.getDay()]})`;
+
   return (
     <div className="p-3 sm:p-4 lg:p-6">
       {/* Header */}
@@ -755,8 +860,8 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
           <div className="w-4 h-4 flex items-center justify-center">
             <i className="ri-calendar-line text-xs" />
           </div>
-          <span className="hidden sm:inline">2026년 3월 17일 (화)</span>
-          <span className="sm:hidden">3월 17일 (화)</span>
+          <span className="hidden sm:inline">{dateLabel}</span>
+          <span className="sm:hidden">{dateLabelShort}</span>
         </div>
       </div>
 
@@ -767,7 +872,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
       />
 
       {/* Status cards */}
-      <StatusCards visible={statusCardsVisible} />
+      <StatusCards visible={statusCardsVisible} dailyStatus={dailyStatus} />
 
       {/* Legend — scrollable on mobile */}
       <div className="mb-4 sm:mb-5">
@@ -813,16 +918,26 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
             </span>
           </div>
           <div className="p-3 sm:p-4 xl:p-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              <div>
-                <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
-                <TimelineColumn entries={amEntries} onSelect={setSelectedEntry} />
+            {timelineEntries.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center mx-auto mb-3">
+                  <i className="ri-time-line text-gray-300 text-lg" />
+                </div>
+                <p className="text-sm text-gray-400">오늘의 기록이 아직 없어요</p>
+                <p className="text-[11px] text-gray-300 mt-1">등원 전 한마디를 작성하면 타임라인이 시작돼요</p>
               </div>
-              <div>
-                <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
-                <TimelineColumn entries={pmEntries} onSelect={setSelectedEntry} />
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div>
+                  <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
+                  <TimelineColumn entries={amEntries} onSelect={setSelectedEntry} />
+                </div>
+                <div>
+                  <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
+                  <TimelineColumn entries={pmEntries} onSelect={setSelectedEntry} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -846,7 +961,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
             </span>
           </div>
           <div className="flex-1 p-4 overflow-y-auto">
-            <AISidebar onMemberMessage={onMemberMessage} />
+            <AISidebar onMemberMessage={onMemberMessage} aiWeeklyInsights={aiWeeklyInsights} careTeamDisplay={careTeamDisplay} />
           </div>
         </div>
       </div>
@@ -881,7 +996,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
               .no-scrollbar::-webkit-scrollbar { display: none; }
               .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
             `}</style>
-            <AISidebar onMemberMessage={onMemberMessage} />
+            <AISidebar onMemberMessage={onMemberMessage} aiWeeklyInsights={aiWeeklyInsights} careTeamDisplay={careTeamDisplay} />
           </div>
         )}
         {!aiSidebarOpen && (

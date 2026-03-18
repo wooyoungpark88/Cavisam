@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import { type AdminUser, type UserRole } from "../../../mocks/adminUsers";
+import { type AdminUser, type UserRole } from "../../../types/admin";
 import { supabase } from "../../../lib/supabase";
 
 interface PendingApprovalsProps {
   users: AdminUser[];
-  onApprove: (id: number, role: UserRole, linkedStudents?: string[]) => void;
-  onReject: (id: number) => void;
+  onApprove: (id: number | string, role: UserRole, linkedStudents?: string[]) => void;
+  onReject: (id: number | string) => void;
 }
 
 interface ApproveCardProps {
   user: AdminUser;
-  onApprove: (id: number, role: UserRole, linkedStudents?: string[]) => void;
-  onReject: (id: number) => void;
+  onApprove: (id: number | string, role: UserRole, linkedStudents?: string[]) => void;
+  onReject: (id: number | string) => void;
 }
 
 function ApproveCard({ user, onApprove, onReject }: ApproveCardProps) {

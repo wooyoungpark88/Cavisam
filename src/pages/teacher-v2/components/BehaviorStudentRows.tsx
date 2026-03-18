@@ -1,10 +1,48 @@
+import { useState, useEffect } from "react";
 import { LineChart, Line, ResponsiveContainer, Tooltip } from "recharts";
-import { mockStudentBehaviorStats } from "../../../mocks/teacherBehavior";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
+import { supabase } from "../../../lib/supabase";
+import { BEHAVIOR_COLORS } from "../../../types/behavior";
+import type { StudentBehaviorStat } from "../../../types/behavior";
 
 const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
+const AVATAR_COLORS = [
+  "#026eff", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444", "#06b6d4", "#ec4899",
+];
+
+const TYPE_MAP: Record<string, string> = {
+  self_harm: "자해행동",
+  harm_others: "타해행동",
+  obsession: "집착행동",
+};
+
 interface Props {
   onShowCCTV: (studentName: string, behaviorType: string, count: number) => void;
+}
+
+function getWeekRange(offset: number): [Date, Date] {
+  const now = new Date();
+  const day = now.getDay();
+  const diffToMon = day === 0 ? -6 : 1 - day;
+  const monday = new Date(now);
+  monday.setDate(now.getDate() + diffToMon + offset * 7);
+  monday.setHours(0, 0, 0, 0);
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23, 59, 59, 999);
+  return [monday, sunday];
+}
+
+function getWeekDates(): string[] {
+  const [monday] = getWeekRange(0);
+  const dates: string[] = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    dates.push(d.toISOString().slice(0, 10));
+  }
+  return dates;
 }
 
 function Sparkline({ data, color }: { data: number[]; color: string }) {
@@ -31,7 +69,148 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
 }
 
 export default function BehaviorStudentRows({ onShowCCTV }: Props) {
-  const sorted = [...mockStudentBehaviorStats].sort((a, b) => b.thisWeek - a.thisWeek);
+  const { students, orgId } = useTeacherData();
+  const [stats, setStats] = useState<StudentBehaviorStat[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!orgId || students.length === 0) {
+      setLoading(false);
+      return;
+    }
+
+    const fourteenDaysAgo = new Date();
+    fourteenDaysAgo.setDate(fourteenDaysAgo.getDate() - 14);
+
+    const [thisMonday, thisSunday] = getWeekRange(0);
+    const [lastMonday, lastSunday] = getWeekRange(-1);
+    const weekDates = getWeekDates();
+
+    supabase
+      .from("behavior_events")
+      .select("student_id, type, occurred_at, students(name, organization_id)")
+      .eq("confirmed", true)
+      .gte("occurred_at", fourteenDaysAgo.toISOString())
+      .then(({ data }) => {
+        if (!data) {
+          setLoading(false);
+          return;
+        }
+
+        const filtered = data.filter((e: any) => e.students?.organization_id === orgId);
+
+        const byStudent = new Map<string, {
+          name: string;
+          thisWeek: number;
+          lastWeek: number;
+          dailyMap: Map<string, number>;
+          typeCounts: Map<string, number>;
+        }>();
+
+        for (const event of filtered) {
+          const sid = event.student_id as string;
+          const name = (event as any).students?.name ?? "?";
+          if (!byStudent.has(sid)) {
+            byStudent.set(sid, {
+              name,
+              thisWeek: 0,
+              lastWeek: 0,
+              dailyMap: new Map(),
+              typeCounts: new Map(),
+            });
+          }
+          const entry = byStudent.get(sid)!;
+          const d = new Date(event.occurred_at as string);
+          const dateStr = (event.occurred_at as string).slice(0, 10);
+
+          if (d >= thisMonday && d <= thisSunday) entry.thisWeek++;
+          if (d >= lastMonday && d <= lastSunday) entry.lastWeek++;
+
+          entry.dailyMap.set(dateStr, (entry.dailyMap.get(dateStr) ?? 0) + 1);
+
+          const typeKey = event.type as string;
+          entry.typeCounts.set(typeKey, (entry.typeCounts.get(typeKey) ?? 0) + 1);
+        }
+
+        const studentMap = new Map(students.map((s) => [s.id, s]));
+
+        const computed: StudentBehaviorStat[] = [];
+        let colorIdx = 0;
+
+        for (const student of students) {
+          const sid = String(student.id);
+          const entry = byStudent.get(sid);
+          const color = AVATAR_COLORS[colorIdx % AVATAR_COLORS.length];
+          colorIdx++;
+
+          const thisWeek = entry?.thisWeek ?? 0;
+          const lastWeek = entry?.lastWeek ?? 0;
+          const change = thisWeek - lastWeek;
+
+          const daily = weekDates.map((date) => entry?.dailyMap.get(date) ?? 0);
+
+          let mainTypeKey = "self_harm";
+          let maxCount = 0;
+          if (entry) {
+            entry.typeCounts.forEach((cnt, key) => {
+              if (cnt > maxCount) {
+                maxCount = cnt;
+                mainTypeKey = key;
+              }
+            });
+          }
+          const mainType = TYPE_MAP[mainTypeKey] ?? mainTypeKey;
+          const mainTypeColor = BEHAVIOR_COLORS[mainType] ?? "#6b7280";
+
+          const nameStr = studentMap.get(student.id)?.name ?? student.name;
+          const initial = nameStr.length >= 2 ? nameStr[1] : (nameStr[0] ?? "?");
+
+          computed.push({
+            id: student.id,
+            name: nameStr,
+            initial,
+            color,
+            thisWeek,
+            lastWeek,
+            change,
+            daily,
+            mainType,
+            mainTypeColor,
+          });
+        }
+
+        setStats(computed);
+        setLoading(false);
+      });
+  }, [orgId, students.length]);
+
+  if (loading) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <h3 className="text-sm font-bold text-gray-900">이용인별 상세 현황</h3>
+        </div>
+        <div className="px-6 py-12 text-center text-sm text-gray-400">
+          데이터를 불러오는 중...
+        </div>
+      </div>
+    );
+  }
+
+  if (stats.length === 0) {
+    return (
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <h3 className="text-sm font-bold text-gray-900">이용인별 상세 현황</h3>
+        </div>
+        <div className="px-6 py-12 text-center text-sm text-gray-400">
+          데이터가 없습니다
+        </div>
+      </div>
+    );
+  }
+
+  const sorted = [...stats].sort((a, b) => b.thisWeek - a.thisWeek);
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">

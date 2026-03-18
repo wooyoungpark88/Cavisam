@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  mockTeamMembers,
-  mockStudentAssignments,
-  mockTeamMeetings,
-  mockTeamActivities,
   type MemberRole,
   type TeamMember,
   type StudentAssignment,
-} from "../../../mocks/teacherTeam";
+  type TeamMeeting,
+  type TeamActivity,
+} from "../../../types/team";
+import { supabase } from "../../../lib/supabase";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
+import { useAuth } from "../../../hooks/useAuth";
 import AddTeamMemberModal from "./AddTeamMemberModal";
 import EditAssignmentModal from "./EditAssignmentModal";
 
@@ -37,14 +38,14 @@ const ACTIVITY_ICONS: Record<string, { icon: string; color: string }> = {
   meeting: { icon: "ri-calendar-check-line", color: "#10b981" },
   alert:   { icon: "ri-alarm-warning-line", color: "#ef4444" },
   update:  { icon: "ri-refresh-line", color: "#f59e0b" },
-};
+}; void ACTIVITY_ICONS;
 
 const MEETING_TYPE_STYLES: Record<string, { bg: string; color: string }> = {
   "정기회의":     { bg: "#eff6ff", color: "#026eff" },
   "사례회의":     { bg: "#fef3c7", color: "#d97706" },
   "보호자간담회": { bg: "#f0fdf4", color: "#059669" },
   "외부협력":     { bg: "#f5f3ff", color: "#7c3aed" },
-};
+}; void MEETING_TYPE_STYLES;
 
 function MemberCard({ member, isSelected, onClick }: { member: TeamMember; isSelected: boolean; onClick: () => void }) {
   const rs = ROLE_COLORS[member.role];
@@ -96,7 +97,7 @@ function AssignmentsTab({
   studentAssignments,
   onEditAssignment,
 }: {
-  selectedMemberId: number | null;
+  selectedMemberId: string | null;
   teamMembers: TeamMember[];
   studentAssignments: StudentAssignment[];
   onEditAssignment: (student: StudentAssignment) => void;
@@ -152,7 +153,7 @@ function AssignmentsTab({
                   const isActive = selectedMemberId === mid;
                   return (
                     <div
-                      key={mid}
+                      key={String(mid)}
                       className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold transition-all"
                       style={{
                         background: isActive ? m.avatarColor : rs.bg,
@@ -177,9 +178,20 @@ function AssignmentsTab({
   );
 }
 
-function MeetingsTab() {
-  const upcoming = mockTeamMeetings.filter((m) => m.isUpcoming);
-  const past = mockTeamMeetings.filter((m) => !m.isUpcoming);
+function MeetingsTab({ meetings, teamMembers }: { meetings: TeamMeeting[]; teamMembers: TeamMember[] }) {
+  const upcoming = meetings.filter((m) => m.isUpcoming);
+  const past = meetings.filter((m) => !m.isUpcoming);
+  if (meetings.length === 0) {
+    return (
+      <div className="p-5 flex flex-col items-center py-16 text-center">
+        <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-3">
+          <i className="ri-calendar-line text-gray-300 text-xl" />
+        </div>
+        <p className="text-gray-400 text-sm font-medium">등록된 회의가 없습니다</p>
+        <p className="text-gray-300 text-xs mt-1">팀 미팅을 추가하면 여기에 표시됩니다</p>
+      </div>
+    );
+  }
   return (
     <div className="p-5 space-y-5">
       <div>
@@ -230,11 +242,11 @@ function MeetingsTab() {
                 <div className="flex items-center gap-1.5 pt-2 border-t border-gray-100">
                   <p className="text-[10px] text-gray-400 mr-1">참석</p>
                   {mtg.participants.map((pid) => {
-                    const m = mockTeamMembers.find((t) => t.id === pid);
+                    const m = teamMembers.find((t) => t.id === pid);
                     if (!m) return null;
                     return (
                       <div
-                        key={pid}
+                        key={String(pid)}
                         className="w-5 h-5 rounded-full flex items-center justify-center text-white text-[9px] font-bold"
                         style={{ background: m.avatarColor }}
                         title={m.name}
@@ -288,14 +300,25 @@ function MeetingsTab() {
   );
 }
 
-function ActivityTab() {
+function ActivityTab({ activities }: { activities: TeamActivity[] }) {
+  if (activities.length === 0) {
+    return (
+      <div className="p-5 flex flex-col items-center py-16 text-center">
+        <div className="w-12 h-12 rounded-2xl bg-gray-50 flex items-center justify-center mb-3">
+          <i className="ri-history-line text-gray-300 text-xl" />
+        </div>
+        <p className="text-gray-400 text-sm font-medium">팀 활동 기록이 없습니다</p>
+        <p className="text-gray-300 text-xs mt-1">팀 활동이 기록되면 여기에 표시됩니다</p>
+      </div>
+    );
+  }
   return (
     <div className="p-5">
       <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-4">최근 팀 활동</p>
       <div className="relative">
         <div className="absolute left-4 top-0 bottom-0 w-px bg-gray-100" />
         <div className="space-y-4">
-          {mockTeamActivities.map((act) => {
+          {activities.map((act) => {
             const ai = ACTIVITY_ICONS[act.type] ?? { icon: "ri-record-circle-line", color: "#6b7280" };
             return (
               <div key={act.id} className="relative pl-10">
@@ -329,15 +352,63 @@ function ActivityTab() {
 }
 
 export default function CareTeamView() {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(mockTeamMembers);
-  const [studentAssignments, setStudentAssignments] = useState<StudentAssignment[]>(mockStudentAssignments);
+  const { students, orgId } = useTeacherData();
+  const { profile } = useAuth();
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [studentAssignments, setStudentAssignments] = useState<StudentAssignment[]>([]);
+  const [teamMeetings] = useState<TeamMeeting[]>([]);
+  const [teamActivities] = useState<TeamActivity[]>([]);
   const [roleFilter, setRoleFilter] = useState<RoleFilter>("전체");
-  const [selectedMemberId, setSelectedMemberId] = useState<number | null>(null);
+  const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>("assignments");
   const [showAddMember, setShowAddMember] = useState(false);
   const [editingStudent, setEditingStudent] = useState<StudentAssignment | null>(null);
   const [addedSuccess, setAddedSuccess] = useState<string | null>(null);
   const [mobilePanelOpen, setMobilePanelOpen] = useState(false); void mobilePanelOpen;
+
+  useEffect(() => {
+    if (!orgId) return;
+
+    const AVATAR_COLORS = ["#026eff","#10b981","#8b5cf6","#f59e0b","#ec4899","#ef4444","#06b6d4"];
+    const ROLE_MAP: Record<string, MemberRole> = {
+      teacher: "담임교사",
+    };
+
+    supabase
+      .from('profiles')
+      .select('*')
+      .eq('organization_id', orgId)
+      .eq('status', 'approved')
+      .eq('role', 'teacher')
+      .then(({ data }) => {
+        if (!data) return;
+        setTeamMembers(data.map((p: any, i: number) => ({
+          id: p.id,
+          name: p.name || "이름 없음",
+          initial: (p.name || "?").charAt(0),
+          avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+          role: ROLE_MAP[p.role] || "담임교사" as MemberRole,
+          department: "교육팀",
+          phone: "",
+          email: "",
+          assignedStudentIds: [],
+          specialty: "",
+          availableTime: "",
+          isMe: p.id === profile?.id,
+        })));
+      });
+
+    const AVATAR_COLORS2 = ["#026eff","#10b981","#f59e0b","#8b5cf6","#ef4444","#06b6d4","#e879f9"];
+    setStudentAssignments(students.map((s, i) => ({
+      studentId: s.id,
+      studentName: s.name,
+      initial: s.name.charAt(0),
+      avatarColor: AVATAR_COLORS2[i % AVATAR_COLORS2.length],
+      primaryTeacherId: profile?.id || "",
+      assignedMemberIds: [],
+      priority: (s.condition === 'bad' || s.condition === 'very_bad') ? "집중" as const : "일반" as const,
+    })));
+  }, [orgId, students, profile?.id]);
 
   const filteredMembers =
     roleFilter === "전체"
@@ -348,8 +419,8 @@ export default function CareTeamView() {
     ? teamMembers.find((m) => m.id === selectedMemberId)
     : null;
 
-  const handleMemberClick = (id: number) => {
-    setSelectedMemberId((prev) => (prev === id ? null : id));
+  const handleMemberClick = (id: number | string) => {
+    setSelectedMemberId((prev) => (prev === String(id) ? null : String(id)));
     setActiveTab("assignments");
     setMobilePanelOpen(false);
   };
@@ -360,7 +431,7 @@ export default function CareTeamView() {
     setTimeout(() => setAddedSuccess(null), 3000);
   };
 
-  const handleSaveAssignment = (studentId: number, newMemberIds: number[]) => {
+  const handleSaveAssignment = (studentId: number | string, newMemberIds: (number | string)[]) => {
     setStudentAssignments((prev) =>
       prev.map((sa) =>
         sa.studentId === studentId ? { ...sa, assignedMemberIds: newMemberIds } : sa
@@ -645,8 +716,8 @@ export default function CareTeamView() {
               onEditAssignment={setEditingStudent}
             />
           )}
-          {activeTab === "meetings" && <MeetingsTab />}
-          {activeTab === "activity" && <ActivityTab />}
+          {activeTab === "meetings" && <MeetingsTab meetings={teamMeetings} teamMembers={teamMembers} />}
+          {activeTab === "activity" && <ActivityTab activities={teamActivities} />}
         </div>
       </div>
 

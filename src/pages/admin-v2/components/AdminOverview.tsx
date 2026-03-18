@@ -1,4 +1,4 @@
-import { type AdminUser } from "../../../mocks/adminUsers";
+import { type AdminUser } from "../../../types/admin";
 
 interface AdminOverviewProps {
   users: AdminUser[];

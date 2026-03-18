@@ -1,9 +1,9 @@
-import { type StudentConversation } from "../../../mocks/teacherMessages";
+import { type StudentConversation } from "../../../types/messages";
 
 interface Props {
   conversations: StudentConversation[];
-  selectedId: number;
-  onSelect: (id: number) => void;
+  selectedId: string | number;
+  onSelect: (id: string | number) => void;
 }
 
 export default function MessageStudentList({ conversations, selectedId, onSelect }: Props) {

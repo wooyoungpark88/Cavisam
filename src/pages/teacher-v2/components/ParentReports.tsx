@@ -1,12 +1,15 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useTeacherData } from "../../../contexts/TeacherDataContext";
+import { useAuth } from "../../../hooks/useAuth";
+import { supabase } from "../../../lib/supabase";
 import {
-  mockSentReports,
   REPORT_TYPES,
   type ReportTypeKey,
   type ReportAttachment,
   type SentReport,
-} from "../../../mocks/teacherReports";
+} from "../../../types/reports";
+
+const AVATAR_COLORS = ["#026eff","#10b981","#f59e0b","#8b5cf6","#ef4444","#06b6d4","#e879f9"];
 
 /* ── 파일 유틸 ──────────────────────────────────────── */
 const IMAGE_EXTS = ["jpg", "jpeg", "png", "gif", "webp", "heic"];
@@ -102,12 +105,12 @@ function UserList({
   selectedId,
   onSelect,
   sentReports,
-  mockStudents,
+  studentList,
 }: {
-  selectedId: number;
-  onSelect: (id: number) => void;
+  selectedId: string | number;
+  onSelect: (id: string) => void;
   sentReports: SentReport[];
-  mockStudents: { id: number; name: string; initial: string; avatarColor: string }[];
+  studentList: { id: string; name: string; initial: string; avatarColor: string }[];
 }) {
   return (
     <div className="flex flex-col flex-1 min-h-0 border-r border-gray-100 bg-white w-full md:w-[190px] md:flex-shrink-0">
@@ -119,7 +122,7 @@ function UserList({
 
       {/* Student list */}
       <div className="flex-1 overflow-y-auto py-2">
-        {mockStudents.map((student) => {
+        {studentList.map((student) => {
           const isActive = student.id === selectedId;
           const studentReports = sentReports.filter((r) => r.studentId === student.id);
           const latest = studentReports[0];
@@ -183,15 +186,41 @@ function UserList({
 }
 
 /* ── Right: 작성 + 이력 패널 ──────────────────────────── */
-function ReportPanel({ studentId, onBack, mockStudents }: { studentId: number; onBack?: () => void; mockStudents: { id: number; name: string; initial: string; avatarColor: string }[] }) {
-  const student = mockStudents.find((s) => s.id === studentId) ?? { id: studentId, name: "로딩 중", initial: "?", avatarColor: "#6b7280" };
+function ReportPanel({ studentId, onBack, studentList }: { studentId: string; onBack?: () => void; studentList: { id: string; name: string; initial: string; avatarColor: string }[] }) {
+  const { profile } = useAuth();
+  const student = studentList.find((s) => s.id === studentId) ?? { id: studentId, name: "로딩 중", initial: "?", avatarColor: "#6b7280" };
   const [selectedType, setSelectedType] = useState<ReportTypeKey>("positive");
   const [content, setContent] = useState("");
   const [sent, setSent] = useState(false);
-  const [reports, setReports] = useState<SentReport[]>(mockSentReports);
+  const [reports, setReports] = useState<SentReport[]>([]);
   const [attachments, setAttachments] = useState<ReportAttachment[]>([]);
   const [fileError, setFileError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!profile?.id) return;
+    supabase
+      .from("parent_messages")
+      .select("*, receiver:profiles!receiver_id(name)")
+      .eq("sender_id", profile.id)
+      .eq("message_type", "daily_report")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (!data) return;
+        setReports(data.map((m: any, i: number) => ({
+          id: m.id || i + 1,
+          studentId: m.student_id,
+          studentName: m.receiver?.name || "이용인",
+          type: "행동기록",
+          typeIcon: "ri-file-list-3-line",
+          typeColor: "#026eff",
+          content: m.content,
+          sentAt: new Date(m.created_at).toLocaleString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
+          confirmed: m.is_read,
+          confirmedAt: m.is_read ? "확인됨" : undefined,
+        })));
+      });
+  }, [profile?.id]);
 
   const selectedTypeMeta = REPORT_TYPES.find((t) => t.key === selectedType)!;
   const filteredHistory = reports.filter((r) => r.studentId === studentId);
@@ -444,7 +473,6 @@ function ReportPanel({ studentId, onBack, mockStudents }: { studentId: number; o
                       {report.content}
                     </p>
                   )}
-                  {/* 이력에서 첨부파일 표시 */}
                   {report.attachments && report.attachments.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {report.attachments.map((att, i) =>
@@ -480,14 +508,19 @@ function ReportPanel({ studentId, onBack, mockStudents }: { studentId: number; o
 /* ── 메인 컨테이너 ─────────────────────────────────────── */
 export default function ParentReports() {
   const { students: rawStudents } = useTeacherData();
-  const mockStudents = useMemo(() =>
-    rawStudents.map((s, i) => ({ id: i + 1, name: s.name, initial: s.name.charAt(0), avatarColor: ["#026eff","#10b981","#f59e0b","#8b5cf6","#ef4444","#06b6d4","#e879f9"][i % 7] })),
+  const studentList = useMemo(() =>
+    rawStudents.map((s, i) => ({ id: s.id, name: s.name, initial: s.name.charAt(0), avatarColor: AVATAR_COLORS[i % 7] })),
   [rawStudents]);
-  const [selectedId, setSelectedId] = useState(1);
-  const [reports] = useState(mockSentReports);
+  const [selectedId, setSelectedId] = useState<string>("");
   const [mobileView, setMobileView] = useState<"list" | "report">("list");
 
-  const handleSelect = (id: number) => {
+  useEffect(() => {
+    if (studentList.length > 0 && !selectedId) {
+      setSelectedId(studentList[0].id);
+    }
+  }, [studentList]);
+
+  const handleSelect = (id: string) => {
     setSelectedId(id);
     setMobileView("report");
   };
@@ -495,6 +528,16 @@ export default function ParentReports() {
   const handleBack = () => {
     setMobileView("list");
   };
+
+  if (!selectedId && studentList.length === 0) {
+    return (
+      <div className="flex flex-1 items-center justify-center bg-white">
+        <p className="text-sm text-gray-400">등록된 이용인이 없습니다</p>
+      </div>
+    );
+  }
+
+  if (!selectedId) return null;
 
   return (
     <div className="flex flex-1 min-h-0 bg-white overflow-hidden">
@@ -509,8 +552,8 @@ export default function ParentReports() {
         <UserList
           selectedId={selectedId}
           onSelect={handleSelect}
-          sentReports={reports}
-          mockStudents={mockStudents}
+          sentReports={[]}
+          studentList={studentList}
         />
       </div>
 
@@ -526,7 +569,7 @@ export default function ParentReports() {
           key={selectedId}
           studentId={selectedId}
           onBack={handleBack}
-          mockStudents={mockStudents}
+          studentList={studentList}
         />
       </div>
     </div>

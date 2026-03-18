@@ -1,12 +1,29 @@
-import { useState, useRef, useEffect } from "react";
-import {
-  type ParentChatMessage,
-  mockCareTeamMessages,
-  mockCareTeam,
-  parentQuickReplies,
-  mockChild,
-} from "../../../mocks/parentDashboard";
+import { useState, useRef, useEffect, useMemo } from "react";
+import { useParentData } from "../../../contexts/ParentDataContext";
 import CabiSaemModal from "../../../components/feature/CabiSaemModal";
+
+interface ParentChatMessage {
+  id: number;
+  sender: "teacher" | "parent";
+  senderName: string;
+  text: string;
+  time: string;
+  type: "text" | "report-card";
+  reportCard?: {
+    title: string;
+    items: { label: string; emoji: string; value: string }[];
+    note?: string;
+  };
+}
+
+const parentQuickReplies = [
+  "어젯밤에 잠을 잘 못 잤어요",
+  "오늘 아침 컨디션이 안 좋아요",
+  "약을 미처 먹이지 못했어요",
+  "감사합니다 선생님",
+  "오늘도 잘 부탁드립니다",
+  "집에서 이야기 들었어요",
+];
 
 interface IncidentRoomProps {
   memberId?: number;
@@ -135,89 +152,101 @@ function DateDivider({ label }: { label: string }) {
 function MemberList({
   selectedId,
   onSelect,
+  childName,
+  careTeamMembers,
+  messagesByMember,
 }: {
   selectedId: number;
   onSelect: (id: number) => void;
+  childName: string;
+  careTeamMembers: { id: number; name: string; initial: string; role: string; color: string; department: string }[];
+  messagesByMember: Record<number, ParentChatMessage[]>;
 }) {
   return (
     <div className="flex flex-col h-full overflow-hidden bg-white">
       {/* header */}
       <div className="flex-shrink-0 px-5 py-4 border-b border-gray-100">
         <h2 className="text-sm font-bold text-gray-900">케어톡</h2>
-        <p className="text-[11px] text-gray-400 mt-0.5">{mockChild.name} · 돌봄 팀 채팅</p>
+        <p className="text-[11px] text-gray-400 mt-0.5">{childName} · 돌봄 팀 채팅</p>
       </div>
 
       {/* list */}
       <div className="flex-1 overflow-y-auto py-2">
-        {mockCareTeam.map((member) => {
-          const messages = mockCareTeamMessages[member.id] ?? [];
-          const last = messages[messages.length - 1];
-          const unread = member.id === 1 ? 2 : 0;
-          const isSelected = member.id === selectedId;
+        {careTeamMembers.length === 0 ? (
+          <div className="px-4 py-8 text-center">
+            <p className="text-sm text-gray-400">돌봄 팀 정보가 없어요</p>
+          </div>
+        ) : (
+          careTeamMembers.map((member) => {
+            const msgs = messagesByMember[member.id] ?? [];
+            const last = msgs[msgs.length - 1];
+            const unread = member.id === 1 ? 2 : 0;
+            const isSelected = member.id === selectedId;
 
-          return (
-            <button
-              key={member.id}
-              onClick={() => onSelect(member.id)}
-              className="w-full flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer text-left"
-              style={{ background: isSelected ? "rgba(2,110,255,0.06)" : "transparent" }}
-            >
-              {/* avatar */}
-              <div className="relative flex-shrink-0">
-                <div
-                  className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-bold"
-                  style={{ background: member.color }}
-                >
-                  {member.initial}
-                </div>
-                {member.id === 1 && (
-                  <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
-                )}
-                {unread > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-[9px] font-bold">
-                    {unread}
-                  </span>
-                )}
-              </div>
-
-              {/* info */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between mb-0.5 gap-1">
-                  <p className="text-sm font-semibold text-gray-900 break-words leading-snug">
-                    {member.name} 선생님
-                  </p>
-                  {last && (
-                    <span className="text-[10px] text-gray-400 flex-shrink-0 mt-0.5">
-                      {last.time.startsWith("오늘")
-                        ? last.time.replace("오늘 ", "")
-                        : last.time.split(" ").slice(-1)[0]}
+            return (
+              <button
+                key={member.id}
+                onClick={() => onSelect(member.id)}
+                className="w-full flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer text-left"
+                style={{ background: isSelected ? "rgba(2,110,255,0.06)" : "transparent" }}
+              >
+                {/* avatar */}
+                <div className="relative flex-shrink-0">
+                  <div
+                    className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    style={{ background: member.color }}
+                  >
+                    {member.initial}
+                  </div>
+                  {member.id === 1 && (
+                    <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
+                  )}
+                  {unread > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-[9px] font-bold">
+                      {unread}
                     </span>
                   )}
                 </div>
-                <div className="flex items-start justify-between gap-1">
-                  <p className="text-[11px] text-gray-500 break-words leading-snug line-clamp-2 flex-1">
-                    {last
-                      ? last.type === "report-card"
-                        ? "[활동 보고카드]"
-                        : last.text
-                      : "메시지 없음"}
-                  </p>
-                  <span
-                    className="flex-shrink-0 text-[9px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap mt-0.5"
-                    style={{ background: `${member.color}14`, color: member.color }}
-                  >
-                    {member.role}
-                  </span>
-                </div>
-              </div>
 
-              {/* arrow (mobile only) */}
-              <div className="w-4 h-4 flex items-center justify-center md:hidden flex-shrink-0">
-                <i className="ri-arrow-right-s-line text-gray-400 text-base" />
-              </div>
-            </button>
-          );
-        })}
+                {/* info */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between mb-0.5 gap-1">
+                    <p className="text-sm font-semibold text-gray-900 break-words leading-snug">
+                      {member.name} 선생님
+                    </p>
+                    {last && (
+                      <span className="text-[10px] text-gray-400 flex-shrink-0 mt-0.5">
+                        {last.time.startsWith("오늘")
+                          ? last.time.replace("오늘 ", "")
+                          : last.time.split(" ").slice(-1)[0]}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-start justify-between gap-1">
+                    <p className="text-[11px] text-gray-500 break-words leading-snug line-clamp-2 flex-1">
+                      {last
+                        ? last.type === "report-card"
+                          ? "[활동 보고카드]"
+                          : last.text
+                        : "메시지 없음"}
+                    </p>
+                    <span
+                      className="flex-shrink-0 text-[9px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap mt-0.5"
+                      style={{ background: `${member.color}14`, color: member.color }}
+                    >
+                      {member.role}
+                    </span>
+                  </div>
+                </div>
+
+                {/* arrow (mobile only) */}
+                <div className="w-4 h-4 flex items-center justify-center md:hidden flex-shrink-0">
+                  <i className="ri-arrow-right-s-line text-gray-400 text-base" />
+                </div>
+              </button>
+            );
+          })
+        )}
       </div>
     </div>
   );
@@ -228,13 +257,19 @@ function ChatPanel({
   memberId,
   onBack,
   showBackButton,
+  childName,
+  careTeamMembers,
+  messagesByMember,
 }: {
   memberId: number;
   onBack: () => void;
   showBackButton: boolean;
+  childName: string;
+  careTeamMembers: { id: number; name: string; initial: string; role: string; color: string; department: string }[];
+  messagesByMember: Record<number, ParentChatMessage[]>;
 }) {
-  const member = mockCareTeam.find((m) => m.id === memberId) ?? mockCareTeam[0];
-  const initialMessages = mockCareTeamMessages[member.id] ?? [];
+  const member = careTeamMembers.find((m) => m.id === memberId) ?? careTeamMembers[0];
+  const initialMessages = messagesByMember[member?.id] ?? [];
 
   const [messages, setMessages] = useState<ParentChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
@@ -242,9 +277,9 @@ function ChatPanel({
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setMessages(mockCareTeamMessages[member.id] ?? []);
+    setMessages(messagesByMember[member?.id] ?? []);
     setInput("");
-  }, [member.id]);
+  }, [member?.id, messagesByMember]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "instant" });
@@ -297,6 +332,14 @@ function ChatPanel({
     return groups;
   })();
 
+  if (!member) {
+    return (
+      <div className="flex flex-col h-full items-center justify-center">
+        <p className="text-sm text-gray-400">돌봄 팀 정보가 없어요</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* ── Chat Header ── */}
@@ -343,7 +386,7 @@ function ChatPanel({
           </div>
           <p className="text-gray-400 text-[11px] break-words leading-snug">
             {member.id === 1
-              ? `${mockChild.name} 담임 · ${mockChild.facility}`
+              ? `${childName} 담임`
               : member.department}
           </p>
         </div>
@@ -385,19 +428,29 @@ function ChatPanel({
 
       {/* ── Messages area ── */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
-        {groupedMessages.map((group) => (
-          <div key={group.dateLabel}>
-            <DateDivider label={group.dateLabel} />
-            {group.msgs.map((msg) => (
-              <MessageBubble
-                key={msg.id}
-                msg={msg}
-                teacherInitial={member.initial}
-                teacherColor={member.color}
-              />
-            ))}
+        {groupedMessages.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full">
+            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center mb-3">
+              <i className="ri-chat-3-line text-gray-300 text-lg" />
+            </div>
+            <p className="text-sm text-gray-400">아직 대화 내용이 없어요</p>
+            <p className="text-[11px] text-gray-300 mt-1">먼저 인사를 건네보세요</p>
           </div>
-        ))}
+        ) : (
+          groupedMessages.map((group) => (
+            <div key={group.dateLabel}>
+              <DateDivider label={group.dateLabel} />
+              {group.msgs.map((msg) => (
+                <MessageBubble
+                  key={msg.id}
+                  msg={msg}
+                  teacherInitial={member.initial}
+                  teacherColor={member.color}
+                />
+              ))}
+            </div>
+          ))
+        )}
         <div ref={bottomRef} />
       </div>
 
@@ -446,12 +499,55 @@ function ChatPanel({
 
 /* ────────────────────────────────── main component ── */
 export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
+  const { activeChild, careTeam, messages: contextMessages, loading } = useParentData();
+
+  const childName = activeChild?.name || "자녀";
+
+  const careTeamMembers = useMemo(() => {
+    return careTeam.map((ct, i) => ({
+      id: i + 1,
+      name: ct.member?.name || "팀원",
+      initial: (ct.member?.name || "?").charAt(0),
+      role: ct.role === 'lead' ? '담당 교사' : ct.role === 'support' ? '보조 교사' : '관찰자',
+      color: ["#026eff", "#10b981", "#f59e0b", "#8b5cf6"][i % 4],
+      department: "",
+    }));
+  }, [careTeam]);
+
+  const messagesByMember = useMemo(() => {
+    const result: Record<number, ParentChatMessage[]> = {};
+    careTeamMembers.forEach((member) => {
+      const ct = careTeam[member.id - 1];
+      if (!ct) return;
+      const memberMsgs = contextMessages
+        .filter(m => m.sender_id === ct.member_id || m.receiver_id === ct.member_id)
+        .map((m, i) => {
+          const isFromTeacher = m.sender_id === ct.member_id;
+          const createdDate = new Date(m.created_at);
+          const todayStr = new Date().toISOString().slice(0, 10);
+          const isToday = m.created_at.startsWith(todayStr);
+          const timeStr = isToday
+            ? `오늘 ${createdDate.toTimeString().slice(0, 5)}`
+            : `${createdDate.getMonth() + 1}월 ${createdDate.getDate()}일 ${createdDate.toTimeString().slice(0, 5)}`;
+
+          return {
+            id: i + 1,
+            sender: (isFromTeacher ? "teacher" : "parent") as "teacher" | "parent",
+            senderName: isFromTeacher ? `${member.name} 선생님` : "나",
+            text: m.content,
+            time: timeStr,
+            type: "text" as const,
+          };
+        });
+      result[member.id] = memberMsgs;
+    });
+    return result;
+  }, [careTeamMembers, careTeam, contextMessages]);
+
   const [selectedId, setSelectedId] = useState(memberId);
-  // mobile: "list" | "chat"
   const [mobileView, setMobileView] = useState<"list" | "chat">("list");
   const isFirstMount = useRef(true);
 
-  // Sync incoming memberId prop (but only navigate to chat when prop changes externally)
   useEffect(() => {
     if (isFirstMount.current) {
       isFirstMount.current = false;
@@ -469,6 +565,17 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
   const handleBack = () => {
     setMobileView("list");
   };
+
+  if (loading) {
+    return (
+      <div className="h-full flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#026eff] rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-gray-400">케어톡을 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-full flex overflow-hidden">
@@ -492,6 +599,9 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
         <MemberList
           selectedId={selectedId}
           onSelect={handleSelectMember}
+          childName={childName}
+          careTeamMembers={careTeamMembers}
+          messagesByMember={messagesByMember}
         />
       </div>
 
@@ -507,6 +617,9 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
           memberId={selectedId}
           onBack={handleBack}
           showBackButton={mobileView === "chat"}
+          childName={childName}
+          careTeamMembers={careTeamMembers}
+          messagesByMember={messagesByMember}
         />
       </div>
     </div>

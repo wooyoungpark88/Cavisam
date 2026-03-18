@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { type TeamMember, type StudentAssignment, type MemberRole } from "../../../mocks/teacherTeam";
+import { type TeamMember, type StudentAssignment, type MemberRole } from "../../../types/team";
 
 const ROLE_COLORS: Record<MemberRole, { bg: string; color: string }> = {
   "담임교사":       { bg: "#eff6ff", color: "#026eff" },
@@ -19,14 +19,14 @@ const PRIORITY_STYLES = {
 interface Props {
   student: StudentAssignment;
   teamMembers: TeamMember[];
-  onSave: (studentId: number, newMemberIds: number[]) => void;
+  onSave: (studentId: number | string, newMemberIds: (number | string)[]) => void;
   onClose: () => void;
 }
 
 export default function EditAssignmentModal({ student, teamMembers, onSave, onClose }: Props) {
-  const [selectedIds, setSelectedIds] = useState<number[]>([...student.assignedMemberIds]);
+  const [selectedIds, setSelectedIds] = useState<(number | string)[]>([...student.assignedMemberIds]);
 
-  const toggle = (id: number) => {
+  const toggle = (id: number | string) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );

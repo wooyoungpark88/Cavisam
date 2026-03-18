@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { type AdminUser, type UserRole, type UserStatus } from "../../../mocks/adminUsers";
+import { type AdminUser, type UserRole, type UserStatus } from "../../../types/admin";
 import { supabase } from "../../../lib/supabase";
 
 type FilterRole = "all" | UserRole;
@@ -28,7 +28,7 @@ const STATUS_STYLE: Record<UserStatus, { bg: string; color: string }> = {
 
 interface RoleModalProps {
   user: AdminUser;
-  onSave: (id: number, role: UserRole, status: UserStatus, linkedStudents?: string[]) => void;
+  onSave: (id: number | string, role: UserRole, status: UserStatus, linkedStudents?: string[]) => void;
   onClose: () => void;
 }
 function RoleModal({ user, onSave, onClose }: RoleModalProps) {
@@ -169,7 +169,7 @@ function RoleModal({ user, onSave, onClose }: RoleModalProps) {
 
 interface UserManagementProps {
   users: AdminUser[];
-  onUpdate: (id: number, role: UserRole, status: UserStatus, linkedStudents?: string[]) => void;
+  onUpdate: (id: number | string, role: UserRole, status: UserStatus, linkedStudents?: string[]) => void;
 }
 
 export default function UserManagement({ users, onUpdate }: UserManagementProps) {
