@@ -35,6 +35,13 @@ function RoleModal({ user, onSave, onClose }: RoleModalProps) {
   const [role, setRole] = useState<UserRole>(user.role === "unassigned" ? "teacher" : user.role);
   const [status, setStatus] = useState<UserStatus>(user.status === "pending" ? "approved" : user.status);
   const [linked, setLinked] = useState<string[]>(user.linkedStudents ?? []);
+  const [MOCK_STUDENTS_FOR_LINK, setStudentNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    supabase.from("students").select("name").order("name").then(({ data }) => {
+      if (data) setStudentNames(data.map((s: { name: string }) => s.name));
+    });
+  }, []);
 
   const toggleStudent = (name: string) => {
     setLinked((prev) =>
@@ -170,13 +177,6 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [search, setSearch] = useState("");
   const [editUser, setEditUser] = useState<AdminUser | null>(null);
-  const [MOCK_STUDENTS_FOR_LINK, setStudentNames] = useState<string[]>([]);
-
-  useEffect(() => {
-    supabase.from("students").select("name").order("name").then(({ data }) => {
-      if (data) setStudentNames(data.map((s) => s.name));
-    });
-  }, []);
 
   const filtered = users.filter((u) => {
     const matchRole = filterRole === "all" || u.role === filterRole;

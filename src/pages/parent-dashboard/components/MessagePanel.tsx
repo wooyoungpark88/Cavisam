@@ -4,7 +4,7 @@ import { useAuth } from "../../../hooks/useAuth";
 
 export default function MessagePanel() {
   const { profile } = useAuth();
-  const { messages, activeChild } = useParentData();
+  const { messages } = useParentData();
   const [input, setInput] = useState("");
 
   // 최근 메시지 5개만 표시

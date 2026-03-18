@@ -894,7 +894,7 @@ function LifeCalendar({ data }: { data: HistoryEntry[] }) {
 ════════════════════════════════════════ */
 function RecentReports() {
   const reports = [
-    { id: 1, date: "최근", teacher: "선생님", mood: "보통", moodEmoji: "😐", moodColor: "#f59e0b", note: "실데이터 연동 준비 중", items: [] },
+    { id: 1, date: "최근", teacher: "선생님", mood: "보통", moodEmoji: "😐", moodColor: "#f59e0b", note: "실데이터 연동 준비 중", items: [] as { label: string; value: string }[] },
   ];
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-5 h-full">

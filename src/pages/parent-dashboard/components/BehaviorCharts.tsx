@@ -11,7 +11,7 @@ type DailyEntry = {
   date: string;
   value: number;
   day: string;
-  breakdown: { 자해: number; 타해: number; 집착: number };
+  breakdown: Record<string, number>;
 };
 
 export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {

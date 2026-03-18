@@ -102,10 +102,12 @@ function UserList({
   selectedId,
   onSelect,
   sentReports,
+  mockStudents,
 }: {
   selectedId: number;
   onSelect: (id: number) => void;
   sentReports: SentReport[];
+  mockStudents: { id: number; name: string; initial: string; avatarColor: string }[];
 }) {
   return (
     <div className="flex flex-col flex-1 min-h-0 border-r border-gray-100 bg-white w-full md:w-[190px] md:flex-shrink-0">
@@ -181,7 +183,7 @@ function UserList({
 }
 
 /* ── Right: 작성 + 이력 패널 ──────────────────────────── */
-function ReportPanel({ studentId, onBack }: { studentId: number; onBack?: () => void }) {
+function ReportPanel({ studentId, onBack, mockStudents }: { studentId: number; onBack?: () => void; mockStudents: { id: number; name: string; initial: string; avatarColor: string }[] }) {
   const student = mockStudents.find((s) => s.id === studentId)!;
   const [selectedType, setSelectedType] = useState<ReportTypeKey>("positive");
   const [content, setContent] = useState("");
@@ -508,6 +510,7 @@ export default function ParentReports() {
           selectedId={selectedId}
           onSelect={handleSelect}
           sentReports={reports}
+          mockStudents={mockStudents}
         />
       </div>
 
@@ -523,6 +526,7 @@ export default function ParentReports() {
           key={selectedId}
           studentId={selectedId}
           onBack={handleBack}
+          mockStudents={mockStudents}
         />
       </div>
     </div>

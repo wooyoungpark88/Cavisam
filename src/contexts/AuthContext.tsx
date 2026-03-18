@@ -4,6 +4,14 @@ import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../lib/supabase';
 import type { Profile, UserRole, UserStatus } from '../types';
 
+interface DemoSignInData {
+  id: string;
+  name: string;
+  role: UserRole;
+  organization_id: string;
+  organization_name?: string;
+}
+
 export interface AuthContextValue {
   session: Session | null;
   profile: Profile | null;
@@ -12,6 +20,8 @@ export interface AuthContextValue {
   loading: boolean;
   /** Supabase 프로필을 다시 불러옴 (역할 변경, 승인 후 등) */
   refreshProfile: () => Promise<void>;
+  /** 데모 모드용 로그인 (구버전 호환) */
+  signIn: (data: DemoSignInData) => void;
   signOut: () => Promise<void>;
 }
 
@@ -77,6 +87,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  function signIn(data: DemoSignInData) {
+    const demoProfile: Profile = {
+      id: data.id,
+      name: data.name,
+      role: data.role,
+      status: 'approved',
+      organization_id: data.organization_id,
+      avatar_url: null,
+      created_at: '',
+    };
+    localStorage.setItem('cavisam_demo', JSON.stringify(demoProfile));
+    setProfile(demoProfile);
+  }
+
   async function signOut() {
     await supabase.auth.signOut();
     localStorage.removeItem('cavisam_demo');
@@ -89,7 +113,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ session, profile, role, status, loading, refreshProfile, signOut }}
+      value={{ session, profile, role, status, loading, refreshProfile, signIn, signOut }}
     >
       {children}
     </AuthContext.Provider>

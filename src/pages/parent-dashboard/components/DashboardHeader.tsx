@@ -4,7 +4,7 @@ import { useAuth } from "../../../hooks/useAuth";
 
 export default function DashboardHeader({ onBack }: { onBack: () => void }) {
   const { profile } = useAuth();
-  const { activeChild, behaviorEvents, messages, unreadCount: msgUnread } = useParentData();
+  const { activeChild, unreadCount: msgUnread } = useParentData();
   const childName = activeChild?.name ?? profile?.name ?? "";
   const childInitial = childName.charAt(0);
   const facility = "해오름 발달장애인복지관";
