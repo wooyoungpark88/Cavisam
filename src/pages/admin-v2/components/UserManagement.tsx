@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { type AdminUser, type UserRole, type UserStatus, MOCK_STUDENTS_FOR_LINK } from "../../../mocks/adminUsers";
+import { useState, useEffect } from "react";
+import { type AdminUser, type UserRole, type UserStatus } from "../../../mocks/adminUsers";
+import { supabase } from "../../../lib/supabase";
 
 type FilterRole = "all" | UserRole;
 type FilterStatus = "all" | UserStatus;
@@ -169,6 +170,13 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
   const [filterStatus, setFilterStatus] = useState<FilterStatus>("all");
   const [search, setSearch] = useState("");
   const [editUser, setEditUser] = useState<AdminUser | null>(null);
+  const [MOCK_STUDENTS_FOR_LINK, setStudentNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    supabase.from("students").select("name").order("name").then(({ data }) => {
+      if (data) setStudentNames(data.map((s) => s.name));
+    });
+  }, []);
 
   const filtered = users.filter((u) => {
     const matchRole = filterRole === "all" || u.role === filterRole;

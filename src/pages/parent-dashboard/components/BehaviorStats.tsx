@@ -1,14 +1,14 @@
-import { useState } from "react";
-import {
-  mockMorningReportHistory,
-  mockMorningReports,
-  mockBehaviorStats,
-  mockChild,
-} from "../../../mocks/parentDashboard";
+import { useState, useMemo } from "react";
+import { useParentData } from "../../../contexts/ParentDataContext";
 import { DailyBehaviorChart, WeeklyConditionChart, BehaviorTypeCard } from "./BehaviorCharts";
 import CorrelationChart from "./CorrelationChart";
 
-type HistoryEntry = typeof mockMorningReportHistory[number];
+type HistoryEntry = { date: string; sleep: string; condition: string; meal: string; bowel: string; medicine: string; note: string };
+
+const COND_MAP: Record<string, string> = { good: "좋음", normal: "보통", bad: "안좋음", very_bad: "안좋음" };
+const MEAL_MAP: Record<string, string> = { good: "전부", normal: "대부분", none: "안먹음" };
+const BOWEL_MAP: Record<string, string> = { normal: "정상", none: "없음" };
+const TYPE_LABEL: Record<string, string> = { self_harm: "자해", harm_others: "타해", obsession: "집착" };
 
 /* ════════════════════════════════════════
    0. MONTHLY STORY REPORT
@@ -23,7 +23,7 @@ function Hi({ c, children }: { c: string; children: React.ReactNode }) {
 
 function MonthlyStoryReport({ data }: { data: HistoryEntry[] }) {
   const total = data.length;
-  const name = mockChild.name.replace("김", "").replace("이", ""); void name;
+  const name = ""; void name;
 
   // ── raw counts ──
   const condGood  = data.filter((d) => d.condition === "좋음").length;
@@ -112,7 +112,7 @@ function MonthlyStoryReport({ data }: { data: HistoryEntry[] }) {
           </div>
           <div>
             <h2 className="text-sm font-black text-gray-900">
-              이번 달 {mockChild.name}는 어땠나요?
+              이번 달 아이는 어땠나요?
             </h2>
             <p className="text-[10px] text-gray-400 mt-0.5">
               2026년 2월 16일 – 3월 17일 · 생활 알리미 {total}일 분석
@@ -893,7 +893,9 @@ function LifeCalendar({ data }: { data: HistoryEntry[] }) {
    4. RECENT 생활알리미 REPORTS
 ════════════════════════════════════════ */
 function RecentReports() {
-  const reports = mockMorningReports;
+  const reports = [
+    { id: 1, date: "최근", teacher: "선생님", mood: "보통", moodEmoji: "😐", moodColor: "#f59e0b", note: "실데이터 연동 준비 중", items: [] },
+  ];
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-5 h-full">
       <div className="flex items-center gap-2 mb-4">
@@ -1059,8 +1061,56 @@ function InsightBanner({ data }: { data: HistoryEntry[] }) {
    MAIN PAGE
 ════════════════════════════════════════ */
 export default function BehaviorStats() {
-  const { daily, weeklyCondition } = mockBehaviorStats;
-  const data = mockMorningReportHistory;
+  const { behaviorEvents, morningReports, activeChild } = useParentData();
+  const childName = activeChild?.name ?? "자녀";
+
+  // 행동 이벤트 → 일별 차트 데이터
+  const daily = useMemo(() => {
+    const byDate = new Map<string, { date: string; value: number; day: string; breakdown: Record<string, number> }>();
+    behaviorEvents.forEach((e) => {
+      const d = e.occurred_at.slice(0, 10);
+      const dateStr = d.slice(5); // "03-17"
+      const dayName = ["일", "월", "화", "수", "목", "금", "토"][new Date(d).getDay()];
+      if (!byDate.has(dateStr)) byDate.set(dateStr, { date: dateStr, value: 0, day: dayName, breakdown: { 자해: 0, 타해: 0, 집착: 0 } });
+      const entry = byDate.get(dateStr)!;
+      entry.value++;
+      const label = TYPE_LABEL[e.type] ?? e.type;
+      entry.breakdown[label] = (entry.breakdown[label] ?? 0) + 1;
+    });
+    return [...byDate.values()].sort((a, b) => a.date.localeCompare(b.date)).slice(-7);
+  }, [behaviorEvents]);
+
+  // 주간 컨디션 (등원전 한마디 기반)
+  const weeklyCondition = useMemo(() => {
+    const days = ["월", "화", "수", "목", "금", "토", "일"];
+    return days.map((day) => {
+      const reportsForDay = morningReports.filter((r) => {
+        const d = new Date(r.date);
+        const dayIdx = d.getDay();
+        const dayMap = [6, 0, 1, 2, 3, 4, 5]; // 일=6, 월=0 ...
+        return days[dayMap[dayIdx]] === day;
+      });
+      const good = reportsForDay.filter((r) => r.condition === "good").length;
+      const mild = reportsForDay.filter((r) => r.condition === "normal").length;
+      const caution = reportsForDay.filter((r) => r.condition === "bad" || r.condition === "very_bad").length;
+      const emoji = good > caution ? "☀️" : caution > good ? "⚠️" : "⛅";
+      return { day, emoji, good, mild, caution };
+    });
+  }, [morningReports]);
+
+  // morning reports → HistoryEntry 형식
+  const data: HistoryEntry[] = useMemo(() =>
+    morningReports.map((r) => ({
+      date: r.date.slice(5),
+      sleep: r.sleep_time?.includes("5") || r.sleep_time?.includes("4") ? "부족"
+        : r.sleep_time?.includes("7") || r.sleep_time?.includes("8") || r.sleep_time?.includes("9") ? "충분" : "보통",
+      condition: COND_MAP[r.condition ?? "normal"] ?? "보통",
+      meal: MEAL_MAP[r.meal ?? "normal"] ?? "대부분",
+      bowel: BOWEL_MAP[r.bowel ?? "normal"] ?? "정상",
+      medicine: r.medication ?? "복용 완료",
+      note: r.note ?? "",
+    })),
+  [morningReports]);
 
   return (
     <div className="relative">
@@ -1069,7 +1119,7 @@ export default function BehaviorStats() {
         <div>
           <h1 className="text-sm font-black text-gray-900 leading-tight">우리 아이 이야기</h1>
           <p className="text-[10px] text-gray-400 mt-0.5 leading-none">
-            {mockChild.name} · 30일 생활 알리미 분석
+            {childName} · 30일 생활 알리미 분석
           </p>
         </div>
         <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-gray-200 text-[10px] text-gray-500 whitespace-nowrap flex-shrink-0">
@@ -1084,7 +1134,7 @@ export default function BehaviorStats() {
           <div>
             <h1 className="text-lg font-black text-gray-900">우리 아이 이야기</h1>
             <p className="text-xs text-gray-400 mt-0.5">
-              {mockChild.name}의 30일 생활 알리미 기록 분석 · 선생님 관찰 기반
+              {childName}의 30일 생활 알리미 기록 분석 · 선생님 관찰 기반
             </p>
           </div>
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 text-[11px] text-gray-500 whitespace-nowrap flex-shrink-0">

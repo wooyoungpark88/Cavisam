@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { mockChild, mockMorningReportHistory } from "../../../mocks/parentDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
+import { useAuth } from "../../../hooks/useAuth";
+import { upsertMorningReport } from "../../../lib/api/reports";
 
 interface OptionItem {
   value: string;
@@ -104,13 +106,34 @@ interface Props {
   onSent: () => void;
 }
 
+const CONDITION_MAP: Record<string, string> = { good: "좋음", normal: "보통", bad: "안좋음", very_bad: "안좋음" };
+const MEAL_MAP: Record<string, string> = { good: "전부", normal: "대부분", none: "안먹음" };
+const BOWEL_MAP: Record<string, string> = { normal: "정상", none: "없음" };
+const CONDITION_REV: Record<string, string> = { "좋음": "good", "보통": "normal", "안좋음": "bad" };
+const MEAL_REV: Record<string, string> = { "전부": "good", "대부분": "good", "조금": "normal", "안먹음": "none" };
+const BOWEL_REV: Record<string, string> = { "정상": "normal", "무른편": "normal", "딱딱함": "normal", "없음": "none" };
+
 export default function MorningReportForm({ onSent }: Props) {
+  const { profile } = useAuth();
+  const { activeChild, morningReports, careTeam, refresh } = useParentData();
+  const childName = activeChild?.name ?? "자녀";
+  const leadTeacher = careTeam.find((m) => m.role === "lead");
+  const teacherName = leadTeacher?.member?.name ?? "선생님";
+
   const [selections, setSelections] = useState<Selections>(EMPTY);
   const [sent, setSent] = useState(false);
   const [loadedFields, setLoadedFields] = useState<Set<string>>(new Set());
   const [yesterdayBanner, setYesterdayBanner] = useState<"idle" | "loaded" | "dismissed">("idle");
 
-  const yesterday = mockMorningReportHistory[0]; // most recent entry = yesterday
+  // 가장 최근 기록 (어제 데이터)
+  const yesterdayReport = morningReports[0];
+  const yesterday = yesterdayReport ? {
+    sleep: yesterdayReport.sleep_time?.includes("5") ? "부족" : yesterdayReport.sleep_time?.includes("7") || yesterdayReport.sleep_time?.includes("8") ? "충분" : "보통",
+    condition: CONDITION_MAP[yesterdayReport.condition ?? "normal"] ?? "보통",
+    meal: MEAL_MAP[yesterdayReport.meal ?? "normal"] ?? "대부분",
+    bowel: BOWEL_MAP[yesterdayReport.bowel ?? "normal"] ?? "정상",
+    medicine: yesterdayReport.medication ?? "복용 완료",
+  } : { sleep: "보통", condition: "보통", meal: "대부분", bowel: "정상", medicine: "복용 완료" };
 
   const handleLoadYesterday = () => {
     setSelections({
@@ -141,9 +164,25 @@ export default function MorningReportForm({ onSent }: Props) {
     });
   };
 
-  const handleSend = () => {
-    if (!isReady) return;
+  const handleSend = async () => {
+    if (!isReady || !profile || !activeChild) return;
     setSent(true);
+    try {
+      await upsertMorningReport({
+        student_id: activeChild.id,
+        parent_id: profile.id,
+        date: new Date().toISOString().slice(0, 10),
+        sleep_time: selections.sleep,
+        condition: (CONDITION_REV[selections.condition] ?? 'normal') as 'good' | 'normal' | 'bad' | 'very_bad',
+        meal: (MEAL_REV[selections.meal] ?? 'normal') as 'good' | 'normal' | 'none',
+        bowel: (BOWEL_REV[selections.bowel] ?? 'normal') as 'normal' | 'none',
+        medication: selections.medicine,
+        note: selections.note || null,
+      });
+      await refresh();
+    } catch (e) {
+      console.error('등원 전 한마디 저장 실패:', e);
+    }
     setTimeout(() => {
       setSent(false);
       setSelections(EMPTY);
@@ -160,7 +199,7 @@ export default function MorningReportForm({ onSent }: Props) {
         {/* Sub-header */}
         <div className="flex items-center justify-between mb-2.5 sm:mb-3">
           <p className="text-xs text-gray-400 truncate min-w-0 mr-2">
-            {mockChild.name} 보호자 → {mockChild.teacher}
+            {childName} 보호자 → {teacherName}
           </p>
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <span

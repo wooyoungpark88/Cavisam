@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { mockBehaviorStats } from "../../../mocks/parentDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
 
 const TYPE_CONFIG = [
   { key: "자해" as const, label: "자해행동", color: "#ef4444" },
@@ -444,10 +444,9 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
 }
 
 /* ── Export stats card for reuse ── */
-function HorizontalBar({ label, value, max, color }: { label: string; value: number; max: number; color: string }) {
+function HorizontalBar({ label, value, max, color, total }: { label: string; value: number; max: number; color: string; total: number }) {
   const pct = Math.round((value / max) * 100);
-  const total = mockBehaviorStats.totalCount;
-  const ratio = Math.round((value / total) * 100);
+  const ratio = total > 0 ? Math.round((value / total) * 100) : 0;
   return (
     <div className="flex items-center gap-3">
       <span className="text-xs text-gray-600 w-16 flex-shrink-0 text-right">{label}</span>
@@ -460,7 +459,16 @@ function HorizontalBar({ label, value, max, color }: { label: string; value: num
 }
 
 export function BehaviorTypeCard() {
-  const { typeBreakdown, totalCount } = mockBehaviorStats;
+  const { behaviorEvents } = useParentData();
+  const totalCount = behaviorEvents.length;
+  const selfHarm = behaviorEvents.filter((e) => e.type === "self_harm").length;
+  const harmOthers = behaviorEvents.filter((e) => e.type === "harm_others").length;
+  const obsession = behaviorEvents.filter((e) => e.type === "obsession").length;
+  const typeBreakdown = [
+    { label: "자해행동", value: selfHarm, color: "#ef4444" },
+    { label: "타해행동", value: harmOthers, color: "#f59e0b" },
+    { label: "집착행동", value: obsession, color: "#026eff" },
+  ];
   const typeMax = Math.max(...typeBreakdown.map((t) => t.value));
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -475,7 +483,7 @@ export function BehaviorTypeCard() {
         <h3 className="text-xs font-bold text-gray-700 mb-3">행동 유형별 발생 현황</h3>
         <div className="space-y-2.5">
           {typeBreakdown.map((t) => (
-            <HorizontalBar key={t.label} label={t.label} value={t.value} max={typeMax} color={t.color} />
+            <HorizontalBar key={t.label} label={t.label} value={t.value} max={typeMax} color={t.color} total={totalCount} />
           ))}
         </div>
       </div>

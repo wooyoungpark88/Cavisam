@@ -1,8 +1,12 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { mockMorningReportHistory } from "../../../mocks/parentDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
 
 type RangeKey = "7일" | "14일" | "한달";
-type HistoryItem = typeof mockMorningReportHistory[0];
+type HistoryItem = { date: string; sleep: string; condition: string; meal: string; bowel: string; medicine: string; note: string };
+
+const COND_MAP: Record<string, string> = { good: "좋음", normal: "보통", bad: "안좋음", very_bad: "안좋음" };
+const MEAL_MAP: Record<string, string> = { good: "전부", normal: "대부분", none: "안먹음" };
+const BOWEL_MAP: Record<string, string> = { normal: "정상", none: "없음" };
 
 const RANGES: RangeKey[] = ["7일", "14일", "한달"];
 
@@ -476,13 +480,28 @@ function HistoryList({ data }: { data: HistoryItem[] }) {
 // Main Dashboard
 // ──────────────────────────────────────────
 export default function MorningReportDashboard() {
+  const { morningReports } = useParentData();
   const [range, setRange] = useState<RangeKey>("7일");
 
+  // DB 데이터를 HistoryItem 형식으로 변환
+  const allData: HistoryItem[] = useMemo(() =>
+    morningReports.map((r) => ({
+      date: r.date.slice(5), // "03-17" 형식
+      sleep: r.sleep_time?.includes("5") || r.sleep_time?.includes("4") ? "부족"
+        : r.sleep_time?.includes("7") || r.sleep_time?.includes("8") || r.sleep_time?.includes("9") ? "충분" : "보통",
+      condition: COND_MAP[r.condition ?? "normal"] ?? "보통",
+      meal: MEAL_MAP[r.meal ?? "normal"] ?? "대부분",
+      bowel: BOWEL_MAP[r.bowel ?? "normal"] ?? "정상",
+      medicine: r.medication ?? "복용 완료",
+      note: r.note ?? "",
+    })),
+  [morningReports]);
+
   const filteredData = useMemo(() => {
-    const n = range === "7일" ? 7 : range === "14일" ? 14 : mockMorningReportHistory.length;
+    const n = range === "7일" ? 7 : range === "14일" ? 14 : allData.length;
     // slice newest-first then reverse for oldest-first chronological order
-    return mockMorningReportHistory.slice(0, n).reverse();
-  }, [range]);
+    return allData.slice(0, n).reverse();
+  }, [range, allData]);
 
   return (
     <div className="space-y-4">

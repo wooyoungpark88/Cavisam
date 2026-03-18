@@ -463,22 +463,34 @@ export default function Home() {
           />
         </div>
 
-        {/* Footer */}
-        <p
-          className="text-[11px] text-gray-400 mt-10"
-          style={{ letterSpacing: "0.02em" }}
-        >
-          해오름 발달장애인복지관
-        </p>
-
-        {/* Admin link */}
+        {/* Admin floating button */}
         <button
           onClick={() => navigate("/admin")}
-          className="mt-3 flex items-center gap-1.5 text-[11px] text-gray-400 hover:text-gray-600 cursor-pointer transition-colors whitespace-nowrap"
-          style={{ letterSpacing: "0.01em" }}
+          className="fixed bottom-6 right-6 group flex items-center gap-2 cursor-pointer transition-all duration-300 z-20"
         >
-          <i className="ri-shield-keyhole-line text-xs" />
-          관리자 콘솔
+          <span
+            className="text-[11px] font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 whitespace-nowrap pointer-events-none"
+          >
+            관리자 콘솔
+          </span>
+          <div
+            className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            style={{
+              background: "rgba(15,23,42,0.06)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid rgba(15,23,42,0.08)",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLDivElement).style.background = "rgba(15,23,42,0.10)";
+              (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(15,23,42,0.15)";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLDivElement).style.background = "rgba(15,23,42,0.06)";
+              (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(15,23,42,0.08)";
+            }}
+          >
+            <i className="ri-settings-4-line text-base text-gray-500 group-hover:text-gray-700 transition-colors" />
+          </div>
         </button>
       </div>
     </div>

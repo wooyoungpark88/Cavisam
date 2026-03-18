@@ -184,3 +184,46 @@ export async function getBehaviorStats(orgId: string) {
 
   return stats;
 }
+
+/** 특정 학생의 행동 이벤트 (보호자 뷰) */
+export async function getBehaviorEventsByStudent(studentId: string, days = 30) {
+  const since = new Date();
+  since.setDate(since.getDate() - days);
+
+  const { data } = await supabase
+    .from('behavior_events')
+    .select('*')
+    .eq('student_id', studentId)
+    .eq('confirmed', true)
+    .gte('occurred_at', since.toISOString())
+    .order('occurred_at', { ascending: false });
+
+  return (data ?? []) as BehaviorEventDB[];
+}
+
+/** 특정 학생의 행동 통계 (일별 집계) */
+export async function getStudentBehaviorStats(studentId: string, days = 30) {
+  const events = await getBehaviorEventsByStudent(studentId, days);
+
+  const stats = {
+    self_harm: 0,
+    harm_others: 0,
+    obsession: 0,
+    total: events.length,
+    byDate: new Map<string, number>(),
+    byType: new Map<string, { self_harm: number; harm_others: number; obsession: number }>(),
+  };
+
+  events.forEach((e) => {
+    stats[e.type]++;
+    const d = e.occurred_at.slice(0, 10);
+    stats.byDate.set(d, (stats.byDate.get(d) ?? 0) + 1);
+
+    if (!stats.byType.has(d)) {
+      stats.byType.set(d, { self_harm: 0, harm_others: 0, obsession: 0 });
+    }
+    stats.byType.get(d)![e.type]++;
+  });
+
+  return stats;
+}

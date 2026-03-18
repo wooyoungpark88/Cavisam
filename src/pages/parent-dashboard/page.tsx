@@ -6,7 +6,8 @@ import MorningReport from "./components/MorningReport";
 import IncidentRoom from "./components/IncidentRoom";
 import CareTeam from "./components/CareTeam";
 import HomeTimeline from "./components/HomeTimeline";
-import { mockChild, mockNotifications } from "../../mocks/parentDashboard";
+import { ParentDataProvider, useParentData } from "../../contexts/ParentDataContext";
+import { useAuth } from "../../hooks/useAuth";
 
 const MOBILE_MENU: { key: MenuKey; label: string[]; icon: string }[] = [
   { key: "timeline",       label: ["홈"],            icon: "ri-home-5-line" },
@@ -26,10 +27,16 @@ function TopBar({
   onMenuSelect: (k: MenuKey) => void;
 }) {
   const navigate = useNavigate();
+  const { profile } = useAuth();
+  const { activeChild, unreadCount: msgUnread } = useParentData();
+  const childName = activeChild?.name ?? profile?.name ?? "";
+  const childInitial = childName.charAt(0);
+  const facility = "해오름 발달장애인복지관";
   const [notiOpen, setNotiOpen] = useState(false);
-  const [notifications, setNotifications] = useState(mockNotifications);
+  // 알림은 아직 notifications 테이블 연동 전이므로 빈 배열
+  const [notifications, setNotifications] = useState<{ id: number; type: string; icon: string; color: string; title: string; desc: string; time: string; unread: boolean }[]>([]);
   const notiRef = useRef<HTMLDivElement>(null);
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const unreadCount = msgUnread + notifications.filter((n) => n.unread).length;
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -138,11 +145,11 @@ function TopBar({
         {/* Avatar */}
         <div className="flex items-center gap-2 cursor-pointer">
           <div className="w-7 h-7 flex items-center justify-center rounded-full bg-[#026eff]/10 text-[#026eff] text-xs font-bold flex-shrink-0">
-            {mockChild.avatarInitial}
+            {childInitial}
           </div>
           <div className="hidden sm:block">
-            <p className="text-xs font-semibold text-gray-800 leading-tight">{mockChild.name} 보호자</p>
-            <p className="text-[10px] text-gray-400">{mockChild.facility}</p>
+            <p className="text-xs font-semibold text-gray-800 leading-tight">{childName} 보호자</p>
+            <p className="text-[10px] text-gray-400">{facility}</p>
           </div>
         </div>
 
@@ -159,7 +166,7 @@ function TopBar({
   );
 }
 
-export default function ParentDashboardPage() {
+function ParentDashboardInner() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<MenuKey>("timeline");
   const [selectedMemberId, setSelectedMemberId] = useState<number>(1);
@@ -279,5 +286,13 @@ export default function ParentDashboardPage() {
         })}
       </nav>
     </div>
+  );
+}
+
+export default function ParentDashboardPage() {
+  return (
+    <ParentDataProvider>
+      <ParentDashboardInner />
+    </ParentDataProvider>
   );
 }

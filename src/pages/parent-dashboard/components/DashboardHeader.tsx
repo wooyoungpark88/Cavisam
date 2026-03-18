@@ -1,12 +1,19 @@
 import { useState, useRef, useEffect } from "react";
-import { mockChild, mockStats, mockNotifications } from "../../../mocks/parentDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
+import { useAuth } from "../../../hooks/useAuth";
 
 export default function DashboardHeader({ onBack }: { onBack: () => void }) {
+  const { profile } = useAuth();
+  const { activeChild, behaviorEvents, messages, unreadCount: msgUnread } = useParentData();
+  const childName = activeChild?.name ?? profile?.name ?? "";
+  const childInitial = childName.charAt(0);
+  const facility = "해오름 발달장애인복지관";
+
   const [notiOpen, setNotiOpen] = useState(false);
-  const [notifications, setNotifications] = useState(mockNotifications);
+  const [notifications, setNotifications] = useState<{ id: number; type: string; icon: string; color: string; title: string; desc: string; time: string; unread: boolean }[]>([]);
   const notiRef = useRef<HTMLDivElement>(null);
 
-  const unreadCount = notifications.filter((n) => n.unread).length;
+  const unreadCount = msgUnread + notifications.filter((n) => n.unread).length;
 
   // Close on outside click
   useEffect(() => {
@@ -129,11 +136,11 @@ export default function DashboardHeader({ onBack }: { onBack: () => void }) {
           {/* Avatar */}
           <div className="flex items-center gap-2.5 cursor-pointer">
             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-[#026eff]/10 text-[#026eff] text-sm font-bold">
-              {mockChild.avatarInitial}
+              {childInitial}
             </div>
             <div className="hidden sm:block text-right">
-              <p className="text-sm font-semibold text-gray-800 leading-tight">{mockChild.name} 보호자</p>
-              <p className="text-xs text-gray-400">{mockChild.facility}</p>
+              <p className="text-sm font-semibold text-gray-800 leading-tight">{childName} 보호자</p>
+              <p className="text-xs text-gray-400">{facility}</p>
             </div>
           </div>
 
@@ -152,9 +159,24 @@ export default function DashboardHeader({ onBack }: { onBack: () => void }) {
 }
 
 export function StatsRow() {
+  const { behaviorEvents, messages } = useParentData();
+  const thisWeekEvents = behaviorEvents.filter((e) => {
+    const d = new Date(e.occurred_at);
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    return d >= weekAgo;
+  });
+  const teacherMsgs = messages.filter((m) => m.sender?.name?.includes("선생"));
+  const stats = [
+    { label: "이번 주 행동 기록", value: `${thisWeekEvents.length}건`, icon: "ri-file-list-3-line", color: "#026eff" },
+    { label: "선생님 메시지", value: `${teacherMsgs.length}건`, icon: "ri-chat-1-line", color: "#10b981" },
+    { label: "AI 리포트", value: "준비 중", icon: "ri-bar-chart-2-line", color: "#f59e0b" },
+    { label: "총 행동 기록", value: `${behaviorEvents.length}건`, icon: "ri-calendar-check-line", color: "#8b5cf6" },
+  ];
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-      {mockStats.map((s) => (
+      {stats.map((s) => (
         <div
           key={s.label}
           className="bg-white rounded-2xl px-5 py-4 border border-gray-100 flex items-center gap-4"

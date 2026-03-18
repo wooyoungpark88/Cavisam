@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { type AdminUser, type UserRole, MOCK_STUDENTS_FOR_LINK } from "../../../mocks/adminUsers";
+import { useState, useEffect } from "react";
+import { type AdminUser, type UserRole } from "../../../mocks/adminUsers";
+import { supabase } from "../../../lib/supabase";
 
 interface PendingApprovalsProps {
   users: AdminUser[];
@@ -156,6 +157,13 @@ function ApproveCard({ user, onApprove, onReject }: ApproveCardProps) {
 
 export default function PendingApprovals({ users, onApprove, onReject }: PendingApprovalsProps) {
   const pending = users.filter((u) => u.status === "pending");
+  const [MOCK_STUDENTS_FOR_LINK, setStudentNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    supabase.from("students").select("name").order("name").then(({ data }) => {
+      if (data) setStudentNames(data.map((s) => s.name));
+    });
+  }, []);
 
   return (
     <div className="flex-1 overflow-y-auto p-4 sm:p-8">

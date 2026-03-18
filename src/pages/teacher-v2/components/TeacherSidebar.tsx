@@ -1,4 +1,4 @@
-import { mockTeacherInfo } from "../../../mocks/teacherDashboard";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
 
 export type TeacherMenuKey = "children" | "parent-reports" | "messages" | "behavior" | "team";
 
@@ -23,6 +23,8 @@ interface TeacherSidebarProps {
 }
 
 export default function TeacherSidebar({ active, onSelect, onSwitchToParent }: TeacherSidebarProps) {
+  const { teacherName } = useTeacherData();
+  const initial = teacherName.charAt(0);
   return (
     <aside
       className="relative flex flex-col h-screen flex-shrink-0 overflow-hidden"
@@ -83,14 +85,14 @@ export default function TeacherSidebar({ active, onSelect, onSwitchToParent }: T
             className="w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-full text-xs font-bold"
             style={{ background: "rgba(2,110,255,0.15)", color: "#026eff" }}
           >
-            {mockTeacherInfo.initial}
+            {initial}
           </div>
           <div className="min-w-0">
             <p className="text-xs font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
-              {mockTeacherInfo.name} 선생님
+              {teacherName}
             </p>
             <p className="text-[10px] leading-tight truncate" style={{ color: "rgba(2,110,255,0.5)" }}>
-              {mockTeacherInfo.class}
+              해오름 발달장애인복지관
             </p>
           </div>
         </div>

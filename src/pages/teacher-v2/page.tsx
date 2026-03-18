@@ -6,6 +6,7 @@ import ParentReports from "./components/ParentReports";
 import TeacherMessages from "./components/TeacherMessages";
 import BehaviorTrend from "./components/BehaviorTrend";
 import CareTeamView from "./components/CareTeamView";
+import { TeacherDataProvider } from "../../contexts/TeacherDataContext";
 
 const FACILITIES = [
   { value: "", label: "발달장애인복지시설을 선택하세요" },
@@ -304,7 +305,11 @@ export default function TeacherPage() {
   const [showDashboard, setShowDashboard] = useState(false);
 
   if (showDashboard) {
-    return <TeacherDashboard onLogout={() => setShowDashboard(false)} />;
+    return (
+      <TeacherDataProvider>
+        <TeacherDashboard onLogout={() => setShowDashboard(false)} />
+      </TeacherDataProvider>
+    );
   }
 
   return <LoginScreen onStart={() => setShowDashboard(true)} />;

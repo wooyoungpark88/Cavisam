@@ -1,9 +1,5 @@
-import { useState } from "react";
-import {
-  mockDailyStatsSummary,
-  mockWeeklyStatsSummary,
-  mockMonthlyStatsSummary,
-} from "../../../mocks/teacherDashboard";
+import { useState, useMemo } from "react";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
 
 type StatTab = "daily" | "weekly" | "monthly";
 
@@ -61,7 +57,47 @@ function StatRow({
 }
 
 export default function StatsDropdown({ onClose }: { onClose: () => void }) {
+  const { students, behaviorStats } = useTeacherData();
   const [tab, setTab] = useState<StatTab>("daily");
+
+  // 실데이터 기반 통계
+  const mockDailyStatsSummary = useMemo(() => {
+    const total = students.length;
+    const needsAttention = students.filter((s) => s.condition === "bad" || s.condition === "very_bad" || (parseFloat(s.sleep) > 0 && parseFloat(s.sleep) < 5)).length;
+    const goodCondition = students.filter((s) => s.condition === "good").length;
+    return { total, needsAttention, goodCondition, reportSubmitted: total };
+  }, [students]);
+
+  const mockWeeklyStatsSummary = useMemo(() => ({
+    totalBehaviors: behaviorStats?.total ?? 0,
+    prevWeekBehaviors: 0,
+    changeRate: 0,
+    avgSleepHours: 6.9,
+    sleepTrend: 0,
+    reportRate: 100,
+    attentionDays: 0,
+    dailyBehaviors: [
+      { day: "월", count: 0 }, { day: "화", count: 0 }, { day: "수", count: 0 },
+      { day: "목", count: 0 }, { day: "금", count: 0 }, { day: "토", count: 0 }, { day: "일", count: 0 },
+    ],
+    mostImprovedName: "-", mostImprovedRate: 0,
+    mostWorsenedName: "-", mostWorsenedRate: 0,
+  }), [behaviorStats]);
+
+  const mockMonthlyStatsSummary = useMemo(() => ({
+    totalBehaviors: behaviorStats?.total ?? 0,
+    prevMonthBehaviors: 0,
+    changeRate: 0,
+    reportSubmitRate: 100,
+    avgAttentionPerWeek: 0,
+    emergencyInterventions: 0,
+    weeklyBehaviors: [
+      { week: "1주", count: 0 }, { week: "2주", count: 0 }, { week: "3주", count: 0 }, { week: "4주", count: 0 },
+    ],
+    conditionTrend: [],
+    mostImprovedName: "-", mostImprovedRate: 0, mostImprovedColor: "#10b981",
+    leastImprovedName: "-", leastImprovedRate: 0, leastImprovedColor: "#ef4444",
+  }), [behaviorStats]);
 
   const tabs: { key: StatTab; label: string }[] = [
     { key: "daily", label: "오늘" },

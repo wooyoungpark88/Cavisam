@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { mockAdminUsers, type AdminUser, type UserRole, type UserStatus } from "../../mocks/adminUsers";
+import { useState, useEffect } from "react";
+import { type AdminUser, type UserRole, type UserStatus } from "../../mocks/adminUsers";
 import AdminSidebar, { type AdminTab } from "./components/AdminSidebar";
 import AdminOverview from "./components/AdminOverview";
 import UserManagement from "./components/UserManagement";
 import PendingApprovals from "./components/PendingApprovals";
+import { supabase } from "../../lib/supabase";
 
 const MOBILE_TABS: { key: AdminTab; icon: string; label: string }[] = [
   { key: "overview", icon: "ri-dashboard-3-line", label: "대시보드" },
@@ -11,18 +12,58 @@ const MOBILE_TABS: { key: AdminTab; icon: string; label: string }[] = [
   { key: "pending", icon: "ri-time-line", label: "승인대기" },
 ];
 
+const ROLE_COLORS: Record<string, string> = {
+  teacher: "#026eff", parent: "#ea580c", admin: "#9ca3af", unassigned: "#6b7280",
+};
+
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState<AdminTab>("overview");
-  const [users, setUsers] = useState<AdminUser[]>(mockAdminUsers);
+  const [users, setUsers] = useState<AdminUser[]>([]);
+
+  // Supabase에서 프로필 목록 로드
+  useEffect(() => {
+    supabase
+      .from("profiles")
+      .select("id, name, role, status, organization_id, avatar_url, created_at")
+      .order("created_at", { ascending: false })
+      .then(({ data }) => {
+        if (!data) return;
+        setUsers(
+          data.map((p, i) => ({
+            id: i + 1,
+            name: p.name || "이름 없음",
+            email: "",
+            phone: "",
+            role: (p.role === "teacher" || p.role === "parent" ? p.role : "unassigned") as UserRole,
+            status: (p.status === "approved" || p.status === "pending" ? p.status : "suspended") as UserStatus,
+            registeredAt: new Date(p.created_at).toLocaleDateString("ko-KR"),
+            approvedAt: p.status === "approved" ? new Date(p.created_at).toLocaleDateString("ko-KR") : undefined,
+            avatarColor: ROLE_COLORS[p.role] ?? "#6b7280",
+            initial: (p.name || "?").charAt(0),
+            _profileId: p.id, // Supabase ID 보존
+          }))
+        );
+      });
+  }, []);
 
   const pendingCount = users.filter((u) => u.status === "pending").length;
 
-  const handleUpdate = (
+  const handleUpdate = async (
     id: number,
     role: UserRole,
     status: UserStatus,
     linkedStudents?: string[]
   ) => {
+    const user = users.find((u) => u.id === id);
+    const profileId = (user as AdminUser & { _profileId?: string })?._profileId;
+
+    // Supabase 업데이트
+    if (profileId) {
+      const dbRole = role === "unassigned" ? "teacher" : role;
+      const dbStatus = status === "suspended" ? "rejected" : status;
+      await supabase.from("profiles").update({ role: dbRole, status: dbStatus }).eq("id", profileId);
+    }
+
     setUsers((prev) =>
       prev.map((u) =>
         u.id === id
@@ -32,12 +73,7 @@ export default function AdminPage() {
               status,
               linkedStudents,
               approvedAt: status === "approved" ? "방금" : u.approvedAt,
-              avatarColor:
-                role === "teacher"
-                  ? "#026eff"
-                  : role === "parent"
-                  ? "#ea580c"
-                  : "#9ca3af",
+              avatarColor: ROLE_COLORS[role] ?? "#9ca3af",
             }
           : u
       )
@@ -48,7 +84,12 @@ export default function AdminPage() {
     handleUpdate(id, role, "approved", linkedStudents);
   };
 
-  const handleReject = (id: number) => {
+  const handleReject = async (id: number) => {
+    const user = users.find((u) => u.id === id);
+    const profileId = (user as AdminUser & { _profileId?: string })?._profileId;
+    if (profileId) {
+      await supabase.from("profiles").update({ status: "rejected" }).eq("id", profileId);
+    }
     setUsers((prev) => prev.filter((u) => u.id !== id));
   };
 

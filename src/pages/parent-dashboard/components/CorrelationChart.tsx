@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { mockBehaviorHistory30, mockMorningReportHistory } from "../../../mocks/parentDashboard";
 
-const cScore = (v: string) => (v === "좋음" ? 3 : v === "보통" ? 2 : 1);
-const sScore = (v: string) => (v === "충분" ? 3 : v === "보통" ? 2 : 1); void sScore;
+// scoring helpers (reserved for future analysis)
+void function cScore(v: string) { return v === "좋음" ? 3 : v === "보통" ? 2 : 1; };
+void function sScore(v: string) { return v === "충분" ? 3 : v === "보통" ? 2 : 1; };
 
 type JoinedDay = {
   date: string; count: number; condition: string; sleep: string; meal: string;
@@ -302,101 +303,71 @@ function AverageAnalysis({ data }: { data: JoinedDay[] }) {
 }
 
 /* ────────────────────────────────────────
-   3. SCATTER PLOT (condition × behavior)
+   3. CONDITION IMPACT CHART (replaces scatter)
 ──────────────────────────────────────── */
-function ScatterPlot({ data }: { data: JoinedDay[] }) {
-  const [hovered, setHovered] = useState<number | null>(null);
+function ConditionImpactChart({ data }: { data: JoinedDay[] }) {
+  const groups = [
+    { label: "주의", emoji: "😟", condition: "안좋음", color: "#ef4444", bg: "#fef2f2" },
+    { label: "보통", emoji: "😐", condition: "보통",   color: "#f59e0b", bg: "#fffbeb" },
+    { label: "좋음", emoji: "😊", condition: "좋음",   color: "#10b981", bg: "#f0fdf4" },
+  ];
 
-  const W = 300, H = 180, PL = 40, PR = 16, PT = 14, PB = 32;
-  const chartW = W - PL - PR;
-  const chartH = H - PT - PB;
-  const maxCount = 12;
+  const stats = groups.map((g) => {
+    const items = data.filter((d) => d.condition === g.condition);
+    const avgCount = items.length ? items.reduce((a, d) => a + d.count, 0) / items.length : 0;
+    return { ...g, avgCount, days: items.length };
+  });
 
-  const scoreToX = (s: number) => PL + ((s - 1) / 2) * chartW;
-  const countToY = (c: number) => PT + chartH - (c / maxCount) * chartH;
-  const jitter = (i: number) => ((i * 13 + 7) % 26) - 13;
-  const sleepColor = (s: string) => s === "충분" ? "#8b5cf6" : s === "보통" ? "#f59e0b" : "#ef4444";
-
-  // Linear regression
-  const xs = data.map((d) => cScore(d.condition));
-  const ys = data.map((d) => d.count);
-  const nn = data.length;
-  const meanX = xs.reduce((a, b) => a + b, 0) / nn;
-  const meanY = ys.reduce((a, b) => a + b, 0) / nn;
-  const ssXX = xs.reduce((a, x) => a + (x - meanX) ** 2, 0);
-  const ssXY = xs.reduce((a, x, i) => a + (x - meanX) * (ys[i] - meanY), 0);
-  const ssYY = ys.reduce((a, y) => a + (y - meanY) ** 2, 0);
-  const slope = ssXX ? ssXY / ssXX : 0;
-  const intercept = meanY - slope * meanX;
-  const r = ssXX && ssYY ? ssXY / Math.sqrt(ssXX * ssYY) : 0;
-
-  const clampY = (y: number) => Math.max(PT, Math.min(PT + chartH, y));
+  const maxAvg = Math.max(...stats.map((s) => s.avgCount), 1);
+  const ratio = stats[0].avgCount > 0 && stats[2].avgCount > 0
+    ? (stats[0].avgCount / stats[2].avgCount).toFixed(1)
+    : "-";
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-5 h-full">
-      <div className="mb-3">
-        <h3 className="text-xs font-bold text-gray-700">컨디션 × 도전행동 산점도</h3>
-        <p className="text-[10px] text-gray-400 mt-0.5">각 점 = 하루 · 색상 = 수면 · 점선 = 추세선</p>
+    <div className="bg-white rounded-2xl border border-gray-100 p-5 h-full flex flex-col">
+      <div className="mb-4">
+        <h3 className="text-xs font-bold text-gray-700">컨디션에 따른 도전행동 변화</h3>
+        <p className="text-[10px] text-gray-400 mt-0.5">컨디션이 나쁜 날, 도전행동이 얼마나 늘어날까요?</p>
       </div>
 
-      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ overflow: "visible" }}>
-        {/* Grid */}
-        {[0, 4, 8, 12].map((v) => (
-          <g key={v}>
-            <line x1={PL} y1={countToY(v)} x2={W - PR} y2={countToY(v)} stroke="#f3f4f6" strokeWidth="1" />
-            <text x={PL - 5} y={countToY(v) + 3.5} textAnchor="end" fontSize="8" fill="#d1d5db">{v}</text>
-          </g>
-        ))}
-        {[{ s: 1, l: "주의" }, { s: 2, l: "보통" }, { s: 3, l: "좋음" }].map(({ s, l }) => (
-          <g key={l}>
-            <line x1={scoreToX(s)} y1={PT} x2={scoreToX(s)} y2={PT + chartH} stroke="#f3f4f6" strokeWidth="1" />
-            <text x={scoreToX(s)} y={H - 4} textAnchor="middle" fontSize="9" fill="#9ca3af" fontWeight="600">{l}</text>
-          </g>
-        ))}
-        <line x1={PL} y1={PT + chartH} x2={W - PR} y2={PT + chartH} stroke="#e5e7eb" strokeWidth="1" />
-        <line x1={PL} y1={PT} x2={PL} y2={PT + chartH} stroke="#e5e7eb" strokeWidth="1" />
-
-        {/* Trend line */}
-        <line
-          x1={scoreToX(1)} y1={clampY(countToY(slope * 1 + intercept))}
-          x2={scoreToX(3)} y2={clampY(countToY(slope * 3 + intercept))}
-          stroke="#ef4444" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.55"
-        />
-
-        {/* Dots */}
-        {data.map((d, i) => {
-          const cx = scoreToX(cScore(d.condition)) + jitter(i);
-          const cy = countToY(d.count);
-          const isHov = hovered === i;
+      {/* Visual bars */}
+      <div className="flex-1 flex flex-col justify-center gap-3">
+        {stats.map((s) => {
+          const pct = maxAvg > 0 ? (s.avgCount / maxAvg) * 100 : 0;
           return (
-            <g key={i} style={{ cursor: "pointer" }} onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)}>
-              {isHov && <circle cx={cx} cy={cy} r={9} fill={sleepColor(d.sleep)} opacity="0.15" />}
-              <circle cx={cx} cy={cy} r={isHov ? 6.5 : 5} fill={sleepColor(d.sleep)}
-                opacity={hovered === null ? 0.75 : isHov ? 1 : 0.25} />
-              <circle cx={cx} cy={cy} r={isHov ? 2.5 : 2} fill="white" />
-            </g>
+            <div key={s.label}>
+              <div className="flex items-center gap-2.5 mb-1.5">
+                <span className="text-base leading-none">{s.emoji}</span>
+                <span className="text-[11px] font-bold w-8" style={{ color: s.color }}>{s.label}</span>
+                <div className="flex-1 h-7 rounded-lg overflow-hidden" style={{ background: s.bg }}>
+                  <div
+                    className="h-full rounded-lg flex items-center justify-end pr-2 transition-all duration-700"
+                    style={{ width: `${Math.max(pct, 8)}%`, background: s.color }}
+                  >
+                    <span className="text-white text-[11px] font-bold whitespace-nowrap">
+                      평균 {s.avgCount.toFixed(1)}건
+                    </span>
+                  </div>
+                </div>
+                <span className="text-[10px] text-gray-400 w-10 text-right flex-shrink-0">{s.days}일</span>
+              </div>
+            </div>
           );
         })}
-      </svg>
+      </div>
 
-      {/* r value + tooltip */}
-      <div className="mt-2 pt-2 border-t border-gray-50">
-        {hovered !== null ? (
-          <div className="flex items-center gap-2 text-[10px]">
-            <span className="font-bold text-gray-700">{data[hovered].date}</span>
-            <span className="text-gray-400">컨디션 {data[hovered].condition}</span>
-            <span className="text-gray-400">수면 {data[hovered].sleep}</span>
-            <span className="font-bold" style={{ color: "#ef4444" }}>{data[hovered].count}건</span>
+      {/* Key insight */}
+      <div className="mt-4 pt-3 border-t border-gray-50">
+        <div className="flex items-start gap-2.5 rounded-xl p-3" style={{ background: "#fef2f2", border: "1px solid rgba(239,68,68,0.15)" }}>
+          <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i className="ri-alarm-warning-line text-[#ef4444] text-sm" />
           </div>
-        ) : (
-          <p className="text-[10px] text-gray-500">
-            상관계수 <strong className="text-gray-700">r = {r.toFixed(2)}</strong>
-            {" — "}
-            {Math.abs(r) >= 0.4
-              ? <span className="text-[#ef4444] font-semibold">컨디션↓ → 도전행동 유의미하게 증가</span>
-              : <span className="text-[#9ca3af]">약한 상관관계</span>}
+          <p className="text-[11px] text-gray-700 leading-relaxed">
+            컨디션 <strong className="text-[#ef4444]">주의</strong>인 날은{" "}
+            <strong className="text-[#10b981]">좋음</strong>인 날보다{" "}
+            도전행동이 평균 <strong className="text-[#ef4444]">{ratio}배</strong> 많아요
           </p>
-        )}
+        </div>
       </div>
     </div>
   );
@@ -497,7 +468,7 @@ export default function CorrelationChart() {
       {/* Scatter + Key findings */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className="lg:col-span-3">
-          <ScatterPlot data={data} />
+          <ConditionImpactChart data={data} />
         </div>
         <div className="lg:col-span-2">
           <KeyFindings data={data} />

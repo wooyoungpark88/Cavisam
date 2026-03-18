@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { mockChild } from "../../../mocks/parentDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
 
 export type MenuKey = "timeline" | "morning" | "incidents" | "behavior-stats" | "care-team";
 
@@ -24,6 +24,9 @@ interface SidebarProps {
 
 export default function Sidebar({ active, onSelect }: SidebarProps) {
   const navigate = useNavigate();
+  const { activeChild } = useParentData();
+  const childName = activeChild?.name ?? "자녀";
+  const childInitial = childName.charAt(0);
 
   return (
     <aside
@@ -85,14 +88,14 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
             className="w-7 h-7 flex-shrink-0 flex items-center justify-center rounded-full text-xs font-bold"
             style={{ background: "rgba(234,88,12,0.15)", color: "#ea580c" }}
           >
-            {mockChild.avatarInitial}
+            {childInitial}
           </div>
           <div className="min-w-0">
             <p className="text-xs font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
-              {mockChild.name}
+              {childName}
             </p>
             <p className="text-[10px] leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
-              {mockChild.grade}
+              해오름 발달장애인복지관
             </p>
           </div>
         </div>

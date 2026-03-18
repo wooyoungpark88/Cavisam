@@ -1,6 +1,15 @@
-import { mockRecords } from "../../../mocks/parentDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
+
+const TYPE_CONFIG: Record<string, { category: string; color: string }> = {
+  self_harm: { category: "자해 행동", color: "#ef4444" },
+  harm_others: { category: "타해 행동", color: "#f59e0b" },
+  obsession: { category: "집착 행동", color: "#026eff" },
+};
 
 export default function BehaviorRecords() {
+  const { behaviorEvents } = useParentData();
+  const recent = behaviorEvents.slice(0, 10);
+
   return (
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
       {/* Header */}
@@ -11,34 +20,37 @@ export default function BehaviorRecords() {
           </div>
           <h2 className="text-sm font-bold text-gray-900">최근 행동 기록</h2>
         </div>
-        <button className="text-xs text-[#026eff] font-medium hover:opacity-70 transition-opacity cursor-pointer whitespace-nowrap">
-          전체 보기
-        </button>
+        <span className="text-xs text-gray-400">{behaviorEvents.length}건</span>
       </div>
 
       {/* Records */}
       <div className="divide-y divide-gray-50">
-        {mockRecords.map((record) => (
-          <div key={record.id} className="px-6 py-4 hover:bg-gray-50/50 transition-colors">
-            <div className="flex items-start gap-3">
-              {/* Category badge */}
-              <span
-                className="mt-0.5 px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap flex-shrink-0"
-                style={{
-                  background: `${record.categoryColor}15`,
-                  color: record.categoryColor,
-                }}
-              >
-                {record.category}
-              </span>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 mb-0.5">{record.title}</p>
-                <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{record.detail}</p>
-                <p className="text-[11px] text-gray-300 mt-1.5">{record.date} · {record.teacher}</p>
+        {recent.length === 0 && (
+          <div className="px-6 py-8 text-center text-xs text-gray-400">기록이 없습니다</div>
+        )}
+        {recent.map((event) => {
+          const config = TYPE_CONFIG[event.type] ?? { category: event.type, color: "#6b7280" };
+          const date = new Date(event.occurred_at).toLocaleString("ko-KR", {
+            month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit",
+          });
+
+          return (
+            <div key={event.id} className="px-6 py-4 hover:bg-gray-50/50 transition-colors">
+              <div className="flex items-start gap-3">
+                <span
+                  className="mt-0.5 px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap flex-shrink-0"
+                  style={{ background: `${config.color}15`, color: config.color }}
+                >
+                  {config.category}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800 mb-0.5">{event.label || config.category}</p>
+                  <p className="text-[11px] text-gray-300 mt-1">{date}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

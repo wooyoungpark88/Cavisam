@@ -253,8 +253,152 @@ create trigger on_auth_user_created
   for each row execute function public.handle_new_user();
 
 -- --------------------------------------------------------
--- 11. REALTIME 구독 활성화
+-- 11. PROFILES 확장: 승인 상태
+-- --------------------------------------------------------
+alter table public.profiles
+  add column if not exists status text not null default 'pending'
+  check (status in ('pending', 'approved', 'rejected'));
+
+-- --------------------------------------------------------
+-- 12. INVITATION_CODES (초대코드)
+-- --------------------------------------------------------
+create table if not exists public.invitation_codes (
+  id              uuid primary key default uuid_generate_v4(),
+  code            text not null unique,
+  organization_id uuid not null references public.organizations(id) on delete cascade,
+  max_uses        int not null default 10,
+  used_count      int not null default 0,
+  expires_at      timestamptz,
+  created_by      uuid references public.profiles(id) on delete set null,
+  created_at      timestamptz not null default now()
+);
+
+alter table public.invitation_codes enable row level security;
+
+-- admin만 초대코드 관리, 일반 사용자는 코드 검증용 조회만
+create policy "invitation_codes_select" on public.invitation_codes
+  for select using (true);
+
+create policy "invitation_codes_admin" on public.invitation_codes
+  for all using (public.get_my_role() = 'admin');
+
+-- --------------------------------------------------------
+-- 13. MORNING_REPORTS (등원 전 한마디)
+-- --------------------------------------------------------
+create table if not exists public.morning_reports (
+  id          uuid primary key default uuid_generate_v4(),
+  student_id  uuid not null references public.students(id) on delete cascade,
+  parent_id   uuid not null references public.profiles(id),
+  date        date not null default current_date,
+  sleep_time  text,
+  condition   text check (condition in ('good', 'normal', 'bad', 'very_bad')),
+  meal        text check (meal in ('good', 'normal', 'none')),
+  bowel       text check (bowel in ('normal', 'none')),
+  medication  text,
+  note        text,
+  created_at  timestamptz not null default now(),
+  unique (student_id, date)
+);
+
+alter table public.morning_reports enable row level security;
+
+create policy "morning_reports_select" on public.morning_reports
+  for select using (
+    parent_id = auth.uid()
+    or exists (
+      select 1 from public.students s
+      where s.id = morning_reports.student_id
+      and s.organization_id = public.get_my_org()
+    )
+    or public.get_my_role() = 'admin'
+  );
+
+create policy "morning_reports_insert" on public.morning_reports
+  for insert with check (parent_id = auth.uid());
+
+create policy "morning_reports_update" on public.morning_reports
+  for update using (parent_id = auth.uid());
+
+-- --------------------------------------------------------
+-- 14. CARE_TEAM (케어팀)
+-- --------------------------------------------------------
+create table if not exists public.care_team (
+  id          uuid primary key default uuid_generate_v4(),
+  student_id  uuid not null references public.students(id) on delete cascade,
+  member_id   uuid not null references public.profiles(id) on delete cascade,
+  role        text not null check (role in ('lead', 'support', 'observer')),
+  created_at  timestamptz not null default now(),
+  unique (student_id, member_id)
+);
+
+alter table public.care_team enable row level security;
+
+create policy "care_team_select" on public.care_team
+  for select using (
+    member_id = auth.uid()
+    or exists (
+      select 1 from public.students s
+      where s.id = care_team.student_id
+      and (s.organization_id = public.get_my_org() or s.parent_id = auth.uid())
+    )
+    or public.get_my_role() = 'admin'
+  );
+
+create policy "care_team_manage" on public.care_team
+  for all using (public.get_my_role() in ('teacher', 'admin'));
+
+-- --------------------------------------------------------
+-- 15. AI_CARE_REPORTS (AI 케어 분석 리포트)
+-- --------------------------------------------------------
+create table if not exists public.ai_care_reports (
+  id          uuid primary key default uuid_generate_v4(),
+  student_id  uuid not null references public.students(id) on delete cascade,
+  report_date date not null default current_date,
+  care_level  text not null check (care_level in ('low', 'medium', 'high', 'critical')),
+  summary     text not null,
+  details     jsonb,
+  created_at  timestamptz not null default now()
+);
+
+alter table public.ai_care_reports enable row level security;
+
+create policy "ai_care_reports_select" on public.ai_care_reports
+  for select using (
+    exists (
+      select 1 from public.students s
+      where s.id = ai_care_reports.student_id
+      and (s.organization_id = public.get_my_org() or s.parent_id = auth.uid())
+    )
+    or public.get_my_role() = 'admin'
+  );
+
+-- --------------------------------------------------------
+-- 16. NOTIFICATIONS (알림)
+-- --------------------------------------------------------
+create table if not exists public.notifications (
+  id          uuid primary key default uuid_generate_v4(),
+  user_id     uuid not null references public.profiles(id) on delete cascade,
+  type        text not null,
+  title       text not null,
+  body        text,
+  is_read     boolean not null default false,
+  metadata    jsonb,
+  created_at  timestamptz not null default now()
+);
+
+alter table public.notifications enable row level security;
+
+create policy "notifications_select" on public.notifications
+  for select using (user_id = auth.uid());
+
+create policy "notifications_update" on public.notifications
+  for update using (user_id = auth.uid());
+
+-- --------------------------------------------------------
+-- 17. REALTIME 구독 활성화
 -- --------------------------------------------------------
 alter publication supabase_realtime add table public.behavior_events;
 alter publication supabase_realtime add table public.parent_messages;
 alter publication supabase_realtime add table public.daily_records;
+alter publication supabase_realtime add table public.morning_reports;
+alter publication supabase_realtime add table public.notifications;

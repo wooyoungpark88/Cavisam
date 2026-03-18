@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { mockStudents } from "../../../mocks/teacherDashboard";
+import { useState, useRef, useMemo } from "react";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
 import {
   mockSentReports,
   REPORT_TYPES,
@@ -477,7 +477,11 @@ function ReportPanel({ studentId, onBack }: { studentId: number; onBack?: () => 
 
 /* ── 메인 컨테이너 ─────────────────────────────────────── */
 export default function ParentReports() {
-  const [selectedId, setSelectedId] = useState(mockStudents[0].id);
+  const { students: rawStudents } = useTeacherData();
+  const mockStudents = useMemo(() =>
+    rawStudents.map((s, i) => ({ id: i + 1, name: s.name, initial: s.name.charAt(0), avatarColor: ["#026eff","#10b981","#f59e0b","#8b5cf6","#ef4444","#06b6d4","#e879f9"][i % 7] })),
+  [rawStudents]);
+  const [selectedId, setSelectedId] = useState(1);
   const [reports] = useState(mockSentReports);
   const [mobileView, setMobileView] = useState<"list" | "report">("list");
 

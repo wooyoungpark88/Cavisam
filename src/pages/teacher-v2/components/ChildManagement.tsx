@@ -1,14 +1,53 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import StudentCard from "./StudentCard";
 import StatsDropdown from "./StatsDropdown";
-import { mockStudents, mockDailyStatsSummary } from "../../../mocks/teacherDashboard";
+import { useTeacherData } from "../../../contexts/TeacherDataContext";
+import type { StudentDailyReport, ConditionLevel, MealLevel, SleepLevel } from "../../../mocks/teacherDashboard";
+
+const COND_MAP: Record<string, ConditionLevel> = { good: "좋음", normal: "보통", bad: "나쁨", very_bad: "매우나쁨" };
+const MEAL_MAP: Record<string, MealLevel> = { good: "완식", normal: "평소처럼", none: "안먹음" };
+const AVATAR_COLORS = ["#026eff", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444", "#06b6d4", "#e879f9"];
+
+function sleepLevel(s: string): SleepLevel {
+  const h = parseFloat(s);
+  if (!isNaN(h)) return h >= 7 ? "충분" : h >= 5 ? "보통" : "부족";
+  if (s.includes("8") || s.includes("9") || s.includes("7")) return "충분";
+  if (s.includes("5") || s.includes("4")) return "부족";
+  return "보통";
+}
 
 export default function ChildManagement() {
+  const { students: rawStudents } = useTeacherData();
   const [attentionOnly, setAttentionOnly] = useState(false);
   const [statsOpen, setStatsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const searchRef = useRef<HTMLInputElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+
+  // DB Student → mock StudentDailyReport 형태로 변환
+  const mockStudents: StudentDailyReport[] = useMemo(() =>
+    rawStudents.map((s, i) => {
+      const cond = COND_MAP[s.condition] ?? "보통";
+      const sl = sleepLevel(s.sleep);
+      const needsAttention = cond === "나쁨" || cond === "매우나쁨" || sl === "부족";
+      const today = new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+      return {
+        id: i + 1,
+        name: s.name,
+        initial: s.name.charAt(0),
+        avatarColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+        reportDate: today,
+        sleep: s.sleep || "-",
+        sleepLevel: sl,
+        condition: cond,
+        meal: (MEAL_MAP[s.meal] ?? "평소처럼") as MealLevel,
+        bowel: s.bowel === "normal" ? "정상" : "없음",
+        note: s.note || "-",
+        medication: s.medication || "-",
+        needsAttention,
+      };
+    }),
+  [rawStudents]);
 
   const attentionCount = mockStudents.filter((s) => s.needsAttention).length;
 
@@ -105,7 +144,7 @@ export default function ChildManagement() {
           <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
             <i className="ri-group-line text-[11px] text-gray-400" />
             <span className="text-[11px] font-semibold text-gray-600">
-              {displayed.length}<span className="text-gray-400 font-normal"> / {mockDailyStatsSummary.total}명</span>
+              {displayed.length}<span className="text-gray-400 font-normal"> / {mockStudents.length}명</span>
             </span>
           </div>
         </div>
