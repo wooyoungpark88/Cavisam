@@ -184,7 +184,7 @@ function UserList({
 
 /* ── Right: 작성 + 이력 패널 ──────────────────────────── */
 function ReportPanel({ studentId, onBack, mockStudents }: { studentId: number; onBack?: () => void; mockStudents: { id: number; name: string; initial: string; avatarColor: string }[] }) {
-  const student = mockStudents.find((s) => s.id === studentId)!;
+  const student = mockStudents.find((s) => s.id === studentId) ?? { id: studentId, name: "로딩 중", initial: "?", avatarColor: "#6b7280" };
   const [selectedType, setSelectedType] = useState<ReportTypeKey>("positive");
   const [content, setContent] = useState("");
   const [sent, setSent] = useState(false);
