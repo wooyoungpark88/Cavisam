@@ -7,7 +7,7 @@ export default function DashboardHeader({ onBack }: { onBack: () => void }) {
   const { activeChild, unreadCount: msgUnread } = useParentData();
   const childName = activeChild?.name ?? profile?.name ?? "";
   const childInitial = childName.charAt(0);
-  const facility = "해오름 발달장애인복지관";
+  const facility = "CareVia";
 
   const [notiOpen, setNotiOpen] = useState(false);
   const [notifications, setNotifications] = useState<{ id: number; type: string; icon: string; color: string; title: string; desc: string; time: string; unread: boolean }[]>([]);

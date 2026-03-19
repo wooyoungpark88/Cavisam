@@ -11,7 +11,7 @@ const FACILITIES = [
 
 export default function ParentPage() {
   const navigate = useNavigate();
-  const { session, profile } = useAuth();
+  const { session, profile, signIn } = useAuth();
   const [facility, setFacility] = useState("");
   const [oauthLoading, setOauthLoading] = useState(false);
 
@@ -43,16 +43,12 @@ export default function ParentPage() {
   }
 
   function handleDemoStart() {
-    const demoProfile = {
+    signIn({
       id: DEMO_PARENT_ID,
       name: "김민준 어머니",
-      role: "parent" as const,
-      status: "approved" as const,
+      role: "parent",
       organization_id: DEMO_ORG_ID,
-      avatar_url: null,
-      created_at: "",
-    };
-    localStorage.setItem("cavisam_demo", JSON.stringify(demoProfile));
+    });
     navigate("/parent-dashboard", { replace: true });
   }
 
@@ -144,7 +140,7 @@ export default function ParentPage() {
 
         {/* Footer */}
         <div className="relative z-10">
-          <p className="text-xs" style={{ color: "rgba(234,88,12,0.45)" }}>해오름 발달장애인복지관</p>
+          <p className="text-xs" style={{ color: "rgba(234,88,12,0.45)" }}>CareVia · 보호자 서비스</p>
         </div>
       </div>
 
@@ -278,7 +274,7 @@ export default function ParentPage() {
 
           {/* Bottom link */}
           <p className="text-center text-xs text-gray-400 mt-6">
-            해오름 발달장애인복지관
+            CareVia · 보호자 서비스
           </p>
         </div>
       </div>

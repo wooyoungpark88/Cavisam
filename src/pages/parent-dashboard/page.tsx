@@ -31,7 +31,7 @@ function TopBar({
   const { activeChild, unreadCount: msgUnread } = useParentData();
   const childName = activeChild?.name ?? profile?.name ?? "";
   const childInitial = childName.charAt(0);
-  const facility = "해오름 발달장애인복지관";
+  const facility = activeChild?.organization_id ? "소속 시설" : "CareVia";
   const [notiOpen, setNotiOpen] = useState(false);
   // 알림은 아직 notifications 테이블 연동 전이므로 빈 배열
   const [notifications, setNotifications] = useState<{ id: number; type: string; icon: string; color: string; title: string; desc: string; time: string; unread: boolean }[]>([]);

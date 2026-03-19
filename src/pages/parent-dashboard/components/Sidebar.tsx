@@ -95,7 +95,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
               {childName}
             </p>
             <p className="text-[10px] leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
-              해오름 발달장애인복지관
+              CareVia
             </p>
           </div>
         </div>

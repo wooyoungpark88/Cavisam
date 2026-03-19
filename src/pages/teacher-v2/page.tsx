@@ -120,7 +120,7 @@ function TeacherDashboard({ onLogout }: { onLogout: () => void }) {
 
 function LoginScreen({ onStart }: { onStart: () => void }) {
   const navigate = useNavigate();
-  const { session, profile } = useAuth();
+  const { session, profile, signIn } = useAuth();
   const [facility, setFacility] = useState("");
   const [oauthLoading, setOauthLoading] = useState(false);
   const canStart = facility !== "";
@@ -142,16 +142,12 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
   }
 
   function handleDemoStart() {
-    const demoProfile = {
+    signIn({
       id: DEMO_TEACHER_ID,
       name: "김태희 선생님",
-      role: "teacher" as const,
-      status: "approved" as const,
+      role: "teacher",
       organization_id: DEMO_ORG_ID,
-      avatar_url: null,
-      created_at: "",
-    };
-    localStorage.setItem("cavisam_demo", JSON.stringify(demoProfile));
+    });
     onStart();
   }
 
@@ -249,7 +245,7 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
         </div>
 
         <div className="relative z-10">
-          <p className="text-xs" style={{ color: "rgba(2,110,255,0.45)" }}>해오름 발달장애인복지관</p>
+          <p className="text-xs" style={{ color: "rgba(2,110,255,0.45)" }}>CareVia · 교사용 서비스</p>
         </div>
       </div>
 
@@ -379,7 +375,7 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
             )}
           </div>
 
-          <p className="text-center text-xs text-gray-400 mt-6">해오름 발달장애인복지관</p>
+          <p className="text-center text-xs text-gray-400 mt-6">CareVia · 교사용 서비스</p>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ export default function ChildProfileCard() {
   const { activeChild, careTeam } = useParentData();
   const childName = activeChild?.name ?? "자녀";
   const childInitial = childName.charAt(0);
-  const facility = "해오름 발달장애인복지관";
+  const facility = "CareVia";
   const leadTeacher = careTeam.find((m) => m.role === "lead");
   const teacherName = leadTeacher?.member?.name ?? "담임 선생님";
 

@@ -50,7 +50,7 @@ export default function CareTeam() {
                       {roleLabel}
                     </span>
                   </div>
-                  <p className="text-[11px] text-gray-400 mb-3 truncate">해오름 발달장애인복지관</p>
+                  <p className="text-[11px] text-gray-400 mb-3 truncate">돌봄 팀 소속</p>
                 </div>
               </div>
             );

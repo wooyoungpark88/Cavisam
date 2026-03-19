@@ -28,7 +28,7 @@ export default function AdminSidebar({ activeTab, onTabChange, pendingCount }: A
           </div>
           <span className="text-sm font-bold text-white">관리자 콘솔</span>
         </div>
-        <p className="text-[10px] text-white/40 pl-0.5">해오름 발달장애인복지관</p>
+        <p className="text-[10px] text-white/40 pl-0.5">CareVia 관리자</p>
       </div>
 
       {/* Nav */}

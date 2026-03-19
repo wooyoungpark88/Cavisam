@@ -134,7 +134,7 @@ export function ParentReports() {
       <div>
         <h2 className="text-xl font-bold text-gray-800">보호자 등원 전 한마디</h2>
         <p className="text-sm text-gray-500 mt-1">
-          해오름반 · <span className="font-semibold text-[#026eff]">{receivedCount}/{totalCount}명</span> 수신
+          우리 반 · <span className="font-semibold text-[#026eff]">{receivedCount}/{totalCount}명</span> 수신
         </p>
       </div>
 

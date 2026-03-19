@@ -92,7 +92,7 @@ export default function TeacherSidebar({ active, onSelect, onSwitchToParent }: T
               {teacherName}
             </p>
             <p className="text-[10px] leading-tight truncate" style={{ color: "rgba(2,110,255,0.5)" }}>
-              해오름 발달장애인복지관
+              CareVia
             </p>
           </div>
         </div>

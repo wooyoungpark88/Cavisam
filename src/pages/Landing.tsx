@@ -82,7 +82,7 @@ export function Landing() {
       name: '김태희 선생님',
       role: 'teacher',
       organization_id: DEMO_ORG_ID,
-      organization_name: '해오름 발달장애인복지관',
+      organization_name: 'CareVia 체험',
     });
     navigate('/teacher');
   };
@@ -93,7 +93,7 @@ export function Landing() {
       name: '김민준 어머니',
       role: 'parent',
       organization_id: DEMO_ORG_ID,
-      organization_name: '해오름 발달장애인복지관',
+      organization_name: 'CareVia 체험',
     });
     navigate('/parent');
   };
@@ -145,7 +145,7 @@ export function Landing() {
         />
       </div>
 
-      <p className="text-xs text-gray-400 mt-10">해오름 발달장애인복지관</p>
+      <p className="text-xs text-gray-400 mt-10">CareVia · AI 기반 통합 돌봄 플랫폼</p>
 
       <button
         onClick={() => navigate("/admin")}

@@ -527,7 +527,7 @@ export default function CareTeamView() {
               </button>
             </div>
           </div>
-          <p className="text-gray-400 text-[11px]">해오름 발달장애인복지관 3반</p>
+          <p className="text-gray-400 text-[11px]">돌봄 팀 현황</p>
         </div>
 
         {/* Role filter */}
@@ -620,7 +620,7 @@ export default function CareTeamView() {
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-50">
             <div>
               <h2 className="text-sm font-bold text-gray-900">돌봄 팀</h2>
-              <p className="text-[10px] text-gray-400">해오름 발달장애인복지관 3반</p>
+              <p className="text-[10px] text-gray-400">돌봄 팀 현황</p>
             </div>
             <button
               onClick={() => setShowAddMember(true)}
