@@ -375,7 +375,6 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
             )}
           </div>
 
-          <p className="text-center text-xs text-gray-400 mt-6">CareVia · 교사용 서비스</p>
         </div>
       </div>
     </div>

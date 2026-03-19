@@ -273,9 +273,6 @@ export default function ParentPage() {
           </div>
 
           {/* Bottom link */}
-          <p className="text-center text-xs text-gray-400 mt-6">
-            CareVia · 보호자 서비스
-          </p>
         </div>
       </div>
     </div>
