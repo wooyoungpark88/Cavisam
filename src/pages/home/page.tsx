@@ -463,34 +463,28 @@ export default function Home() {
           />
         </div>
 
-        {/* Admin floating button */}
+        {/* Admin console button */}
         <button
           onClick={() => navigate("/admin")}
-          className="fixed bottom-6 right-6 group flex items-center gap-2 cursor-pointer transition-all duration-300 z-20"
+          className="mt-10 inline-flex items-center gap-2 px-5 py-2.5 rounded-full cursor-pointer transition-all duration-200 hover:shadow-md"
+          style={{
+            background: "rgba(15,23,42,0.06)",
+            border: "1px solid rgba(15,23,42,0.1)",
+          }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "rgba(15,23,42,0.10)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(15,23,42,0.18)";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.background = "rgba(15,23,42,0.06)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(15,23,42,0.1)";
+          }}
         >
-          <span
-            className="text-[12.5px] font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 whitespace-nowrap pointer-events-none"
-          >
-            관리자 콘솔
-          </span>
-          <div
-            className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-            style={{
-              background: "rgba(15,23,42,0.06)",
-              backdropFilter: "blur(8px)",
-              border: "1px solid rgba(15,23,42,0.08)",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLDivElement).style.background = "rgba(15,23,42,0.10)";
-              (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(15,23,42,0.15)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLDivElement).style.background = "rgba(15,23,42,0.06)";
-              (e.currentTarget as HTMLDivElement).style.borderColor = "rgba(15,23,42,0.08)";
-            }}
-          >
-            <i className="ri-settings-4-line text-base text-gray-500 group-hover:text-gray-700 transition-colors" />
+          <div className="w-6 h-6 rounded-full flex items-center justify-center bg-gray-200/60">
+            <i className="ri-shield-keyhole-line text-xs text-gray-500" />
           </div>
+          <span className="text-sm font-medium text-gray-500">관리자 콘솔</span>
+          <i className="ri-arrow-right-s-line text-gray-400 text-sm" />
         </button>
       </div>
     </div>
