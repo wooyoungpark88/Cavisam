@@ -301,16 +301,16 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         border: "1px solid rgba(2,110,255,0.12)",
       }}
     >
-      <div className="flex items-center gap-2 mb-2 sm:mb-3">
+      <div className="flex items-center gap-2.5 mb-2.5 sm:mb-3">
         <div
-          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
+          className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
           style={{ background: "#026eff" }}
         >
           {entry.actorInitial}
         </div>
-        <span className="text-xs font-semibold text-gray-700 flex-1 truncate">{entry.actor}</span>
+        <span className="text-sm font-semibold text-gray-800 flex-1 truncate">{entry.actor}</span>
         <span
-          className="text-[12px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
+          className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: "rgba(2,110,255,0.12)", color: "#026eff" }}
         >
           등원 전 한마디
@@ -319,20 +319,20 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
           <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
         </div>
       </div>
-      <div className="bg-white rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 mb-2 sm:mb-2.5">
-        <p className="text-[12px] font-semibold text-gray-400 mb-1">AI 요약</p>
-        <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{entry.aiSummary}</p>
+      <div className="bg-white rounded-lg sm:rounded-xl px-3 sm:px-3.5 py-2.5 sm:py-3 mb-2.5 sm:mb-3" style={{ borderLeft: "3px solid #026eff" }}>
+        <p className="text-xs font-semibold text-gray-400 mb-1.5">AI 요약</p>
+        <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">{entry.aiSummary}</p>
       </div>
       <div className="flex items-center gap-2">
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
-          <i className="ri-checkbox-circle-fill text-[#10b981] text-xs" />
+          <i className="ri-checkbox-circle-fill text-[#10b981] text-sm" />
         </div>
-        <span className="text-[12.5px] text-gray-500 flex-1 truncate">{entry.teacherConfirmed}</span>
+        <span className="text-xs text-gray-500 flex-1 truncate">{entry.teacherConfirmed}</span>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="text-xs font-medium border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
-            color: confirmed ? "#10b981" : "#9ca3af",
+            color: confirmed ? "#10b981" : "#6b7280",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
             background: confirmed ? "rgba(16,185,129,0.06)" : "white",
           }}
@@ -351,19 +351,20 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
       onClick={onClick}
       className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-gray-100 cursor-pointer transition-all active:scale-[0.99]"
     >
-      <div className="flex items-center gap-2 mb-2">
+      <div className="flex items-center gap-2.5 mb-2.5">
         <div
-          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
+          className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
           style={{ background: entry.actorColor }}
         >
           {entry.actorInitial}
         </div>
-        <span className="text-xs font-semibold text-gray-700 flex-1">{entry.actor}</span>
+        <span className="text-sm font-semibold text-gray-800 flex-1">{entry.actor}</span>
+        <span className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap" style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}>선생님 메시지</span>
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
           <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
         </div>
       </div>
-      <p className="text-xs text-gray-700 leading-relaxed mb-2 sm:mb-2.5 line-clamp-2">{entry.content}</p>
+      <p className="text-sm text-gray-700 leading-relaxed mb-2.5 sm:mb-3 line-clamp-2" style={{ borderLeft: "3px solid #10b981", paddingLeft: "10px" }}>{entry.content}</p>
       {entry.hasPhoto && entry.photoUrl && (
         <div className="w-full h-24 sm:h-28 rounded-xl overflow-hidden mb-2 sm:mb-2.5 bg-gray-100">
           <img
@@ -378,9 +379,9 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
         <span className="text-sm leading-none ml-0.5">👍</span>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="ml-auto text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="ml-auto text-xs font-medium border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
-            color: confirmed ? "#10b981" : "#9ca3af",
+            color: confirmed ? "#10b981" : "#6b7280",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
             background: confirmed ? "rgba(16,185,129,0.06)" : "white",
           }}
@@ -403,20 +404,20 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
       style={{ border: `1.5px solid ${entry.reportTypeColor ?? "#e5e7eb"}30` }}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 mb-2 sm:mb-2.5">
+      <div className="flex items-center gap-2.5 mb-2.5 sm:mb-3">
         <div
-          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
+          className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
           style={{ background: entry.actorColor }}
         >
           {entry.actorInitial}
         </div>
-        <span className="text-xs font-semibold text-gray-700 flex-1 truncate">{entry.actor}</span>
+        <span className="text-sm font-semibold text-gray-800 flex-1 truncate">{entry.actor}</span>
         {/* Type badge */}
         <span
-          className="inline-flex items-center gap-1 text-[12px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
+          className="inline-flex items-center gap-1 text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: badgeBg, color: entry.reportTypeColor ?? "#6b7280" }}
         >
-          {entry.reportTypeIcon && <i className={`${entry.reportTypeIcon} text-[12.5px]`} />}
+          {entry.reportTypeIcon && <i className={`${entry.reportTypeIcon} text-xs`} />}
           {entry.reportType}
         </span>
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
@@ -425,7 +426,7 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
       </div>
 
       {/* Content preview */}
-      <p className="text-xs text-gray-700 leading-relaxed mb-2 sm:mb-3 line-clamp-2">{entry.content}</p>
+      <p className="text-sm text-gray-700 leading-relaxed mb-2.5 sm:mb-3 line-clamp-2">{entry.content}</p>
 
       {/* Reactions + confirm */}
       <div className="flex items-center gap-1.5">
@@ -440,17 +441,17 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         <div className="flex-1" />
         {confirmed ? (
           <span
-            className="inline-flex items-center gap-1 text-[12px] font-semibold px-2.5 py-1 rounded-lg"
+            className="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg"
             style={{ color: "#10b981", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)" }}
           >
-            <i className="ri-checkbox-circle-fill text-[12.5px]" />
+            <i className="ri-checkbox-circle-fill text-xs" />
             확인됨
           </span>
         ) : (
           <button
             onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-            className="text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
-            style={{ color: "#9ca3af", borderColor: "#e5e7eb", background: "white" }}
+            className="text-xs font-medium border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+            style={{ color: "#6b7280", borderColor: "#e5e7eb", background: "white" }}
           >
             확인
           </button>
@@ -471,19 +472,19 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
         border: "1px solid rgba(245,158,11,0.2)",
       }}
     >
-      <div className="flex items-center gap-2 mb-2 sm:mb-3">
-        <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-          <i className="ri-alert-line text-[#f59e0b] text-sm" />
+      <div className="flex items-center gap-2.5 mb-2.5 sm:mb-3">
+        <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+          <i className="ri-alert-line text-[#f59e0b] text-base" />
         </div>
-        <span className="text-xs font-bold text-gray-800 flex-1">{entry.actor}</span>
+        <span className="text-sm font-bold text-gray-800 flex-1">{entry.actor}</span>
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
           <i className="ri-arrow-right-s-line text-gray-300 text-sm" />
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="text-xs font-medium border px-2.5 py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
-            color: confirmed ? "#10b981" : "#9ca3af",
+            color: confirmed ? "#10b981" : "#6b7280",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
             background: "white",
           }}
@@ -492,14 +493,14 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
         </button>
       </div>
       <p
-        className="text-xs font-semibold text-gray-800 leading-relaxed px-2.5 sm:px-3 py-2 rounded-lg mb-2 sm:mb-2.5 line-clamp-2"
-        style={{ background: "rgba(245,158,11,0.12)" }}
+        className="text-sm font-semibold text-gray-800 leading-relaxed px-3 py-2.5 rounded-lg mb-2.5 sm:mb-3 line-clamp-2"
+        style={{ background: "rgba(245,158,11,0.12)", borderLeft: "3px solid #f59e0b" }}
       >
         {entry.content}
       </p>
-      <div className="bg-white rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5">
-        <p className="text-[12px] font-semibold text-gray-400 mb-1">AI Insight</p>
-        <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{entry.aiInsight}</p>
+      <div className="bg-white rounded-lg sm:rounded-xl px-3 sm:px-3.5 py-2.5 sm:py-3">
+        <p className="text-xs font-semibold text-gray-400 mb-1.5">AI Insight</p>
+        <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">{entry.aiInsight}</p>
       </div>
     </div>
   );
@@ -562,7 +563,7 @@ function TimelineColumn({
                   }}
                 />
               </div>
-              <p className="text-[12.5px] font-bold text-gray-400 mb-1.5 tracking-wide leading-none">
+              <p className="text-xs font-bold text-gray-500 mb-1.5 tracking-wide leading-none">
                 {entry.time}
               </p>
               <EntryRenderer entry={entry} onSelect={onSelect} />
@@ -929,11 +930,11 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <p className="text-[12.5px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
                   <TimelineColumn entries={amEntries} onSelect={setSelectedEntry} />
                 </div>
                 <div>
-                  <p className="text-[12.5px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
                   <TimelineColumn entries={pmEntries} onSelect={setSelectedEntry} />
                 </div>
               </div>
