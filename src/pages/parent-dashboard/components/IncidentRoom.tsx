@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useParentData } from "../../../contexts/ParentDataContext";
 import { useAuth } from "../../../hooks/useAuth";
 import { sendMessage, markAsRead } from "../../../lib/api/messages";
+import { uploadAttachment, validateFile, getAttachmentType } from "../../../lib/api/attachments";
 import CabiSaemModal from "../../../components/feature/CabiSaemModal";
 
 interface ParentChatMessage {
@@ -282,7 +283,11 @@ function ChatPanel({
   const [messages, setMessages] = useState<ParentChatMessage[]>(initialMessages);
   const [input, setInput] = useState("");
   const [showCabiSaem, setShowCabiSaem] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMessages(messagesByMember[member?.id] ?? []);
@@ -297,12 +302,64 @@ function ChatPanel({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim()) return;
-    const text = input.trim();
-    setInput("");
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = '';
+    const error = validateFile(file);
+    if (error) { alert(error); return; }
+    setPendingFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
 
-    // 낙관적 업데이트
+  const clearPending = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPendingFile(null);
+    setPreviewUrl(null);
+  };
+
+  const handleSend = async () => {
+    if ((!input.trim() && !pendingFile)) return;
+    const text = input.trim();
+    const file = pendingFile;
+    const fileType = file ? getAttachmentType(file) : null;
+
+    setInput("");
+    clearPending();
+
+    // 첨부파일 전송
+    if (file && fileType && studentId && senderId && member) {
+      const newMsg: ParentChatMessage = {
+        id: messages.length + 100,
+        sender: "parent",
+        senderName: "나",
+        text: text || (fileType === 'image' ? '📷 사진' : '🎬 영상'),
+        time: "업로드 중...",
+        type: "text",
+      };
+      setMessages((prev) => [...prev, newMsg]);
+      setUploading(true);
+      try {
+        const { url: storagePath, type: attachType } = await uploadAttachment(file, senderId);
+        const receiverId = memberProfileIds[member.id] ?? "";
+        await sendMessage({
+          student_id: studentId,
+          sender_id: senderId,
+          receiver_id: receiverId,
+          content: text || (attachType === 'image' ? '사진' : '영상'),
+          message_type: "attachment",
+          attachment_url: storagePath,
+          attachment_type: attachType,
+        });
+      } catch (e) {
+        console.error("첨부파일 전송 실패:", e);
+      } finally {
+        setUploading(false);
+      }
+      return;
+    }
+
+    // 텍스트만 전송
     const newMsg: ParentChatMessage = {
       id: messages.length + 100,
       sender: "parent",
@@ -313,7 +370,6 @@ function ChatPanel({
     };
     setMessages((prev) => [...prev, newMsg]);
 
-    // Supabase에 실제 저장
     if (studentId && senderId && member) {
       try {
         const receiverId = memberProfileIds[member.id] ?? "";
@@ -494,9 +550,45 @@ function ChatPanel({
         ))}
       </div>
 
+      {/* ── Attachment preview ── */}
+      {previewUrl && pendingFile && (
+        <div className="flex-shrink-0 px-4 pt-3 border-t border-gray-100 bg-white">
+          <div className="relative inline-block">
+            {getAttachmentType(pendingFile) === 'video' ? (
+              <video src={previewUrl} className="h-20 rounded-xl object-cover" />
+            ) : (
+              <img src={previewUrl} alt="미리보기" className="h-20 rounded-xl object-cover" />
+            )}
+            <button
+              onClick={clearPending}
+              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow cursor-pointer hover:bg-red-600"
+            >
+              <i className="ri-close-line" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── Input bar ── */}
       <div className="flex-shrink-0 px-4 py-3 bg-white">
-        <div className="flex items-center gap-3 bg-gray-50 rounded-2xl px-4 py-2.5 border border-gray-100">
+        <div className="flex items-center gap-2 bg-gray-50 rounded-2xl px-4 py-2.5 border border-gray-100">
+          {/* 첨부 버튼 */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*,video/*"
+            className="hidden"
+            onChange={handleFileSelect}
+          />
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            disabled={uploading}
+            className="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-[#026eff] hover:bg-blue-50 cursor-pointer transition-colors flex-shrink-0 disabled:opacity-30"
+            title="사진/영상 첨부"
+          >
+            <i className="ri-image-add-line text-lg" />
+          </button>
+
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -507,11 +599,15 @@ function ChatPanel({
           />
           <button
             onClick={handleSend}
-            disabled={!input.trim()}
+            disabled={(!input.trim() && !pendingFile) || uploading}
             className="w-8 h-8 flex items-center justify-center rounded-xl text-white cursor-pointer whitespace-nowrap transition-all disabled:opacity-30 flex-shrink-0"
             style={{ background: member.color }}
           >
-            <i className="ri-send-plane-fill text-xs" />
+            {uploading ? (
+              <i className="ri-loader-4-line text-xs animate-spin" />
+            ) : (
+              <i className="ri-send-plane-fill text-xs" />
+            )}
           </button>
         </div>
       </div>
