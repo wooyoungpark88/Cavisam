@@ -53,25 +53,29 @@ export function TeacherDataProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const today = new Date().toISOString().slice(0, 10);
+    try {
+      const today = new Date().toISOString().slice(0, 10);
 
-    const [studs, stats] = await Promise.all([
-      getStudentsWithRecords(orgId, today),
-      getBehaviorStats(orgId),
-    ]);
+      const [studs, stats] = await Promise.all([
+        getStudentsWithRecords(orgId, today),
+        getBehaviorStats(orgId),
+      ]);
 
-    setStudents(studs);
-    setBehaviorStats(stats);
+      setStudents(studs);
+      setBehaviorStats(stats);
 
-    // 안읽은 메시지 수
-    const { count } = await supabase
-      .from('parent_messages')
-      .select('*', { count: 'exact', head: true })
-      .eq('receiver_id', profile.id)
-      .eq('is_read', false);
-    setUnreadCount(count ?? 0);
-
-    setLoading(false);
+      // 안읽은 메시지 수
+      const { count } = await supabase
+        .from('parent_messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('receiver_id', profile.id)
+        .eq('is_read', false);
+      setUnreadCount(count ?? 0);
+    } catch (err) {
+      console.error('[TeacherDataContext] fetchAll 오류:', err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {

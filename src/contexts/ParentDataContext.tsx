@@ -70,49 +70,52 @@ export function ParentDataProvider({ children: reactChildren }: { children: Reac
       return;
     }
 
-    const kids = await getStudentsByParent(profile.id);
-    setChildList(kids);
+    try {
+      const kids = await getStudentsByParent(profile.id);
+      setChildList(kids);
 
-    if (kids.length === 0) {
+      if (kids.length === 0) {
+        return;
+      }
+
+      const kid = kids[0];
+      const today = new Date().toISOString().slice(0, 10);
+
+      const [msgs, reports, events, team] = await Promise.all([
+        getMessages(kid.id, profile.id),
+        getMorningReports(kid.id, 30),
+        getBehaviorEventsByStudent(kid.id, 30),
+        getCareTeam(kid.id),
+      ]);
+
+      setMessages(msgs);
+      setMorningReports(reports);
+      setBehaviorEvents(events);
+      setCareTeam(team);
+
+      // 오늘 일일기록
+      const { data: rec } = await supabase
+        .from('daily_records')
+        .select('*')
+        .eq('student_id', kid.id)
+        .eq('date', today)
+        .single();
+
+      if (rec) {
+        setTodayRecord({
+          sleep: rec.sleep,
+          condition: rec.condition,
+          meal: rec.meal,
+          bowel: rec.bowel,
+          note: rec.note,
+          medication: rec.medication,
+        });
+      }
+    } catch (err) {
+      console.error('[ParentDataContext] fetchAll 오류:', err);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const kid = kids[0];
-    const today = new Date().toISOString().slice(0, 10);
-
-    const [msgs, reports, events, team] = await Promise.all([
-      getMessages(kid.id, profile.id),
-      getMorningReports(kid.id, 30),
-      getBehaviorEventsByStudent(kid.id, 30),
-      getCareTeam(kid.id),
-    ]);
-
-    setMessages(msgs);
-    setMorningReports(reports);
-    setBehaviorEvents(events);
-    setCareTeam(team);
-
-    // 오늘 일일기록
-    const { data: rec } = await supabase
-      .from('daily_records')
-      .select('*')
-      .eq('student_id', kid.id)
-      .eq('date', today)
-      .single();
-
-    if (rec) {
-      setTodayRecord({
-        sleep: rec.sleep,
-        condition: rec.condition,
-        meal: rec.meal,
-        bowel: rec.bowel,
-        note: rec.note,
-        medication: rec.medication,
-      });
-    }
-
-    setLoading(false);
   }
 
   useEffect(() => {
