@@ -70,7 +70,7 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const svgW = 280, svgH = 92, padX = 30, padTop = 16, padBottom = 22;
+  const svgW = 280, svgH = 130, padX = 30, padTop = 20, padBottom = 22;
   const chartH = svgH - padTop - padBottom;
   const n = data.length;
   const xStep = n > 1 ? (svgW - padX * 2) / (n - 1) : 0;
@@ -132,7 +132,7 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
             return (
               <g key={g.score}>
                 <line x1={padX} y1={gy} x2={svgW - 6} y2={gy} stroke="#f3f4f6" strokeWidth="1" strokeDasharray="3,2" />
-                <text x={padX - 4} y={gy + 3} textAnchor="end" fontSize="7" fill={g.color} fontWeight="600">
+                <text x={padX - 4} y={gy + 2.5} textAnchor="end" fontSize="6" fill={g.color} fontWeight="600">
                   {g.label}
                 </text>
               </g>
@@ -159,13 +159,13 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
               <g key={i} style={{ cursor: "pointer" }} onClick={() => setActiveIdx(activeIdx === i ? null : i)}>
                 <circle cx={x} cy={ys[i]} r={11} fill="transparent" />
                 {(isBest || isWorst) && !isActive && (
-                  <circle cx={x} cy={ys[i]} r={8} fill={color} opacity="0.15" />
+                  <circle cx={x} cy={ys[i]} r={6} fill={color} opacity="0.15" />
                 )}
-                {isActive && <circle cx={x} cy={ys[i]} r={9} fill={color} opacity="0.20" />}
-                <circle cx={x} cy={ys[i]} r={isActive ? 6 : 5} fill={color} />
-                <circle cx={x} cy={ys[i]} r={isActive ? 2.5 : 2} fill="white" />
+                {isActive && <circle cx={x} cy={ys[i]} r={7} fill={color} opacity="0.20" />}
+                <circle cx={x} cy={ys[i]} r={isActive ? 4.5 : 4} fill={color} />
+                <circle cx={x} cy={ys[i]} r={isActive ? 2 : 1.5} fill="white" />
                 {isBest && !isActive && (
-                  <text x={x} y={aboveY} textAnchor="middle" fontSize="7.5" fill={color} fontWeight="700">
+                  <text x={x} y={aboveY} textAnchor="middle" fontSize="6" fill={color} fontWeight="700">
                     최고
                   </text>
                 )}
@@ -173,7 +173,7 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
                   (() => {
                     const labelY = belowY !== null ? belowY : aboveY;
                     return (
-                      <text x={x} y={labelY} textAnchor="middle" fontSize="7.5" fill={color} fontWeight="700">
+                      <text x={x} y={labelY} textAnchor="middle" fontSize="6" fill={color} fontWeight="700">
                         최저
                       </text>
                     );
