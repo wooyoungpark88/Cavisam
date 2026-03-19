@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { type ChatMessage, type StudentConversation } from "../../../types/messages";
 import { useAuth } from "../../../hooks/useAuth";
 import { sendMessage } from "../../../lib/api/messages";
+import { uploadAttachment, validateFile, getAttachmentType, getSignedUrl } from "../../../lib/api/attachments";
 import CabiSaemModal from "../../../components/feature/CabiSaemModal";
 
 const quickReplies = [
@@ -63,6 +64,45 @@ function DailyReportCard({ data }: { data: NonNullable<ChatMessage["reportData"]
   );
 }
 
+// ── Attachment renderer ───────────────────────────────────
+function AttachmentContent({ msg }: { msg: ChatMessage }) {
+  const [url, setUrl] = useState(msg.attachmentUrl ?? '');
+
+  // storage 경로인 경우 signed URL로 변환
+  useEffect(() => {
+    const raw = msg.attachmentUrl;
+    if (!raw) return;
+    // 이미 http URL이면 그대로 사용 (blob: 또는 data: 포함)
+    if (raw.startsWith('http') || raw.startsWith('blob:') || raw.startsWith('data:')) {
+      setUrl(raw);
+    } else {
+      getSignedUrl(raw).then((signed) => { if (signed) setUrl(signed); });
+    }
+  }, [msg.attachmentUrl]);
+
+  if (!url) return null;
+
+  if (msg.attachmentType === 'video') {
+    return (
+      <video
+        src={url}
+        controls
+        preload="metadata"
+        className="rounded-xl max-w-[260px] max-h-[200px] object-cover"
+      />
+    );
+  }
+  return (
+    <img
+      src={url}
+      alt="첨부 이미지"
+      className="rounded-xl max-w-[260px] max-h-[260px] object-cover cursor-pointer"
+      loading="lazy"
+      onClick={() => window.open(url, '_blank')}
+    />
+  );
+}
+
 // ── Message bubble ─────────────────────────────────────────
 function MessageBubble({ msg }: { msg: ChatMessage }) {
   const isMe = msg.sender === "teacher";
@@ -78,6 +118,36 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
         <div className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
           {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
           <DailyReportCard data={msg.reportData} />
+          <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 첨부파일 메시지
+  if (msg.type === "attachment" && msg.attachmentUrl) {
+    return (
+      <div className={`flex ${isMe ? "flex-row-reverse" : "flex-row"} items-end gap-2 mb-3`}>
+        {!isMe && (
+          <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-bold flex-shrink-0 self-end">
+            보
+          </div>
+        )}
+        <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} max-w-[72%]`}>
+          {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
+          <AttachmentContent msg={msg} />
+          {msg.text && (
+            <div
+              className="px-4 py-2.5 rounded-2xl text-sm leading-relaxed mt-1"
+              style={
+                isMe
+                  ? { background: "linear-gradient(135deg, #026eff, #0243c2)", color: "white", borderBottomRightRadius: 6 }
+                  : { background: "#f3f4f6", color: "#1f2937", borderBottomLeftRadius: 6 }
+              }
+            >
+              {msg.text}
+            </div>
+          )}
           <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
         </div>
       </div>
@@ -148,7 +218,11 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>(conversation.messages);
   const [showCabiSaem, setShowCabiSaem] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMessages(conversation.messages);
@@ -158,12 +232,76 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = async () => {
-    if (!input.trim() || !profile) return;
-    const text = input.trim();
-    setInput("");
+  // 파일 선택 핸들러
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    e.target.value = ''; // 같은 파일 재선택 허용
 
-    // 즉시 UI에 반영 (낙관적 업데이트)
+    const error = validateFile(file);
+    if (error) {
+      alert(error);
+      return;
+    }
+
+    setPendingFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+  };
+
+  // 미리보기 취소
+  const clearPending = () => {
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPendingFile(null);
+    setPreviewUrl(null);
+  };
+
+  const handleSend = async () => {
+    if ((!input.trim() && !pendingFile) || !profile) return;
+
+    const text = input.trim();
+    const file = pendingFile;
+    const preview = previewUrl;
+    const fileType = file ? getAttachmentType(file) : null;
+
+    setInput("");
+    clearPending();
+
+    // 첨부파일이 있는 경우
+    if (file && fileType) {
+      // 낙관적 업데이트 (미리보기 URL 사용)
+      const tempMsg: ChatMessage = {
+        id: Date.now(),
+        sender: "teacher",
+        senderName: profile.name || "선생님",
+        text: text || "",
+        time: "업로드 중...",
+        type: "attachment",
+        attachmentUrl: preview ?? undefined,
+        attachmentType: fileType,
+      };
+      setMessages((prev) => [...prev, tempMsg]);
+      setUploading(true);
+
+      try {
+        const { url: storagePath, type: attachType } = await uploadAttachment(file, profile.id);
+        await sendMessage({
+          student_id: String(conversation.studentId),
+          sender_id: profile.id,
+          receiver_id: conversation._parentId ?? "",
+          content: text || (attachType === 'image' ? '사진' : '영상'),
+          message_type: "attachment",
+          attachment_url: storagePath,
+          attachment_type: attachType,
+        });
+      } catch (e) {
+        console.error("첨부파일 전송 실패:", e);
+      } finally {
+        setUploading(false);
+      }
+      return;
+    }
+
+    // 텍스트만 전송
     const tempMsg: ChatMessage = {
       id: Date.now(),
       sender: "teacher",
@@ -174,7 +312,6 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
     };
     setMessages((prev) => [...prev, tempMsg]);
 
-    // Supabase에 실제 저장
     try {
       await sendMessage({
         student_id: String(conversation.studentId),
@@ -285,9 +422,44 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
           ))}
         </div>
 
+        {/* ── Attachment preview ── */}
+        {previewUrl && pendingFile && (
+          <div className="flex-shrink-0 px-4 md:px-5 pt-3 border-t border-gray-100 bg-white">
+            <div className="relative inline-block">
+              {getAttachmentType(pendingFile) === 'video' ? (
+                <video src={previewUrl} className="h-24 rounded-xl object-cover" />
+              ) : (
+                <img src={previewUrl} alt="미리보기" className="h-24 rounded-xl object-cover" />
+              )}
+              <button
+                onClick={clearPending}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs shadow cursor-pointer hover:bg-red-600"
+              >
+                <i className="ri-close-line" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* ── Input bar ── */}
         <div className="flex-shrink-0 px-4 md:px-5 py-3 border-t border-gray-100 bg-white">
           <div className="flex items-center gap-2 md:gap-3 bg-gray-50 rounded-2xl px-4 py-2.5">
+            {/* 첨부 버튼 */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*,video/*"
+              className="hidden"
+              onChange={handleFileSelect}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-8 h-8 flex items-center justify-center rounded-xl text-gray-400 hover:text-[#026eff] hover:bg-blue-50 cursor-pointer transition-colors flex-shrink-0 disabled:opacity-30"
+            >
+              <i className="ri-attachment-2 text-lg" />
+            </button>
+
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -298,11 +470,15 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
             />
             <button
               onClick={handleSend}
-              disabled={!input.trim()}
+              disabled={(!input.trim() && !pendingFile) || uploading}
               className="w-8 h-8 flex items-center justify-center rounded-xl text-white cursor-pointer whitespace-nowrap transition-all disabled:opacity-30 flex-shrink-0"
               style={{ background: "#026eff" }}
             >
-              <i className="ri-send-plane-fill text-xs" />
+              {uploading ? (
+                <i className="ri-loader-4-line text-xs animate-spin" />
+              ) : (
+                <i className="ri-send-plane-fill text-xs" />
+              )}
             </button>
           </div>
         </div>

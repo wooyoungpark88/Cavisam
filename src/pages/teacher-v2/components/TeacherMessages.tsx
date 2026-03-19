@@ -130,7 +130,10 @@ export default function TeacherMessages() {
             senderName: m.sender?.name ?? "알 수 없음",
             text: m.content,
             time: new Date(m.created_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
-            type: m.message_type === "daily_report" ? "daily-report" as const : "text" as const,
+            type: m.message_type === "attachment" ? "attachment" as const
+              : m.message_type === "daily_report" ? "daily-report" as const : "text" as const,
+            attachmentUrl: m.attachment_url ?? undefined,
+            attachmentType: m.attachment_type ?? undefined,
           }));
 
           return {
@@ -181,7 +184,10 @@ export default function TeacherMessages() {
             senderName: isFromMe ? (profile.name || "선생님") : "보호자",
             text: msg.content,
             time: new Date(msg.created_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
-            type: msg.message_type === "daily_report" ? "daily-report" : "text",
+            type: msg.message_type === "attachment" ? "attachment"
+              : msg.message_type === "daily_report" ? "daily-report" : "text",
+            attachmentUrl: msg.attachment_url ?? undefined,
+            attachmentType: msg.attachment_type ?? undefined,
           };
 
           setConversations((prev) =>

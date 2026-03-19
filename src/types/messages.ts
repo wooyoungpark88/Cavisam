@@ -4,7 +4,7 @@ export interface ChatMessage {
   senderName: string;
   text: string;
   time: string;
-  type: "text" | "daily-report";
+  type: "text" | "daily-report" | "attachment";
   reportData?: {
     sleep: string;
     bowel: string;
@@ -14,6 +14,8 @@ export interface ChatMessage {
     sentBy: string;
     sentTime: string;
   };
+  attachmentUrl?: string;
+  attachmentType?: "image" | "video";
 }
 
 export interface StudentConversation {

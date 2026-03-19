@@ -6,9 +6,11 @@ export interface MessageDB {
   sender_id: string;
   receiver_id: string;
   content: string;
-  message_type: 'text' | 'daily_report';
+  message_type: 'text' | 'daily_report' | 'attachment';
   is_read: boolean;
   created_at: string;
+  attachment_url?: string | null;
+  attachment_type?: 'image' | 'video' | null;
   sender?: { name: string; avatar_url: string | null };
   receiver?: { name: string; avatar_url: string | null };
 }
@@ -26,6 +28,7 @@ export async function getMessages(studentId: string, userId: string): Promise<Me
 
 export async function sendMessage(
   msg: Pick<MessageDB, 'student_id' | 'sender_id' | 'receiver_id' | 'content' | 'message_type'>
+    & { attachment_url?: string; attachment_type?: 'image' | 'video' }
 ): Promise<MessageDB | null> {
   const { data, error } = await supabase
     .from('parent_messages')
