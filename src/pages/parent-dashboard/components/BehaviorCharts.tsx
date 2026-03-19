@@ -85,14 +85,14 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
       <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between mb-1">
         <div>
           <h3 className="text-xs font-bold text-gray-700">최근 7일 도전행동 추이</h3>
-          <p className="text-[12px] text-gray-400 mt-0.5">
-            이번 주 총&nbsp;<strong className="text-gray-600">{totalWeek}건</strong>
-            <span className="text-gray-300 mx-1.5">·</span>
-            일평균&nbsp;<strong className="text-gray-600">{avgPerDay}건</strong>
-            <span className="hidden sm:inline ml-1.5 text-gray-300">· 도트를 클릭해 세부 확인</span>
+          <p className="text-xs text-gray-500 mt-0.5">
+            이번 주 총&nbsp;<strong className="text-gray-700">{totalWeek}건</strong>
+            <span className="text-gray-400 mx-1.5">·</span>
+            일평균&nbsp;<strong className="text-gray-700">{avgPerDay}건</strong>
+            <span className="hidden sm:inline ml-1.5 text-gray-400">· 도트를 클릭해 세부 확인</span>
           </p>
         </div>
-        <div className="flex items-center gap-2 text-[12px] text-gray-400 sm:flex-shrink-0">
+        <div className="flex items-center gap-2 text-xs text-gray-500 sm:flex-shrink-0">
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block bg-[#ef4444]" />5↑</span>
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block bg-[#f59e0b]" />3~4</span>
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block bg-[#10b981]" />2↓</span>
@@ -138,7 +138,7 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
           })}
           {xs.map((x, i) => (
             <text key={i} x={x} y={svgH - 4} textAnchor="middle" fontSize="9"
-              fill={i === activeIdx ? "#374151" : "#9ca3af"} fontWeight={i === activeIdx ? "700" : "400"}>
+              fill={i === activeIdx ? "#374151" : "#6b7280"} fontWeight={i === activeIdx ? "700" : "400"}>
               {data[i].day}
             </text>
           ))}
@@ -170,7 +170,7 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
               </div>
               <div className="flex items-baseline gap-1 mb-2.5">
                 <span className="text-2xl font-black leading-none" style={{ color }}>{d.value}</span>
-                <span className="text-xs text-gray-400">건 발생</span>
+                <span className="text-xs text-gray-500">건 발생</span>
               </div>
               <div className="space-y-1.5">
                 {TYPE_CONFIG.map((tc) => (
@@ -185,7 +185,7 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
                 ))}
               </div>
               <div className="mt-2 pt-2 border-t border-gray-50 flex justify-between">
-                <span className="text-[12px] text-gray-400">총 발생</span>
+                <span className="text-[12px] text-gray-500">총 발생</span>
                 <span className="text-[12.5px] font-bold text-gray-700">{d.value}건</span>
               </div>
             </div>
@@ -196,7 +196,7 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
       <div className="mt-4 pt-4 border-t border-gray-50">
         <div className="flex items-baseline justify-between mb-3">
           <p className="text-[12.5px] font-bold text-gray-600">요일별 행동 유형 구성</p>
-          <p className="text-[12px] text-gray-400">막대 높이 = 총 발생 수 · 색상 = 행동 유형</p>
+          <p className="text-xs text-gray-500">막대 높이 = 총 발생 수 · 색상 = 행동 유형</p>
         </div>
         <div className="flex gap-2 items-end">
           {data.map((d, i) => {
@@ -207,7 +207,7 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
             const severity = getSeverity(d.value);
             return (
               <div key={i} className="flex-1 flex flex-col items-center gap-1.5 cursor-pointer" onClick={() => setActiveIdx(activeIdx === i ? null : i)}>
-                <span className={`text-[12px] font-semibold transition-colors ${isActive ? "text-gray-700" : "text-gray-400"}`}>{d.value}건</span>
+                <span className={`text-[12px] font-semibold transition-colors ${isActive ? "text-gray-700" : "text-gray-500"}`}>{d.value}건</span>
                 <div className="w-full flex justify-center items-end" style={{ height: barMaxH }}>
                   <div className="w-full rounded-md overflow-hidden flex flex-col-reverse transition-all duration-200"
                     style={{ height: barH, outline: isActive ? `2px solid ${color}` : "2px solid transparent", outlineOffset: "2px" }}>
@@ -224,7 +224,7 @@ export function DailyBehaviorChart({ data }: { data: DailyEntry[] }) {
         </div>
         <div className="flex items-center gap-3 mt-3 justify-end">
           {TYPE_CONFIG.map((tc) => (
-            <span key={tc.key} className="flex items-center gap-1 text-[12px] text-gray-400">
+            <span key={tc.key} className="flex items-center gap-1 text-xs text-gray-500">
               <span className="w-2 h-2 rounded-sm inline-block" style={{ background: tc.color }} />{tc.label}
             </span>
           ))}
@@ -300,12 +300,12 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
       <div className="flex flex-col gap-1.5 sm:flex-row sm:items-start sm:justify-between mb-1">
         <div>
           <h3 className="text-xs font-bold text-gray-700">주간 컨디션 추이</h3>
-          <p className="text-[12px] text-gray-400 mt-0.5">
+          <p className="text-xs text-gray-500 mt-0.5">
             이번 주 전체 관찰 중 <strong className="text-[#10b981]">좋음 {goodPct}%</strong>
-            <span className="hidden sm:inline ml-1.5 text-gray-300">· 도트를 클릭해 세부 확인</span>
+            <span className="hidden sm:inline ml-1.5 text-gray-400">· 도트를 클릭해 세부 확인</span>
           </p>
         </div>
-        <div className="flex items-center gap-2.5 text-[12px] text-gray-400 sm:flex-shrink-0">
+        <div className="flex items-center gap-2.5 text-xs text-gray-500 sm:flex-shrink-0">
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block bg-[#10b981]" />좋음</span>
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block bg-[#f59e0b]" />보통</span>
           <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full inline-block bg-[#ef4444]" />주의</span>
@@ -350,7 +350,7 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
             );
           })}
           {xs.map((x, i) => (
-            <text key={i} x={x} y={svgH - 4} textAnchor="middle" fontSize="9" fill={i === activeIdx ? "#374151" : "#9ca3af"} fontWeight={i === activeIdx ? "700" : "400"}>
+            <text key={i} x={x} y={svgH - 4} textAnchor="middle" fontSize="9" fill={i === activeIdx ? "#374151" : "#6b7280"} fontWeight={i === activeIdx ? "700" : "400"}>
               {data[i].day}
             </text>
           ))}
@@ -400,7 +400,7 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
                 ))}
               </div>
               <div className="mt-2 pt-2 border-t border-gray-50 flex justify-between items-center">
-                <span className="text-[12px] text-gray-400">총 관찰</span>
+                <span className="text-[12px] text-gray-500">총 관찰</span>
                 <span className="text-[12.5px] font-bold text-gray-700">{total}건</span>
               </div>
             </div>
@@ -411,7 +411,7 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
       <div className="mt-4 pt-4 border-t border-gray-50">
         <div className="flex items-baseline justify-between mb-3">
           <p className="text-[12.5px] font-bold text-gray-600">요일별 컨디션 구성</p>
-          <p className="text-[12px] text-gray-400">막대 높이 = 총 관찰 수 · 색상 = 컨디션 비율</p>
+          <p className="text-xs text-gray-500">막대 높이 = 총 관찰 수 · 색상 = 컨디션 비율</p>
         </div>
         <div className="flex gap-2 items-end">
           {data.map((d, i) => {
@@ -425,7 +425,7 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
             const label = getLabel(score);
             return (
               <div key={i} className="flex-1 flex flex-col items-center gap-1.5 cursor-pointer" onClick={() => setActiveIdx(activeIdx === i ? null : i)}>
-                <span className={`text-[12px] font-semibold transition-colors ${isActive ? "text-gray-700" : "text-gray-400"}`}>{total}건</span>
+                <span className={`text-[12px] font-semibold transition-colors ${isActive ? "text-gray-700" : "text-gray-500"}`}>{total}건</span>
                 <div className="w-full flex justify-center items-end" style={{ height: barMaxH }}>
                   <div className="w-full rounded-md overflow-hidden flex flex-col-reverse transition-all duration-200"
                     style={{ height: barH, outline: isActive ? `2px solid ${color}` : "2px solid transparent", outlineOffset: "2px" }}>
@@ -442,7 +442,7 @@ export function WeeklyConditionChart({ data }: { data: { day: string; good: numb
         </div>
         <div className="flex items-center gap-3 mt-3 justify-end">
           {[{ label: "좋음 (아래)", color: "#10b981" }, { label: "보통", color: "#f59e0b" }, { label: "주의 (위)", color: "#ef4444" }].map((leg) => (
-            <span key={leg.label} className="flex items-center gap-1 text-[12px] text-gray-400">
+            <span key={leg.label} className="flex items-center gap-1 text-xs text-gray-500">
               <span className="w-2 h-2 rounded-sm inline-block" style={{ background: leg.color }} />{leg.label}
             </span>
           ))}
@@ -485,8 +485,8 @@ export function BehaviorTypeCard() {
         <p className="text-4xl font-black text-gray-900">
           {totalCount}<span className="text-lg font-bold text-gray-400">건</span>
         </p>
-        <p className="text-xs text-gray-400 mt-1.5">전체 행동 발생</p>
-        <p className="text-[12px] text-gray-300 mt-1">최근 30일</p>
+        <p className="text-xs text-gray-500 mt-1.5">전체 행동 발생</p>
+        <p className="text-xs text-gray-400 mt-1">최근 30일</p>
       </div>
       <div className="sm:col-span-2 bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="text-xs font-bold text-gray-700 mb-3">행동 유형별 발생 현황</h3>

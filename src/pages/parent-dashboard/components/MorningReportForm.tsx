@@ -444,7 +444,7 @@ export default function MorningReportForm({ onSent }: Props) {
       <div className="px-3 sm:px-7 pt-3 sm:pt-5 pb-4">
         {/* Sub-header */}
         <div className="flex items-center justify-between mb-2.5 sm:mb-3">
-          <p className="text-xs text-gray-400 truncate min-w-0 mr-2">
+          <p className="text-xs text-gray-500 truncate min-w-0 mr-2">
             {childName} 보호자 → {teacherName}
           </p>
           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -454,7 +454,7 @@ export default function MorningReportForm({ onSent }: Props) {
             >
               {filledRequired}/{totalRequired}
             </span>
-            <span className="text-[12px] text-gray-400">필수</span>
+            <span className="text-[12px] text-gray-500">필수</span>
           </div>
         </div>
 
@@ -605,7 +605,7 @@ export default function MorningReportForm({ onSent }: Props) {
                         {opt.sublabel && (
                           <span
                             className="text-[11px] mt-0.5 leading-tight text-center hidden sm:block"
-                            style={{ color: isSelected ? section.accentColor : "#9ca3af" }}
+                            style={{ color: isSelected ? section.accentColor : "#6b7280" }}
                           >
                             {opt.sublabel}
                           </span>
@@ -625,7 +625,7 @@ export default function MorningReportForm({ onSent }: Props) {
                 <i className="ri-sticky-note-line text-[12.5px] text-gray-400" />
               </div>
               <span className="text-xs font-bold text-gray-700">전달 사항</span>
-              <span className="text-[12px] text-gray-400 ml-0.5">(선택)</span>
+              <span className="text-[12px] text-gray-500 ml-0.5">(선택)</span>
               {sttSupported && (
                 <span className="ml-auto flex items-center gap-1 text-xs text-[#f97316] font-medium">
                   <i className="ri-mic-line text-xs" />
@@ -677,7 +677,7 @@ export default function MorningReportForm({ onSent }: Props) {
                   </>
                 ) : null}
               </p>
-              <span className="text-xs text-gray-300 tabular-nums">{selections.note.length}/500</span>
+              <span className="text-xs text-gray-400 tabular-nums">{selections.note.length}/500</span>
             </div>
             <style>{`
               @keyframes stt-pulse {

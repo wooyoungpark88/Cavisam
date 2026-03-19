@@ -46,7 +46,7 @@ export default function DashboardHeader({ onBack }: { onBack: () => void }) {
             alt="CareVia"
             className="h-7"
           />
-          <span className="text-xs text-gray-300">|</span>
+          <span className="text-xs text-gray-400">|</span>
           <span className="text-sm text-gray-500 font-medium">보호자</span>
         </div>
 
@@ -116,8 +116,8 @@ export default function DashboardHeader({ onBack }: { onBack: () => void }) {
                             <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#026eff]" />
                           )}
                         </div>
-                        <p className="text-[12.5px] text-gray-400 leading-snug line-clamp-2">{n.desc}</p>
-                        <p className="text-[12px] text-gray-300 mt-1">{n.time}</p>
+                        <p className="text-[12.5px] text-gray-500 leading-snug line-clamp-2">{n.desc}</p>
+                        <p className="text-[12px] text-gray-400 mt-1">{n.time}</p>
                       </div>
                     </button>
                   ))}
@@ -140,7 +140,7 @@ export default function DashboardHeader({ onBack }: { onBack: () => void }) {
             </div>
             <div className="hidden sm:block text-right">
               <p className="text-sm font-semibold text-gray-800 leading-tight">{childName} 보호자</p>
-              <p className="text-xs text-gray-400">{facility}</p>
+              <p className="text-xs text-gray-500">{facility}</p>
             </div>
           </div>
 
@@ -189,7 +189,7 @@ export function StatsRow() {
           </div>
           <div>
             <p className="text-xl font-bold text-gray-900 leading-tight">{s.value}</p>
-            <p className="text-xs text-gray-400 mt-0.5">{s.label}</p>
+            <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
           </div>
         </div>
       ))}

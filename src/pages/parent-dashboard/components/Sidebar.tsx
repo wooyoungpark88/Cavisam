@@ -72,7 +72,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
           </div>
           <span className="font-bold text-sm tracking-tight" style={{ color: "#0f172a" }}>CareVia</span>
         </div>
-        <p className="text-xs pl-8" style={{ color: "rgba(234,88,12,0.5)" }}>보호자 대시보드</p>
+        <p className="text-xs pl-8" style={{ color: "rgba(234,88,12,0.65)" }}>보호자 대시보드</p>
       </div>
 
       {/* Child info */}
@@ -94,7 +94,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
             <p className="text-sm font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
               {childName}
             </p>
-            <p className="text-xs leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
+            <p className="text-xs leading-tight truncate" style={{ color: "rgba(234,88,12,0.65)" }}>
               CareVia
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-all cursor-pointer whitespace-nowrap"
               style={{
                 background: isActive ? "rgba(234,88,12,0.10)" : "transparent",
-                color: isActive ? "#ea580c" : "rgba(30,41,59,0.5)",
+                color: isActive ? "#ea580c" : "rgba(30,41,59,0.68)",
                 border: isActive ? "1px solid rgba(234,88,12,0.18)" : "1px solid transparent",
               }}
               onMouseEnter={(e) => {
@@ -124,7 +124,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
               onMouseLeave={(e) => {
                 if (!isActive) {
                   (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                  (e.currentTarget as HTMLButtonElement).style.color = "rgba(30,41,59,0.5)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "rgba(30,41,59,0.68)";
                 }
               }}
             >
@@ -151,13 +151,13 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
         <button
           onClick={() => navigate("/teacher")}
           className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all cursor-pointer whitespace-nowrap"
-          style={{ color: "rgba(30,41,59,0.4)" }}
+          style={{ color: "rgba(30,41,59,0.60)" }}
           onMouseEnter={(e) => {
             (e.currentTarget as HTMLButtonElement).style.color = "#ea580c";
             (e.currentTarget as HTMLButtonElement).style.background = "rgba(234,88,12,0.05)";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.color = "rgba(30,41,59,0.4)";
+            (e.currentTarget as HTMLButtonElement).style.color = "rgba(30,41,59,0.60)";
             (e.currentTarget as HTMLButtonElement).style.background = "transparent";
           }}
         >
