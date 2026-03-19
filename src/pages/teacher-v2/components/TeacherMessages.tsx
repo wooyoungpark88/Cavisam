@@ -10,6 +10,68 @@ const AVATAR_COLORS = ["#026eff","#10b981","#f59e0b","#8b5cf6","#ef4444","#06b6d
 
 type MobileView = "list" | "chat";
 
+// 주간 통계 계산 유틸
+function computeWeeklyStats(
+  records: { student_id: string; date: string; sleep: string; condition: string; meal: string }[],
+  studentId: string,
+) {
+  const now = new Date();
+  const dayOfWeek = now.getDay(); // 0=Sun
+  const thisMonday = new Date(now);
+  thisMonday.setDate(now.getDate() - ((dayOfWeek + 6) % 7));
+  thisMonday.setHours(0, 0, 0, 0);
+  const lastMonday = new Date(thisMonday);
+  lastMonday.setDate(thisMonday.getDate() - 7);
+
+  const thisWeekStr = thisMonday.toISOString().slice(0, 10);
+  const lastWeekStr = lastMonday.toISOString().slice(0, 10);
+
+  const mine = records.filter((r) => r.student_id === studentId);
+  const thisWeek = mine.filter((r) => r.date >= thisWeekStr);
+  const lastWeek = mine.filter((r) => r.date >= lastWeekStr && r.date < thisWeekStr);
+
+  const COND_SCORE: Record<string, number> = { good: 3, normal: 2, bad: 1, very_bad: 0 };
+  const MEAL_SCORE: Record<string, number> = { good: 3, normal: 2, none: 0 };
+
+  function avg(arr: number[]) { return arr.length === 0 ? null : arr.reduce((a, b) => a + b, 0) / arr.length; }
+  function parseSleep(s: string) {
+    const n = parseFloat(s);
+    return isNaN(n) ? null : n;
+  }
+
+  const twSleep = avg(thisWeek.map((r) => parseSleep(r.sleep)).filter((v): v is number => v !== null));
+  const lwSleep = avg(lastWeek.map((r) => parseSleep(r.sleep)).filter((v): v is number => v !== null));
+  const twCond = avg(thisWeek.map((r) => COND_SCORE[r.condition] ?? 2));
+  const lwCond = avg(lastWeek.map((r) => COND_SCORE[r.condition] ?? 2));
+  const twMeal = avg(thisWeek.map((r) => MEAL_SCORE[r.meal] ?? 2));
+  const lwMeal = avg(lastWeek.map((r) => MEAL_SCORE[r.meal] ?? 2));
+
+  function changeStr(curr: number | null, prev: number | null): { val: string; change: string; positive: boolean } {
+    if (curr === null) return { val: "-", change: "→", positive: true };
+    const val = curr.toFixed(1);
+    if (prev === null) return { val, change: "→", positive: true };
+    const diff = curr - prev;
+    if (Math.abs(diff) < 0.05) return { val, change: "→", positive: true };
+    return { val, change: diff > 0 ? "↑" : "↓", positive: diff > 0 };
+  }
+
+  const s = changeStr(twSleep, lwSleep);
+  const c = changeStr(twCond, lwCond);
+  const m = changeStr(twMeal, lwMeal);
+
+  return {
+    sleep: twSleep !== null ? `${twSleep.toFixed(1)}h` : "-",
+    sleepChange: s.change,
+    sleepPositive: s.positive,
+    condition: twCond !== null ? ["매우나쁨", "나쁨", "보통", "좋음"][Math.round(twCond)] ?? "보통" : "-",
+    conditionChange: c.change,
+    conditionPositive: c.positive,
+    meal: twMeal !== null ? ["안먹음", "조금", "보통", "잘먹음"][Math.round(twMeal)] ?? "보통" : "-",
+    mealChange: m.change,
+    mealPositive: m.positive,
+  };
+}
+
 export default function TeacherMessages() {
   const { students } = useTeacherData();
   const { profile } = useAuth();
@@ -24,21 +86,35 @@ export default function TeacherMessages() {
       return;
     }
 
-    supabase
-      .from("parent_messages")
-      .select("*, sender:profiles!sender_id(name, avatar_url), receiver:profiles!receiver_id(name, avatar_url)")
-      .or(`sender_id.eq.${profile.id},receiver_id.eq.${profile.id}`)
-      .order("created_at", { ascending: true })
-      .then(({ data }) => {
+    // 2주치 daily_records + parent_messages 병렬 조회
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    const sinceDate = twoWeeksAgo.toISOString().slice(0, 10);
+    const studentIds = students.map((s) => s.id);
+
+    Promise.all([
+      supabase
+        .from("parent_messages")
+        .select("*, sender:profiles!sender_id(name, avatar_url), receiver:profiles!receiver_id(name, avatar_url)")
+        .or(`sender_id.eq.${profile.id},receiver_id.eq.${profile.id}`)
+        .order("created_at", { ascending: true }),
+      supabase
+        .from("daily_records")
+        .select("student_id, date, sleep, condition, meal")
+        .in("student_id", studentIds)
+        .gte("date", sinceDate),
+    ]).then(([{ data: msgData }, { data: recData }]) => {
         const messagesByStudent = new Map<string, any[]>();
-        if (data) {
-          for (const msg of data) {
+        if (msgData) {
+          for (const msg of msgData) {
             const sid = msg.student_id as string;
             if (!sid) continue;
             if (!messagesByStudent.has(sid)) messagesByStudent.set(sid, []);
             messagesByStudent.get(sid)!.push(msg);
           }
         }
+
+        const records = (recData ?? []) as { student_id: string; date: string; sleep: string; condition: string; meal: string }[];
 
         const convs: StudentConversation[] = students.map((student, index) => {
           const msgs = messagesByStudent.get(student.id) ?? [];
@@ -67,11 +143,7 @@ export default function TeacherMessages() {
             lastTime: lastMsg
               ? new Date(lastMsg.created_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })
               : "",
-            weeklyStats: {
-              sleep: "-", sleepChange: "→", sleepPositive: true,
-              condition: "-", conditionChange: "→", conditionPositive: true,
-              meal: "-", mealChange: "→", mealPositive: true,
-            },
+            weeklyStats: computeWeeklyStats(records, student.id),
             messages: chatMessages,
           };
         });

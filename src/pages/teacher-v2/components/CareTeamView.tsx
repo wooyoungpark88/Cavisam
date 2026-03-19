@@ -356,8 +356,8 @@ export default function CareTeamView() {
   const { profile } = useAuth();
   const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
   const [studentAssignments, setStudentAssignments] = useState<StudentAssignment[]>([]);
-  const [teamMeetings] = useState<TeamMeeting[]>([]);
-  const [teamActivities] = useState<TeamActivity[]>([]);
+  const [teamMeetings, setTeamMeetings] = useState<TeamMeeting[]>([]);
+  const [teamActivities, setTeamActivities] = useState<TeamActivity[]>([]);
   const [roleFilter, setRoleFilter] = useState<RoleFilter>("전체");
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>("assignments");
@@ -408,6 +408,55 @@ export default function CareTeamView() {
       assignedMemberIds: [],
       priority: (s.condition === 'bad' || s.condition === 'very_bad') ? "집중" as const : "일반" as const,
     })));
+
+    // 미팅 조회
+    const MEETING_TYPE_MAP: Record<string, TeamMeeting["type"]> = {
+      regular: "정기회의", case: "사례회의", parent: "보호자간담회", external: "외부협력",
+    };
+    supabase
+      .from('team_meetings')
+      .select('*, team_meeting_participants(member_id)')
+      .eq('organization_id', orgId)
+      .order('meeting_date', { ascending: false })
+      .limit(20)
+      .then(({ data }) => {
+        if (!data) return;
+        const today = new Date().toISOString().slice(0, 10);
+        setTeamMeetings(data.map((m: any) => ({
+          id: m.id,
+          title: m.title,
+          date: m.meeting_date,
+          time: m.meeting_time,
+          type: MEETING_TYPE_MAP[m.meeting_type] ?? "정기회의",
+          participants: (m.team_meeting_participants ?? []).map((p: any) => p.member_id),
+          agenda: Array.isArray(m.agenda) ? m.agenda : [],
+          isUpcoming: m.meeting_date >= today,
+          location: m.location,
+          notes: m.notes,
+        })));
+      });
+
+    // 활동 기록 조회
+    supabase
+      .from('team_activities')
+      .select('*, member:profiles!member_id(name, avatar_url)')
+      .eq('organization_id', orgId)
+      .order('created_at', { ascending: false })
+      .limit(30)
+      .then(({ data }) => {
+        if (!data) return;
+        setTeamActivities(data.map((a: any, i: number) => ({
+          id: a.id,
+          memberId: a.member_id,
+          memberName: a.member?.name ?? "알 수 없음",
+          memberColor: AVATAR_COLORS[i % AVATAR_COLORS.length],
+          memberInitial: (a.member?.name ?? "?").charAt(0),
+          action: a.action,
+          target: a.target,
+          time: new Date(a.created_at).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          type: a.activity_type as TeamActivity["type"],
+        })));
+      });
   }, [orgId, students, profile?.id]);
 
   const filteredMembers =

@@ -395,7 +395,81 @@ create policy "notifications_update" on public.notifications
   for update using (user_id = auth.uid());
 
 -- --------------------------------------------------------
--- 17. REALTIME 구독 활성화
+-- 17. TEAM_MEETINGS (돌봄팀 미팅)
+-- --------------------------------------------------------
+create table if not exists public.team_meetings (
+  id              uuid primary key default uuid_generate_v4(),
+  organization_id uuid not null references public.organizations(id) on delete cascade,
+  title           text not null,
+  meeting_type    text not null check (meeting_type in ('regular', 'case', 'parent', 'external')) default 'regular',
+  meeting_date    date not null,
+  meeting_time    text not null default '',
+  location        text not null default '',
+  agenda          jsonb not null default '[]'::jsonb,
+  notes           text,
+  created_by      uuid references public.profiles(id) on delete set null,
+  created_at      timestamptz not null default now()
+);
+
+alter table public.team_meetings enable row level security;
+
+create policy "team_meetings_select" on public.team_meetings
+  for select using (
+    organization_id = public.get_my_org()
+    or public.get_my_role() = 'admin'
+  );
+
+create policy "team_meetings_manage" on public.team_meetings
+  for all using (public.get_my_role() in ('teacher', 'admin'));
+
+-- 미팅 참석자
+create table if not exists public.team_meeting_participants (
+  id         uuid primary key default uuid_generate_v4(),
+  meeting_id uuid not null references public.team_meetings(id) on delete cascade,
+  member_id  uuid not null references public.profiles(id) on delete cascade,
+  unique (meeting_id, member_id)
+);
+
+alter table public.team_meeting_participants enable row level security;
+
+create policy "team_meeting_participants_select" on public.team_meeting_participants
+  for select using (
+    exists (
+      select 1 from public.team_meetings m
+      where m.id = team_meeting_participants.meeting_id
+      and (m.organization_id = public.get_my_org() or public.get_my_role() = 'admin')
+    )
+  );
+
+create policy "team_meeting_participants_manage" on public.team_meeting_participants
+  for all using (public.get_my_role() in ('teacher', 'admin'));
+
+-- --------------------------------------------------------
+-- 18. TEAM_ACTIVITIES (돌봄팀 활동 기록)
+-- --------------------------------------------------------
+create table if not exists public.team_activities (
+  id              uuid primary key default uuid_generate_v4(),
+  organization_id uuid not null references public.organizations(id) on delete cascade,
+  member_id       uuid not null references public.profiles(id) on delete cascade,
+  activity_type   text not null check (activity_type in ('note', 'report', 'meeting', 'alert', 'update')) default 'note',
+  action          text not null,
+  target          text not null default '',
+  created_at      timestamptz not null default now()
+);
+
+alter table public.team_activities enable row level security;
+
+create policy "team_activities_select" on public.team_activities
+  for select using (
+    organization_id = public.get_my_org()
+    or public.get_my_role() = 'admin'
+  );
+
+create policy "team_activities_manage" on public.team_activities
+  for all using (public.get_my_role() in ('teacher', 'admin'));
+
+-- --------------------------------------------------------
+-- 19. REALTIME 구독 활성화
 -- --------------------------------------------------------
 alter publication supabase_realtime add table public.behavior_events;
 alter publication supabase_realtime add table public.parent_messages;

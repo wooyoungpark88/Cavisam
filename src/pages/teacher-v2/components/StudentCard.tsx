@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { type StudentDailyReport, type ConditionLevel, type MealLevel, type SleepLevel } from "../../../types/teacher";
+import type { AiCareReport } from "../../../types/ai-care";
 import AICareModal from "./AICareModal";
+import { getLatestAiCareReport } from "../../../lib/api/ai-care";
 
 function conditionStyle(level: ConditionLevel): { color: string; bg: string; label: string } {
   switch (level) {
@@ -36,9 +38,14 @@ interface StudentCardProps {
 
 export default function StudentCard({ student }: StudentCardProps) {
   const [showAI, setShowAI] = useState(false);
+  const [aiReport, setAiReport] = useState<AiCareReport | null>(null);
   const condStyle = conditionStyle(student.condition);
   const mlStyle = mealStyle(student.meal);
-  const aiReport = null;
+
+  useEffect(() => {
+    if (!student.id) return;
+    getLatestAiCareReport(String(student.id)).then(setAiReport);
+  }, [student.id]);
 
   const hasNote = student.note && student.note !== "-";
   const hasMed  = student.medication && student.medication !== "-";
