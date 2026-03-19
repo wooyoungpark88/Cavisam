@@ -125,7 +125,7 @@ export default function ParentPage() {
           {/* Feature chips */}
           <div className="flex flex-col gap-3 mt-2">
             {[
-              { icon: "ri-calendar-heart-line", text: "자녀 일과 타임라인 확인" },
+              { icon: "ri-calendar-check-line", text: "자녀 일과 타임라인 확인" },
               { icon: "ri-chat-heart-line", text: "담당 교사와 실시간 소통" },
               { icon: "ri-bar-chart-2-line", text: "AI 기반 성장 리포트" },
             ].map((item) => (
