@@ -587,18 +587,18 @@ function AISidebar({
   return (
     <div className="space-y-3">
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
-        <h3 className="text-xs font-bold text-gray-800 mb-3">AI 주간 인사이트</h3>
+        <h3 className="text-sm font-bold text-gray-800 mb-3">AI 주간 인사이트</h3>
         {aiWeeklyInsights.length === 0 ? (
-          <p className="text-[12.5px] text-gray-400">아직 분석할 데이터가 없어요</p>
+          <p className="text-xs text-gray-400">아직 분석할 데이터가 없어요</p>
         ) : (
           <div className="space-y-3.5">
             {aiWeeklyInsights.map((insight, i) => (
               <div key={i}>
                 {/* 라벨 + 변화율 배지 */}
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[12.5px] text-gray-600">{insight.label}</span>
+                  <span className="text-xs font-medium text-gray-700">{insight.label}</span>
                   <span
-                    className="text-[12.5px] font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
+                    className="text-xs font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
                     style={{ background: `${insight.color}15`, color: insight.color }}
                   >
                     {insight.badge}
@@ -612,7 +612,7 @@ function AISidebar({
                   />
                 </div>
                 {/* 막대 의미 설명 */}
-                <p className="text-[11px] text-gray-400 leading-relaxed">{insight.subLabel}</p>
+                <p className="text-xs text-gray-400 leading-relaxed">{insight.subLabel}</p>
               </div>
             ))}
           </div>
@@ -621,11 +621,11 @@ function AISidebar({
 
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-bold text-gray-800">돌봄 팀</h3>
-          <span className="text-[12px] text-gray-400 font-medium">클릭 시 대화</span>
+          <h3 className="text-sm font-bold text-gray-800">돌봄 팀</h3>
+          <span className="text-xs text-gray-400 font-medium">클릭 시 대화</span>
         </div>
         {careTeamDisplay.length === 0 ? (
-          <p className="text-[12.5px] text-gray-400">돌봄 팀 정보가 없어요</p>
+          <p className="text-xs text-gray-400">돌봄 팀 정보가 없어요</p>
         ) : (
           <div className="flex gap-2 sm:block sm:space-y-1 overflow-x-auto pb-1 sm:pb-0">
             {careTeamDisplay.slice(0, 3).map((member) => (
@@ -649,10 +649,10 @@ function AISidebar({
                 </div>
                 {/* Name / role */}
                 <div className="min-w-0 flex-1 text-center sm:text-left">
-                  <p className="text-xs font-semibold text-gray-800 leading-tight truncate">
+                  <p className="text-sm font-semibold text-gray-800 leading-tight truncate">
                     {member.name}
                   </p>
-                  <p className="text-[12px] text-gray-400 leading-tight hidden sm:block">{member.role}</p>
+                  <p className="text-xs text-gray-400 leading-tight hidden sm:block">{member.role}</p>
                 </div>
                 {/* Chat icon */}
                 <div
@@ -944,7 +944,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
 
         {/* Secondary panel: AI Insights + Care Team — xl only */}
         <div
-          className="hidden xl:flex flex-col w-52 flex-shrink-0 rounded-2xl border border-gray-100 overflow-hidden"
+          className="hidden xl:flex flex-col w-72 flex-shrink-0 rounded-2xl border border-gray-100 overflow-hidden"
           style={{ background: "#f8fafc" }}
         >
           {/* Secondary label bar */}

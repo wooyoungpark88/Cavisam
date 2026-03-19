@@ -72,7 +72,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
           </div>
           <span className="font-bold text-sm tracking-tight" style={{ color: "#0f172a" }}>CareVia</span>
         </div>
-        <p className="text-[12px] pl-8" style={{ color: "rgba(234,88,12,0.5)" }}>보호자 대시보드</p>
+        <p className="text-xs pl-8" style={{ color: "rgba(234,88,12,0.5)" }}>보호자 대시보드</p>
       </div>
 
       {/* Child info */}
@@ -91,10 +91,10 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
             {childInitial}
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
+            <p className="text-sm font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
               {childName}
             </p>
-            <p className="text-[12px] leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
+            <p className="text-xs leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
               CareVia
             </p>
           </div>
@@ -131,7 +131,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
               <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
                 <i className={`${item.icon} text-sm`} />
               </div>
-              <span className="text-xs font-medium">{item.label}</span>
+              <span className="text-sm font-medium">{item.label}</span>
               {isActive && (
                 <span
                   className="ml-auto w-1 h-4 rounded-full flex-shrink-0"
@@ -164,7 +164,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
           <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
             <i className="ri-exchange-line text-sm" />
           </div>
-          <span className="text-xs font-medium">교사 뷰로 전환</span>
+          <span className="text-sm font-medium">교사 뷰로 전환</span>
         </button>
       </div>
     </aside>
