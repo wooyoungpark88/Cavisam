@@ -8,11 +8,13 @@ import AdminPage from './pages/admin-v2/page';
 import AuthCallback from './pages/auth/AuthCallback';
 import AuthSetup from './pages/auth/AuthSetup';
 import AuthPending from './pages/auth/AuthPending';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 export const router = createBrowserRouter([
   // 공개
   { path: '/', element: <Home /> },
   { path: '/login', element: <Login /> },
+  { path: '/privacy', element: <PrivacyPolicy /> },
 
   // 인증 플로우
   { path: '/auth/callback', element: <AuthCallback /> },

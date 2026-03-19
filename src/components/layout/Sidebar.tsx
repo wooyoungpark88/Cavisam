@@ -105,6 +105,14 @@ export function Sidebar({ isOpen = false, onClose }: SidebarProps) {
           <span className="text-base">🔄</span>
           <span>{role === 'teacher' ? '보호자 뷰로 전환' : '교사 뷰로 전환'}</span>
         </button>
+        <a
+          href="/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block px-3 py-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
+        >
+          개인정보 처리방침
+        </a>
       </footer>
     </aside>
   );

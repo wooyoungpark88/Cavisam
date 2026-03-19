@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import type { UserRole } from '../../types';
@@ -14,11 +14,13 @@ export default function AuthSetup() {
 
   const [inviteCode, setInviteCode] = useState('');
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
+  const [agreedPrivacy, setAgreedPrivacy] = useState(false);
+  const [agreedSensitive, setAgreedSensitive] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   async function handleSubmit() {
-    if (!session || !inviteCode.trim() || !selectedRole) return;
+    if (!session || !inviteCode.trim() || !selectedRole || !agreedPrivacy || !agreedSensitive) return;
     setSubmitting(true);
     setError('');
 
@@ -131,6 +133,35 @@ export default function AuthSetup() {
           </div>
         </div>
 
+        {/* 개인정보 동의 */}
+        <div className="mb-6 space-y-3">
+          <label className="flex items-start gap-2.5 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={agreedPrivacy}
+              onChange={(e) => setAgreedPrivacy(e.target.checked)}
+              className="w-4 h-4 mt-0.5 border-2 border-gray-300 rounded text-[#026eff] focus:ring-[#026eff]"
+            />
+            <span className="text-sm text-gray-700">
+              <Link to="/privacy" target="_blank" className="text-[#026eff] underline font-medium">
+                개인정보 처리방침
+              </Link>
+              에 동의합니다. <span className="text-red-500">(필수)</span>
+            </span>
+          </label>
+          <label className="flex items-start gap-2.5 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={agreedSensitive}
+              onChange={(e) => setAgreedSensitive(e.target.checked)}
+              className="w-4 h-4 mt-0.5 border-2 border-gray-300 rounded text-[#026eff] focus:ring-[#026eff]"
+            />
+            <span className="text-sm text-gray-700">
+              건강 관련 민감정보(수면·식사·컨디션·배변·투약) 수집에 동의합니다. <span className="text-red-500">(필수)</span>
+            </span>
+          </label>
+        </div>
+
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">
             {error}
@@ -139,7 +170,7 @@ export default function AuthSetup() {
 
         <button
           onClick={handleSubmit}
-          disabled={!inviteCode.trim() || !selectedRole || submitting}
+          disabled={!inviteCode.trim() || !selectedRole || !agreedPrivacy || !agreedSensitive || submitting}
           className="w-full py-3 bg-[#026eff] text-white rounded-xl font-medium hover:bg-[#0258d4] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {submitting ? '처리 중...' : '설정 완료'}

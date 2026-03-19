@@ -10,9 +10,13 @@ export default defineConfig({
     sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          supabase: ['@supabase/supabase-js'],
+        manualChunks(id) {
+          if (id.includes('react-dom') || id.includes('react-router-dom')) {
+            return 'vendor'
+          }
+          if (id.includes('@supabase')) {
+            return 'supabase'
+          }
         },
       },
     },

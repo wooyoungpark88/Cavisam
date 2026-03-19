@@ -146,6 +146,51 @@ create index if not exists idx_parent_messages_student
   on parent_messages(student_id, created_at);
 
 
+-- ========== 4. care_team INSERT 정책 ==========
+
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'care_team' and policyname = 'care_team_insert') then
+    create policy "care_team_insert" on public.care_team
+      for insert with check (public.get_my_role() in ('teacher', 'admin'));
+  end if;
+end $$;
+
+
+-- ========== 5. event_groups 정책 세분화 ==========
+
+-- 기존 과도한 'for all' 정책 제거 후 개별 정책으로 분리
+drop policy if exists "event_groups_manage" on public.event_groups;
+drop policy if exists "event_groups_teacher_manage" on public.event_groups;
+
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'event_groups' and policyname = 'event_groups_select') then
+    create policy "event_groups_select" on public.event_groups
+      for select using (true);
+  end if;
+end $$;
+
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'event_groups' and policyname = 'event_groups_insert') then
+    create policy "event_groups_insert" on public.event_groups
+      for insert with check (public.get_my_role() in ('teacher', 'admin'));
+  end if;
+end $$;
+
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'event_groups' and policyname = 'event_groups_update') then
+    create policy "event_groups_update" on public.event_groups
+      for update using (public.get_my_role() in ('teacher', 'admin'));
+  end if;
+end $$;
+
+do $$ begin
+  if not exists (select 1 from pg_policies where tablename = 'event_groups' and policyname = 'event_groups_delete') then
+    create policy "event_groups_delete" on public.event_groups
+      for delete using (public.get_my_role() = 'admin');
+  end if;
+end $$;
+
+
 -- ========== 완료 ==========
 -- 아래 쿼리로 결과 확인:
 select tablename from pg_tables where schemaname = 'public' order by tablename;
