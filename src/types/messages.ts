@@ -22,6 +22,8 @@ export interface StudentConversation {
   initial: string;
   avatarColor: string;
   parentName: string;
+  /** 보호자 profile id — 메시지 발송 시 receiver_id로 사용 */
+  _parentId?: string;
   unreadCount: number;
   lastMessage: string;
   lastTime: string;

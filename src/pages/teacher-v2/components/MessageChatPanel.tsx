@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { type ChatMessage, type StudentConversation } from "../../../types/messages";
 import { useAuth } from "../../../hooks/useAuth";
+import { sendMessage } from "../../../lib/api/messages";
 import CabiSaemModal from "../../../components/feature/CabiSaemModal";
 
 const quickReplies = [
@@ -157,18 +158,34 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim() || !profile) return;
-    const newMsg: ChatMessage = {
+    const text = input.trim();
+    setInput("");
+
+    // 즉시 UI에 반영 (낙관적 업데이트)
+    const tempMsg: ChatMessage = {
       id: Date.now(),
       sender: "teacher",
       senderName: profile.name || "선생님",
-      text: input.trim(),
+      text,
       time: "방금",
       type: "text",
     };
-    setMessages((prev) => [...prev, newMsg]);
-    setInput("");
+    setMessages((prev) => [...prev, tempMsg]);
+
+    // Supabase에 실제 저장
+    try {
+      await sendMessage({
+        student_id: String(conversation.studentId),
+        sender_id: profile.id,
+        receiver_id: conversation._parentId ?? "",
+        content: text,
+        message_type: "text",
+      });
+    } catch (e) {
+      console.error("메시지 전송 실패:", e);
+    }
   };
 
   const { weeklyStats: s } = conversation;

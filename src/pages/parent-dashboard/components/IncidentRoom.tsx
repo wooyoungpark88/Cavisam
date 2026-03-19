@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { useParentData } from "../../../contexts/ParentDataContext";
+import { useAuth } from "../../../hooks/useAuth";
+import { sendMessage, markAsRead } from "../../../lib/api/messages";
 import CabiSaemModal from "../../../components/feature/CabiSaemModal";
 
 interface ParentChatMessage {
@@ -260,6 +262,9 @@ function ChatPanel({
   childName,
   careTeamMembers,
   messagesByMember,
+  studentId,
+  senderId,
+  memberProfileIds,
 }: {
   memberId: number;
   onBack: () => void;
@@ -267,6 +272,9 @@ function ChatPanel({
   childName: string;
   careTeamMembers: { id: number; name: string; initial: string; role: string; color: string; department: string }[];
   messagesByMember: Record<number, ParentChatMessage[]>;
+  studentId?: string;
+  senderId?: string;
+  memberProfileIds: Record<number, string>;
 }) {
   const member = careTeamMembers.find((m) => m.id === memberId) ?? careTeamMembers[0];
   const initialMessages = messagesByMember[member?.id] ?? [];
@@ -289,18 +297,37 @@ function ChatPanel({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!input.trim()) return;
+    const text = input.trim();
+    setInput("");
+
+    // 낙관적 업데이트
     const newMsg: ParentChatMessage = {
       id: messages.length + 100,
       sender: "parent",
       senderName: "나",
-      text: input.trim(),
+      text,
       time: "방금",
       type: "text",
     };
     setMessages((prev) => [...prev, newMsg]);
-    setInput("");
+
+    // Supabase에 실제 저장
+    if (studentId && senderId && member) {
+      try {
+        const receiverId = memberProfileIds[member.id] ?? "";
+        await sendMessage({
+          student_id: studentId,
+          sender_id: senderId,
+          receiver_id: receiverId,
+          content: text,
+          message_type: "text",
+        });
+      } catch (e) {
+        console.error("메시지 전송 실패:", e);
+      }
+    }
   };
 
   const groupedMessages = (() => {
@@ -500,8 +527,18 @@ function ChatPanel({
 /* ────────────────────────────────── main component ── */
 export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
   const { activeChild, careTeam, messages: contextMessages, loading } = useParentData();
+  const { profile } = useAuth();
 
   const childName = activeChild?.name || "자녀";
+
+  // care team member의 profile id 매핑 (메시지 전송 시 receiver_id로 사용)
+  const memberProfileIds = useMemo(() => {
+    const map: Record<number, string> = {};
+    careTeam.forEach((ct, i) => {
+      map[i + 1] = ct.member_id;
+    });
+    return map;
+  }, [careTeam]);
 
   const careTeamMembers = useMemo(() => {
     return careTeam.map((ct, i) => ({
@@ -556,6 +593,13 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
     setSelectedId(memberId);
     setMobileView("chat");
   }, [memberId]);
+
+  // 채팅방 진입 시 읽음 처리
+  useEffect(() => {
+    if (activeChild?.id && profile?.id) {
+      markAsRead(activeChild.id, profile.id).catch(() => {});
+    }
+  }, [activeChild?.id, profile?.id, selectedId]);
 
   const handleSelectMember = (id: number) => {
     setSelectedId(id);
@@ -620,6 +664,9 @@ export default function IncidentRoom({ memberId = 1 }: IncidentRoomProps) {
           childName={childName}
           careTeamMembers={careTeamMembers}
           messagesByMember={messagesByMember}
+          studentId={activeChild?.id}
+          senderId={profile?.id}
+          memberProfileIds={memberProfileIds}
         />
       </div>
     </div>

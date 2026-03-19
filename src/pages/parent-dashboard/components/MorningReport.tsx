@@ -1,11 +1,15 @@
 import { useState } from "react";
 import MorningReportForm from "./MorningReportForm";
 import MorningReportDashboard from "./MorningReportDashboard";
+import { useParentData } from "../../../contexts/ParentDataContext";
 
 type Tab = "form" | "stats";
 
 export default function MorningReport() {
-  const [tab, setTab] = useState<Tab>("form");
+  const { morningReports } = useParentData();
+  const today = new Date().toISOString().slice(0, 10);
+  const hasSentToday = morningReports.some((r) => r.date === today);
+  const [tab, setTab] = useState<Tab>(hasSentToday ? "stats" : "form");
   const [sentCount, setSentCount] = useState(0);
 
   return (

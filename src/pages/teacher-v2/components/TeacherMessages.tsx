@@ -122,6 +122,7 @@ export default function TeacherMessages() {
 
           const parentMsg = msgs.find((m: any) => m.sender_id !== profile.id);
           const parentName = parentMsg?.sender?.name ?? "보호자";
+          const parentId: string = parentMsg?.sender_id ?? student.parent_id ?? "";
 
           const chatMessages: ChatMessage[] = msgs.map((m: any) => ({
             id: m.id,
@@ -138,6 +139,7 @@ export default function TeacherMessages() {
             initial: student.name.charAt(0),
             avatarColor: AVATAR_COLORS[index % 7],
             parentName,
+            _parentId: parentId,
             unreadCount: msgs.filter((m: any) => !m.is_read && m.receiver_id === profile.id).length,
             lastMessage: lastMsg?.content ?? "",
             lastTime: lastMsg
@@ -154,6 +156,55 @@ export default function TeacherMessages() {
         }
         setLoading(false);
       });
+
+    // Realtime 구독: 새 메시지 수신 시 대화 목록 갱신
+    const channel = supabase
+      .channel("teacher-messages")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "parent_messages",
+        },
+        (payload) => {
+          const msg = payload.new as any;
+          // 내가 보낸 메시지이거나 내가 받는 메시지일 때만 처리
+          if (msg.sender_id !== profile.id && msg.receiver_id !== profile.id) return;
+
+          const studentId = msg.student_id as string;
+          const isFromMe = msg.sender_id === profile.id;
+
+          const newChatMsg: ChatMessage = {
+            id: msg.id,
+            sender: isFromMe ? "teacher" : "parent",
+            senderName: isFromMe ? (profile.name || "선생님") : "보호자",
+            text: msg.content,
+            time: new Date(msg.created_at).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" }),
+            type: msg.message_type === "daily_report" ? "daily-report" : "text",
+          };
+
+          setConversations((prev) =>
+            prev.map((conv) => {
+              if (conv.studentId !== studentId) return conv;
+              // 이미 같은 id의 메시지가 있으면 중복 방지
+              if (conv.messages.some((m) => m.id === msg.id)) return conv;
+              return {
+                ...conv,
+                messages: [...conv.messages, newChatMsg],
+                lastMessage: msg.content,
+                lastTime: newChatMsg.time,
+                unreadCount: isFromMe ? conv.unreadCount : conv.unreadCount + 1,
+              };
+            })
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [profile?.id, students]);
 
   if (loading) {
