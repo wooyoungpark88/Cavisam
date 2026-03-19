@@ -1,7 +1,87 @@
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useParentData } from "../../../contexts/ParentDataContext";
 import { useAuth } from "../../../hooks/useAuth";
 import { upsertMorningReport } from "../../../lib/api/reports";
+
+/* ── Web Speech API 타입 ── */
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onresult: ((ev: SpeechRecognitionEvent) => void) | null;
+  onerror: ((ev: Event & { error: string }) => void) | null;
+  onend: (() => void) | null;
+  onstart: (() => void) | null;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognitionInstance;
+    webkitSpeechRecognition: new () => SpeechRecognitionInstance;
+  }
+}
+
+function useSpeechToText(onResult: (text: string) => void) {
+  const [listening, setListening] = useState(false);
+  const [supported, setSupported] = useState(false);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+
+  useEffect(() => {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    setSupported(!!SR);
+  }, []);
+
+  const toggle = useCallback(() => {
+    if (listening) {
+      recognitionRef.current?.stop();
+      return;
+    }
+
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) return;
+
+    const recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = "ko-KR";
+
+    recognition.onstart = () => setListening(true);
+
+    recognition.onresult = (ev: SpeechRecognitionEvent) => {
+      let transcript = "";
+      for (let i = ev.resultIndex; i < ev.results.length; i++) {
+        if (ev.results[i].isFinal) {
+          transcript += ev.results[i][0].transcript;
+        }
+      }
+      if (transcript.trim()) {
+        onResult(transcript.trim());
+      }
+    };
+
+    recognition.onerror = () => {
+      setListening(false);
+    };
+
+    recognition.onend = () => {
+      setListening(false);
+      recognitionRef.current = null;
+    };
+
+    recognitionRef.current = recognition;
+    recognition.start();
+  }, [listening, onResult]);
+
+  return { listening, supported, toggle };
+}
 
 interface OptionItem {
   value: string;
@@ -124,6 +204,15 @@ export default function MorningReportForm({ onSent }: Props) {
   const [sent, setSent] = useState(false);
   const [loadedFields, setLoadedFields] = useState<Set<string>>(new Set());
   const [yesterdayBanner, setYesterdayBanner] = useState<"idle" | "loaded" | "dismissed">("idle");
+
+  const handleSpeechResult = useCallback((text: string) => {
+    setSelections((prev) => {
+      const separator = prev.note.length > 0 && !prev.note.endsWith(" ") ? " " : "";
+      return { ...prev, note: prev.note + separator + text };
+    });
+  }, []);
+
+  const { listening, supported: sttSupported, toggle: toggleSTT } = useSpeechToText(handleSpeechResult);
 
   // 가장 최근 기록 (어제 데이터)
   const yesterdayReport = morningReports[0];
@@ -372,7 +461,7 @@ export default function MorningReportForm({ onSent }: Props) {
             );
           })}
 
-          {/* Note section - full width */}
+          {/* Note section with STT - full width */}
           <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 p-3 sm:p-4 sm:col-span-2">
             <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-3">
               <div className="w-5 h-5 flex items-center justify-center rounded-md flex-shrink-0 bg-gray-100">
@@ -380,16 +469,65 @@ export default function MorningReportForm({ onSent }: Props) {
               </div>
               <span className="text-xs font-bold text-gray-700">전달 사항</span>
               <span className="text-[12px] text-gray-400 ml-0.5">(선택)</span>
+              {sttSupported && (
+                <span className="ml-auto flex items-center gap-1 text-xs text-[#f97316] font-medium">
+                  <i className="ri-mic-line text-xs" />
+                  음성으로도 입력 가능
+                </span>
+              )}
             </div>
-            <textarea
-              value={selections.note}
-              onChange={(e) => setSelections((prev) => ({ ...prev, note: e.target.value }))}
-              placeholder="선생님에게 전달할 내용이 있으면 적어주세요..."
-              maxLength={300}
-              className="w-full bg-gray-50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs text-gray-700 placeholder-gray-400 resize-none focus:outline-none leading-relaxed"
-              style={{ minHeight: 56 }}
-            />
-            <p className="text-[12px] text-gray-300 text-right mt-1">{selections.note.length}/300</p>
+            <div className="relative">
+              <textarea
+                value={selections.note}
+                onChange={(e) => setSelections((prev) => ({ ...prev, note: e.target.value }))}
+                placeholder={listening ? "말씀해 주세요... 음성을 인식하고 있어요" : "선생님에게 전달할 내용을 입력하거나 마이크를 눌러 말씀해 주세요"}
+                maxLength={500}
+                className="w-full bg-gray-50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 pr-14 text-sm text-gray-700 placeholder-gray-400 resize-none focus:outline-none leading-relaxed transition-all"
+                style={{
+                  minHeight: 64,
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: listening ? "#f97316" : "transparent",
+                  boxShadow: listening ? "0 0 0 3px rgba(249,115,22,0.12)" : "none",
+                }}
+              />
+              {sttSupported && (
+                <button
+                  type="button"
+                  onClick={toggleSTT}
+                  className="absolute right-2.5 bottom-2.5 w-9 h-9 flex items-center justify-center rounded-full transition-all cursor-pointer"
+                  style={{
+                    background: listening ? "#f97316" : "rgba(249,115,22,0.12)",
+                    color: listening ? "white" : "#f97316",
+                    animation: listening ? "stt-pulse 1.5s ease-in-out infinite" : "none",
+                  }}
+                >
+                  <i className={`${listening ? "ri-mic-fill" : "ri-mic-line"} text-base`} />
+                </button>
+              )}
+            </div>
+            <div className="flex items-center justify-between mt-1.5">
+              <p className="text-xs text-gray-400 flex items-center gap-1">
+                {listening ? (
+                  <>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f97316] animate-pulse" />
+                    음성 인식 중...
+                  </>
+                ) : sttSupported ? (
+                  <>
+                    <i className="ri-mic-line text-xs" />
+                    오른쪽 <strong className="text-gray-600">마이크 버튼</strong>을 눌러 말하면 자동으로 입력돼요
+                  </>
+                ) : null}
+              </p>
+              <span className="text-xs text-gray-300 tabular-nums">{selections.note.length}/500</span>
+            </div>
+            <style>{`
+              @keyframes stt-pulse {
+                0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.3); }
+                50% { box-shadow: 0 0 0 8px rgba(249,115,22,0); }
+              }
+            `}</style>
           </div>
         </div>
       </div>
