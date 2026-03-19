@@ -36,10 +36,10 @@ const SUMMARY_BADGES = [
 
 const TIMELINE_DATA: TimelineEntry[] = [
   { id: '1', type: 'parent_report', time: '07:45', teacher: '이영희 어머님 (보호자)', emoji: '🟢', content: null },
-  { id: '2', type: 'condition', time: '08:45', teacher: '김태희 선생님', emoji: '👩‍🏫', content: '아침에 밝은 표정으로 등원했어요' },
-  { id: '3', type: 'meal', time: '12:10', teacher: '김태희 선생님', emoji: '👩‍🏫', content: '점심 — 밥, 국, 반찬 대부분 먹음' },
-  { id: '4', type: 'medication', time: '12:30', teacher: '김태희 선생님', emoji: '👩‍🏫', content: '리스페리돈 0.5mg 복용 완료' },
-  { id: '5', type: 'photo', time: '14:00', teacher: '김태희 선생님', emoji: '👩‍🏫', content: '미술활동 — 점토로 동물 만들기' },
+  { id: '2', type: 'condition', time: '08:45', teacher: '김태희', emoji: '👩‍🏫', content: '아침에 밝은 표정으로 등원했어요' },
+  { id: '3', type: 'meal', time: '12:10', teacher: '김태희', emoji: '👩‍🏫', content: '점심 — 밥, 국, 반찬 대부분 먹음' },
+  { id: '4', type: 'medication', time: '12:30', teacher: '김태희', emoji: '👩‍🏫', content: '리스페리돈 0.5mg 복용 완료' },
+  { id: '5', type: 'photo', time: '14:00', teacher: '김태희', emoji: '👩‍🏫', content: '미술활동 — 점토로 동물 만들기' },
   { id: '6', type: 'challenge', time: '15:20', teacher: 'CareVia AI', emoji: '⚠️', content: '자해 행동 1회 감지 (머리 박기) → 직원 즉시 개입, 3분 내 안정' },
 ];
 
@@ -50,7 +50,7 @@ const AI_INSIGHTS = [
 ];
 
 const CARE_TEAM = [
-  { name: '김태희 선생님', role: '담당 교사' },
+  { name: '김태희', role: '담당 교사' },
   { name: '박미영', role: 'BCBA 치료사' },
   { name: '정민호', role: '활동보조인' },
 ];
@@ -105,7 +105,7 @@ function ParentReportContent() {
       </div>
       <div className="flex items-center gap-2">
         <span className="text-green-500">✅</span>
-        <p className="text-sm text-gray-600">김태희 선생님 확인 완료</p>
+        <p className="text-sm text-gray-600">김태희 확인 완료</p>
         <div className="flex-1" />
         <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded">확인</span>
       </div>

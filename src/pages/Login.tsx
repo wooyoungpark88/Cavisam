@@ -51,7 +51,7 @@ export function Login() {
     // 데모용 세션은 localStorage로 임시 처리
     const demoProfile = {
       id: role === 'teacher' ? DEMO_TEACHER_ID : DEMO_PARENT_ID,
-      name: role === 'teacher' ? '김태희 선생님' : '김민준 어머니',
+      name: role === 'teacher' ? '김태희' : '김민준 어머니',
       role,
       status: 'approved' as const,
       organization_id: DEMO_ORG_ID,

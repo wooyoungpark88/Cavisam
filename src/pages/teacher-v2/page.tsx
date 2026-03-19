@@ -144,7 +144,7 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
   function handleDemoStart() {
     signIn({
       id: DEMO_TEACHER_ID,
-      name: "김태희 선생님",
+      name: "김태희",
       role: "teacher",
       organization_id: DEMO_ORG_ID,
     });

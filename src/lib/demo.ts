@@ -76,7 +76,7 @@ export function getDemoMessages(studentId: string): MessageDB[] {
         sender_id: DEMO_TEACHER_ID, receiver_id: DEMO_PARENT_ID,
         content: '안녕하세요! 소통방이 개설되었습니다. 언제든 연락주세요.',
         message_type: 'text', is_read: true, created_at: demoTime(48),
-        sender: { name: '김태희 선생님', avatar_url: null },
+        sender: { name: '김태희', avatar_url: null },
       },
     ];
   }
@@ -87,7 +87,7 @@ export function getDemoMessages(studentId: string): MessageDB[] {
       sender_id: DEMO_TEACHER_ID, receiver_id: DEMO_PARENT_ID,
       content: '안녕하세요, 민준이 어머니! 오늘 민준이가 미술 시간에 그림을 아주 잘 그렸어요. 집중력이 많이 좋아졌습니다.',
       message_type: 'text', is_read: true, created_at: demoTime(5),
-      sender: { name: '김태희 선생님', avatar_url: null },
+      sender: { name: '김태희', avatar_url: null },
     },
     {
       id: 'demo-msg-2', student_id: studentId,
@@ -108,7 +108,7 @@ export function getDemoMessages(studentId: string): MessageDB[] {
       sender_id: DEMO_TEACHER_ID, receiver_id: DEMO_PARENT_ID,
       content: '네, 알겠습니다! 점심 후 약 복용 챙기겠습니다.',
       message_type: 'text', is_read: true, created_at: demoTime(3.5),
-      sender: { name: '김태희 선생님', avatar_url: null },
+      sender: { name: '김태희', avatar_url: null },
     },
     {
       id: 'demo-msg-5', student_id: studentId,
@@ -123,7 +123,7 @@ export function getDemoMessages(studentId: string): MessageDB[] {
         teacherName: '김태희',
       }),
       message_type: 'daily_report', is_read: true, created_at: demoTime(1),
-      sender: { name: '김태희 선생님', avatar_url: null },
+      sender: { name: '김태희', avatar_url: null },
     },
     {
       id: 'demo-msg-6', student_id: studentId,
