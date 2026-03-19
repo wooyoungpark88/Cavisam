@@ -245,7 +245,6 @@ function LoginScreen({ onStart }: { onStart: () => void }) {
         </div>
 
         <div className="relative z-10">
-          <p className="text-xs" style={{ color: "rgba(2,110,255,0.45)" }}>CareVia · 교사용 서비스</p>
         </div>
       </div>
 

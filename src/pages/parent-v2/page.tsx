@@ -140,7 +140,6 @@ export default function ParentPage() {
 
         {/* Footer */}
         <div className="relative z-10">
-          <p className="text-xs" style={{ color: "rgba(234,88,12,0.45)" }}>CareVia · 보호자 서비스</p>
         </div>
       </div>
 
