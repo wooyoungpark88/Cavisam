@@ -182,6 +182,153 @@ const EMPTY: Selections = {
   note: "",
 };
 
+/* ── 완료 오버레이 ── */
+const CONFETTI_COLORS = ["#026eff", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#06b6d4", "#e879f9"];
+const CONFETTI_SHAPES = ["circle", "square", "triangle"] as const;
+
+function SuccessOverlay({ selections, childName, teacherName }: {
+  selections: Selections;
+  childName: string;
+  teacherName: string;
+}) {
+  const summaryItems = [
+    { label: "수면", value: selections.sleep, color: "#8b5cf6", icon: "ri-moon-line" },
+    { label: "컨디션", value: selections.condition, color: "#f59e0b", icon: "ri-sun-line" },
+    { label: "식사", value: selections.meal, color: "#ef4444", icon: "ri-restaurant-line" },
+    { label: "배변", value: selections.bowel, color: "#10b981", icon: "ri-drop-line" },
+    { label: "약 복용", value: selections.medicine, color: "#026eff", icon: "ri-capsule-line" },
+  ].filter((item) => item.value);
+
+  return (
+    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center px-6 animate-fade-in"
+      style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.97) 0%, rgba(240,253,244,0.97) 100%)" }}
+    >
+      {/* 컨페티 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {Array.from({ length: 52 }).map((_, i) => {
+          const shape = CONFETTI_SHAPES[i % 3];
+          const color = CONFETTI_COLORS[i % CONFETTI_COLORS.length];
+          const left = Math.random() * 100;
+          const delay = Math.random() * 0.8;
+          const duration = 1.8 + Math.random() * 1.2;
+          const size = 6 + Math.random() * 6;
+          const rotation = Math.random() * 360;
+          return (
+            <div
+              key={i}
+              className="absolute animate-confetti-fall"
+              style={{
+                left: `${left}%`,
+                top: -20,
+                animationDelay: `${delay}s`,
+                animationDuration: `${duration}s`,
+              }}
+            >
+              {shape === "circle" && (
+                <div style={{ width: size, height: size, borderRadius: "50%", background: color }} />
+              )}
+              {shape === "square" && (
+                <div style={{ width: size, height: size, background: color, transform: `rotate(${rotation}deg)` }} />
+              )}
+              {shape === "triangle" && (
+                <div style={{
+                  width: 0, height: 0,
+                  borderLeft: `${size / 2}px solid transparent`,
+                  borderRight: `${size / 2}px solid transparent`,
+                  borderBottom: `${size}px solid ${color}`,
+                  transform: `rotate(${rotation}deg)`,
+                }} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 체크마크 */}
+      <div className="relative mb-6">
+        <div className="w-20 h-20 rounded-full flex items-center justify-center animate-ring-pop"
+          style={{ background: "linear-gradient(135deg, #10b981, #059669)" }}
+        >
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" className="animate-check-draw">
+            <path
+              d="M10 20L17 27L30 13"
+              stroke="white"
+              strokeWidth="4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                strokeDasharray: 40,
+                strokeDashoffset: 40,
+                animation: "check-draw 0.5s ease-out 0.18s forwards",
+              }}
+            />
+          </svg>
+        </div>
+        {/* 글로우 */}
+        <div className="absolute inset-0 rounded-full animate-pulse"
+          style={{ background: "radial-gradient(circle, rgba(16,185,129,0.2) 0%, transparent 70%)", transform: "scale(1.6)" }}
+        />
+      </div>
+
+      {/* 메시지 */}
+      <h3 className="text-lg font-bold text-gray-900 mb-1">선생님께 발송했어요!</h3>
+      <p className="text-sm text-gray-500 mb-5">{childName} → {teacherName} 선생님</p>
+
+      {/* 요약 카드 */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 w-full max-w-sm animate-summary-up">
+        <div className="flex flex-wrap gap-2 justify-center">
+          {summaryItems.map((item) => (
+            <span
+              key={item.label}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold"
+              style={{ background: `${item.color}12`, color: item.color }}
+            >
+              <i className={`${item.icon} text-xs`} />
+              {item.label} {item.value}
+            </span>
+          ))}
+        </div>
+        {selections.note && (
+          <p className="text-xs text-gray-500 text-center mt-2.5 leading-relaxed line-clamp-2">
+            "{selections.note}"
+          </p>
+        )}
+      </div>
+
+      <style>{`
+        @keyframes fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fade-in { animation: fade-in 0.3s ease-out; }
+
+        @keyframes ring-pop {
+          0% { transform: scale(0); opacity: 0; }
+          60% { transform: scale(1.15); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-ring-pop { animation: ring-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s both; }
+
+        @keyframes check-draw {
+          to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes confetti-fall {
+          0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+          100% { transform: translateY(calc(100vh + 40px)) rotate(720deg); opacity: 0; }
+        }
+        .animate-confetti-fall { animation: confetti-fall 2s ease-in forwards; }
+
+        @keyframes summary-up {
+          from { transform: translateY(16px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-summary-up { animation: summary-up 0.4s ease-out 0.5s both; }
+      `}</style>
+    </div>
+  );
+}
+
 interface Props {
   onSent: () => void;
 }
@@ -253,8 +400,12 @@ export default function MorningReportForm({ onSent }: Props) {
     });
   };
 
+  // 발송 완료 시 요약 카드에 보여줄 스냅샷
+  const [sentSnapshot, setSentSnapshot] = useState<Selections | null>(null);
+
   const handleSend = async () => {
     if (!isReady || !profile || !activeChild) return;
+    setSentSnapshot({ ...selections });
     setSent(true);
     try {
       await upsertMorningReport({
@@ -274,15 +425,21 @@ export default function MorningReportForm({ onSent }: Props) {
     }
     setTimeout(() => {
       setSent(false);
+      setSentSnapshot(null);
       setSelections(EMPTY);
       setLoadedFields(new Set());
       setYesterdayBanner("idle");
       onSent();
-    }, 2000);
+    }, 3200);
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative">
+      {/* 발송 완료 오버레이 */}
+      {sent && sentSnapshot && (
+        <SuccessOverlay selections={sentSnapshot} childName={childName} teacherName={teacherName} />
+      )}
+
       {/* Content area */}
       <div className="px-3 sm:px-7 pt-3 sm:pt-5 pb-4">
         {/* Sub-header */}
