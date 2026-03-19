@@ -105,14 +105,14 @@ export default function CCTVPreviewModal({
               <div className="flex items-center gap-2 mt-0.5">
                 {behaviorType && (
                   <span
-                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                    className="text-[12px] font-semibold px-2 py-0.5 rounded-full"
                     style={{ background: "rgba(239,68,68,0.1)", color: "#ef4444" }}
                   >
                     {behaviorType}
                   </span>
                 )}
                 {behaviorCount != null && (
-                  <span className="text-[10px] text-gray-400">이번 주 {behaviorCount}건 감지됨</span>
+                  <span className="text-[12px] text-gray-400">이번 주 {behaviorCount}건 감지됨</span>
                 )}
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function CCTVPreviewModal({
                   }}
                 >
                   <span
-                    className="absolute -top-4 left-0 text-[9px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap"
+                    className="absolute -top-4 left-0 text-[11px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap"
                     style={{ background: "#ef4444", color: "white" }}
                   >
                     도전행동 감지
@@ -187,7 +187,7 @@ export default function CCTVPreviewModal({
                     className="w-1.5 h-1.5 rounded-full"
                     style={{ background: "#ef4444", animation: "cctv-blink 1s ease-in-out infinite" }}
                   />
-                  <span className="text-[10px] font-mono text-white/70">
+                  <span className="text-[12px] font-mono text-white/70">
                     CAM-03 · 2026.03.18 {THUMBNAIL_TIMES[activeThumb]}
                   </span>
                 </div>
@@ -195,7 +195,7 @@ export default function CCTVPreviewModal({
                 {/* Corner badge */}
                 <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-0.5 rounded-md"
                   style={{ background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.5)" }}>
-                  <span className="text-[9px] font-bold text-red-400">● REC</span>
+                  <span className="text-[11px] font-bold text-red-400">● REC</span>
                 </div>
               </div>
 
@@ -294,7 +294,7 @@ export default function CCTVPreviewModal({
                     <i className="ri-lock-fill text-white/40 text-sm" />
                   </div>
                   <span
-                    className="absolute bottom-1 left-1 text-[8px] font-mono text-white/60"
+                    className="absolute bottom-1 left-1 text-[10px] font-mono text-white/60"
                   >
                     {time}
                   </span>
@@ -307,7 +307,7 @@ export default function CCTVPreviewModal({
                 </button>
               ))}
               <div
-                className="flex-shrink-0 w-20 h-12 rounded-xl flex items-center justify-center text-[10px] font-semibold text-gray-500 border border-dashed border-gray-300 cursor-pointer"
+                className="flex-shrink-0 w-20 h-12 rounded-xl flex items-center justify-center text-[12px] font-semibold text-gray-500 border border-dashed border-gray-300 cursor-pointer"
               >
                 +{Math.floor(Math.random() * 8) + 3}개 더
               </div>
@@ -319,7 +319,7 @@ export default function CCTVPreviewModal({
             {/* Divider */}
             <div className="flex items-center gap-3 mb-4">
               <div className="flex-1 h-px bg-gray-100" />
-              <span className="text-[11px] text-gray-400 font-medium whitespace-nowrap">AI CCTV 서비스란?</span>
+              <span className="text-[12.5px] text-gray-400 font-medium whitespace-nowrap">AI CCTV 서비스란?</span>
               <div className="flex-1 h-px bg-gray-100" />
             </div>
 
@@ -339,7 +339,7 @@ export default function CCTVPreviewModal({
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gray-900 leading-tight mb-0.5">{feat.title}</p>
-                    <p className="text-[10px] text-gray-500 leading-relaxed">{feat.desc}</p>
+                    <p className="text-[12px] text-gray-500 leading-relaxed">{feat.desc}</p>
                   </div>
                 </div>
               ))}

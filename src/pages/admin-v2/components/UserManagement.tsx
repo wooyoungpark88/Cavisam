@@ -63,7 +63,7 @@ function RoleModal({ user, onSave, onClose }: RoleModalProps) {
             </div>
             <div>
               <p className="text-sm font-bold text-gray-900">{user.name}</p>
-              <p className="text-[11px] text-gray-400">{user.email}</p>
+              <p className="text-[12.5px] text-gray-400">{user.email}</p>
             </div>
           </div>
           <button onClick={onClose} className="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
@@ -112,14 +112,14 @@ function RoleModal({ user, onSave, onClose }: RoleModalProps) {
                         borderColor: isSelected ? "#ea580c" : "#e5e7eb",
                       }}
                     >
-                      {isSelected && <i className="ri-check-line mr-1 text-[10px]" />}
+                      {isSelected && <i className="ri-check-line mr-1 text-[12px]" />}
                       {s}
                     </button>
                   );
                 })}
               </div>
               {linked.length === 0 && (
-                <p className="text-[11px] text-orange-400 mt-2">이용인을 1명 이상 연결해 주세요.</p>
+                <p className="text-[12.5px] text-orange-400 mt-2">이용인을 1명 이상 연결해 주세요.</p>
               )}
             </div>
           )}
@@ -258,7 +258,7 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
         {/* thead */}
         <div className="grid grid-cols-[2fr_2.5fr_1.5fr_1fr_1fr_1fr] gap-0 px-5 py-2.5 bg-gray-50 border-b border-gray-100">
           {["이름", "이메일 / 전화번호", "연결 이용인", "역할", "상태", ""].map((h) => (
-            <p key={h} className="text-[11px] font-bold text-gray-500 px-1">
+            <p key={h} className="text-[12.5px] font-bold text-gray-500 px-1">
               {h}
             </p>
           ))}
@@ -288,13 +288,13 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">{u.name}</p>
                     {u.department && (
-                      <p className="text-[10px] text-gray-400 truncate">{u.department}</p>
+                      <p className="text-[12px] text-gray-400 truncate">{u.department}</p>
                     )}
                   </div>
                 </div>
                 <div className="px-1 min-w-0">
                   <p className="text-xs text-gray-600 truncate">{u.email}</p>
-                  <p className="text-[10px] text-gray-400 mt-0.5">{u.phone}</p>
+                  <p className="text-[12px] text-gray-400 mt-0.5">{u.phone}</p>
                 </div>
                 <div className="px-1">
                   {u.linkedStudents && u.linkedStudents.length > 0 ? (
@@ -302,19 +302,19 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                       {u.linkedStudents.map((s) => (
                         <span
                           key={s}
-                          className="text-[10px] px-2 py-0.5 bg-orange-50 text-orange-500 rounded-full font-medium whitespace-nowrap"
+                          className="text-[12px] px-2 py-0.5 bg-orange-50 text-orange-500 rounded-full font-medium whitespace-nowrap"
                         >
                           {s}
                         </span>
                       ))}
                     </div>
                   ) : (
-                    <span className="text-[11px] text-gray-300">—</span>
+                    <span className="text-[12.5px] text-gray-300">—</span>
                   )}
                 </div>
                 <div className="px-1">
                   <span
-                    className="text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
+                    className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
                     style={ROLE_STYLE[u.role]}
                   >
                     {ROLE_LABEL[u.role]}
@@ -322,7 +322,7 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                 </div>
                 <div className="px-1">
                   <span
-                    className="text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
+                    className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap"
                     style={STATUS_STYLE[u.status]}
                   >
                     {STATUS_LABEL[u.status]}
@@ -364,17 +364,17 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-900 truncate">{u.name}</p>
-                  <p className="text-[11px] text-gray-400 truncate">{u.email}</p>
+                  <p className="text-[12.5px] text-gray-400 truncate">{u.email}</p>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <span
-                    className="text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
+                    className="text-[12.5px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
                     style={ROLE_STYLE[u.role]}
                   >
                     {ROLE_LABEL[u.role]}
                   </span>
                   <span
-                    className="text-[11px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
+                    className="text-[12.5px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
                     style={STATUS_STYLE[u.status]}
                   >
                     {STATUS_LABEL[u.status]}
@@ -387,12 +387,12 @@ export default function UserManagement({ users, onUpdate }: UserManagementProps)
                     ? u.linkedStudents.map((s) => (
                         <span
                           key={s}
-                          className="text-[10px] px-2 py-0.5 bg-orange-50 text-orange-500 rounded-full font-medium whitespace-nowrap"
+                          className="text-[12px] px-2 py-0.5 bg-orange-50 text-orange-500 rounded-full font-medium whitespace-nowrap"
                         >
                           {s}
                         </span>
                       ))
-                    : <span className="text-[11px] text-gray-300">연결 이용인 없음</span>
+                    : <span className="text-[12.5px] text-gray-300">연결 이용인 없음</span>
                   }
                 </div>
                 <button

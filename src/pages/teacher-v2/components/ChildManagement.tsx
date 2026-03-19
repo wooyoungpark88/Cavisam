@@ -101,7 +101,7 @@ export default function ChildManagement() {
             />
             관심 필요
             <span
-              className="ml-0.5 px-1.5 py-0.5 rounded-full text-[10px] font-bold"
+              className="ml-0.5 px-1.5 py-0.5 rounded-full text-[12px] font-bold"
               style={
                 attentionOnly
                   ? { background: "#dc2626", color: "white" }
@@ -111,7 +111,7 @@ export default function ChildManagement() {
               {attentionCount}
             </span>
             {attentionOnly && (
-              <span className="ml-0.5 text-[10px] text-red-400 font-medium hidden sm:inline">필터 중</span>
+              <span className="ml-0.5 text-[12px] text-red-400 font-medium hidden sm:inline">필터 중</span>
             )}
           </button>
 
@@ -142,8 +142,8 @@ export default function ChildManagement() {
 
           {/* Total count badge */}
           <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-gray-50 border border-gray-200">
-            <i className="ri-group-line text-[11px] text-gray-400" />
-            <span className="text-[11px] font-semibold text-gray-600">
+            <i className="ri-group-line text-[12.5px] text-gray-400" />
+            <span className="text-[12.5px] font-semibold text-gray-600">
               {displayed.length}<span className="text-gray-400 font-normal"> / {mockStudents.length}명</span>
             </span>
           </div>
@@ -172,12 +172,12 @@ export default function ChildManagement() {
           />
           {isSearching && (
             <div className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-[11px] font-semibold text-[#026eff]">{displayed.length}명</span>
+              <span className="text-[12.5px] font-semibold text-[#026eff]">{displayed.length}명</span>
               <button
                 onClick={() => { setSearch(""); searchRef.current?.focus(); }}
                 className="w-4 h-4 flex items-center justify-center rounded-full bg-gray-300 hover:bg-gray-400 cursor-pointer transition-colors"
               >
-                <i className="ri-close-line text-white text-[10px]" />
+                <i className="ri-close-line text-white text-[12px]" />
               </button>
             </div>
           )}

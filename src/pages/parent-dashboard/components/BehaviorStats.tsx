@@ -114,17 +114,17 @@ function MonthlyStoryReport({ data }: { data: HistoryEntry[] }) {
             <h2 className="text-sm font-black text-gray-900">
               이번 달 아이는 어땠나요?
             </h2>
-            <p className="text-[10px] text-gray-400 mt-0.5">
+            <p className="text-[12px] text-gray-400 mt-0.5">
               2026년 2월 16일 – 3월 17일 · 생활 알리미 {total}일 분석
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <span
-            className="text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 whitespace-nowrap flex-shrink-0"
+            className="text-[12px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 whitespace-nowrap flex-shrink-0"
             style={{ background: "#fef3c7", color: "#92400e" }}
           >
-            <i className="ri-ai-generate text-[10px]" />
+            <i className="ri-ai-generate text-[12px]" />
             AI 자동 생성
           </span>
         </div>
@@ -190,7 +190,7 @@ function MonthlyStoryReport({ data }: { data: HistoryEntry[] }) {
 
         <button
           onClick={() => setExpanded((v) => !v)}
-          className="flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
+          className="flex items-center gap-1 text-[12.5px] font-semibold cursor-pointer"
           style={{ color: "#d97706" }}
         >
           <i className={`${expanded ? "ri-arrow-up-s-line" : "ri-arrow-down-s-line"} text-xs`} />
@@ -200,11 +200,11 @@ function MonthlyStoryReport({ data }: { data: HistoryEntry[] }) {
 
       {/* Keywords */}
       <div className="px-5 pb-4 flex items-center gap-2 flex-wrap">
-        <span className="text-[10px] text-gray-400 font-semibold mr-1">이번 달 키워드</span>
+        <span className="text-[12px] text-gray-400 font-semibold mr-1">이번 달 키워드</span>
         {keywords.map((k) => (
           <span
             key={k.label}
-            className="text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
+            className="text-[12px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
             style={{ background: k.bg, color: k.color }}
           >
             {k.label}
@@ -342,16 +342,16 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
         <div>
           <h3 className="text-sm font-bold text-gray-800">30일 생활 패턴</h3>
           {/* 데스크톱 설명 */}
-          <p className="text-[11px] text-gray-400 mt-0.5 hidden sm:block">
+          <p className="text-[12.5px] text-gray-400 mt-0.5 hidden sm:block">
             각 칸이 하루예요 — 색이 진할수록 좋은 날, 빨간색은 주의가 필요한 날이에요
           </p>
           {/* 모바일 설명 */}
-          <p className="text-[11px] text-gray-400 mt-0.5 sm:hidden">
+          <p className="text-[12.5px] text-gray-400 mt-0.5 sm:hidden">
             칸을 탭하면 그날 상세 정보를 볼 수 있어요
           </p>
         </div>
         {/* legend */}
-        <div className="flex items-center gap-2 sm:gap-3 text-[10px] text-gray-400 sm:flex-shrink-0 sm:ml-4">
+        <div className="flex items-center gap-2 sm:gap-3 text-[12px] text-gray-400 sm:flex-shrink-0 sm:ml-4">
           <span className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 rounded-sm inline-block bg-[#10b981]" />좋음
           </span>
@@ -369,7 +369,7 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
         {reversed.map((d, i) => (
           <div key={i} className="flex-1 text-center">
             {i % 5 === 0 && (
-              <span className="text-[9px] text-gray-300 leading-none">{d.date.slice(-2)}</span>
+              <span className="text-[11px] text-gray-300 leading-none">{d.date.slice(-2)}</span>
             )}
           </div>
         ))}
@@ -381,8 +381,8 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
           <div key={m.key} className="flex items-center gap-2 sm:gap-3">
             {/* Label */}
             <div className="w-16 sm:w-[88px] flex items-center gap-1 sm:gap-1.5 flex-shrink-0">
-              <i className={`${m.icon} text-[10px] sm:text-[11px] text-gray-400`} />
-              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-600 whitespace-nowrap">{m.label}</span>
+              <i className={`${m.icon} text-[12px] sm:text-[12.5px] text-gray-400`} />
+              <span className="text-[12px] sm:text-[12.5px] font-semibold text-gray-600 whitespace-nowrap">{m.label}</span>
             </div>
 
             {/* Blocks */}
@@ -415,16 +415,16 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
             {/* Summary */}
             <div className="w-16 sm:w-[90px] flex items-center gap-1 sm:gap-1.5 flex-shrink-0 justify-end">
               <div className="text-right">
-                <p className="text-[10px] sm:text-[11px] font-bold text-gray-700 whitespace-nowrap">
+                <p className="text-[12px] sm:text-[12.5px] font-bold text-gray-700 whitespace-nowrap">
                   {m.goodLabel} <span className="text-gray-900">{m.goodCount}일</span>
                 </p>
-                <p className="text-[9px] text-gray-400">
+                <p className="text-[11px] text-gray-400">
                   {Math.round((m.goodCount / data.length) * 100)}%
                 </p>
               </div>
               <div className="w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center flex-shrink-0">
                 <i
-                  className={`${trendIcon(m.trend)} text-[11px] sm:text-xs`}
+                  className={`${trendIcon(m.trend)} text-[12.5px] sm:text-xs`}
                   style={{ color: trendColor(m.trend) }}
                 />
               </div>
@@ -440,18 +440,18 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
           {reversed.map((d, i) => (
             <div key={i} className="flex-1 text-center">
               {(i === 0 || i === reversed.length - 1) && (
-                <span className="text-[9px] text-gray-300 leading-none">{d.date}</span>
+                <span className="text-[11px] text-gray-300 leading-none">{d.date}</span>
               )}
             </div>
           ))}
         </div>
         {/* 모바일: 시작~오늘 범위 레이블 */}
         <div className="flex sm:hidden items-center justify-between">
-          <span className="text-[9px] text-gray-400 font-medium">
+          <span className="text-[11px] text-gray-400 font-medium">
             {reversed[0]?.date.slice(5).replace("-", "/")} 시작
           </span>
-          <span className="text-[9px] text-gray-300 mx-2 flex-1 text-center">· · · · · 30일 · · · · ·</span>
-          <span className="text-[9px] text-gray-400 font-medium">
+          <span className="text-[11px] text-gray-300 mx-2 flex-1 text-center">· · · · · 30일 · · · · ·</span>
+          <span className="text-[11px] text-gray-400 font-medium">
             오늘 {reversed[reversed.length - 1]?.date.slice(5).replace("-", "/")}
           </span>
         </div>
@@ -459,11 +459,11 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
 
       {/* Trend caption */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 pt-4 border-t border-gray-50 gap-2">
-        <p className="text-[10px] text-gray-400">
+        <p className="text-[12px] text-gray-400">
           <span className="font-semibold text-gray-600">최근 15일</span> vs{" "}
           <span className="font-semibold text-gray-600">이전 15일</span> 비교 — 화살표로 추세 표시
         </p>
-        <div className="flex items-center gap-3 text-[10px]">
+        <div className="flex items-center gap-3 text-[12px]">
           <span className="flex items-center gap-1 text-[#10b981]">
             <i className="ri-arrow-up-line" /> 개선
           </span>
@@ -491,9 +491,9 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
           ].map((row) => (
             <div key={row.label} className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: row.color }} />
-              <span className="text-[10px] text-gray-400">{row.label}</span>
+              <span className="text-[12px] text-gray-400">{row.label}</span>
               <span
-                className="text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+                className="text-[12px] font-bold px-1.5 py-0.5 rounded-md"
                 style={{ background: row.color + "20", color: row.color }}
               >
                 {row.value}
@@ -506,8 +506,8 @@ function TrendChart({ data }: { data: HistoryEntry[] }) {
       {/* 모바일: 탭 안내 힌트 (툴팁 없을 때만 표시) */}
       {!activeCell && (
         <div className="mt-3 sm:hidden flex items-center justify-center gap-1.5 py-2 rounded-xl bg-gray-50/80">
-          <i className="ri-hand-coin-line text-[11px] text-gray-400" />
-          <span className="text-[10px] text-gray-400">원하는 날짜 칸을 탭해 보세요</span>
+          <i className="ri-hand-coin-line text-[12.5px] text-gray-400" />
+          <span className="text-[12px] text-gray-400">원하는 날짜 칸을 탭해 보세요</span>
         </div>
       )}
     </div>
@@ -605,13 +605,13 @@ function DistributionGrid({ data }: { data: HistoryEntry[] }) {
         {items.map((item) => (
           <div key={item.label} className="flex flex-col items-center gap-2">
             <DonutRing pct={item.pct} color={item.color} />
-            <p className="text-[11px] font-bold text-gray-700 text-center">{item.label}</p>
+            <p className="text-[12.5px] font-bold text-gray-700 text-center">{item.label}</p>
             <div className="w-full space-y-1">
               {item.rows.map((row) => (
                 <div key={row.l} className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: row.c }} />
-                  <span className="text-[10px] text-gray-500 flex-1 truncate whitespace-nowrap">{row.l}</span>
-                  <span className="text-[10px] font-semibold text-gray-700">{row.v}일</span>
+                  <span className="text-[12px] text-gray-500 flex-1 truncate whitespace-nowrap">{row.l}</span>
+                  <span className="text-[12px] font-semibold text-gray-700">{row.v}일</span>
                 </div>
               ))}
             </div>
@@ -663,10 +663,10 @@ function GalaxyWatchSection() {
           </div>
           <div>
             <p className="text-xs font-bold text-gray-800">갤럭시 워치 생체 데이터</p>
-            <p className="text-[10px] text-gray-400">어제 · 목 3월 17일 기준</p>
+            <p className="text-[12px] text-gray-400">어제 · 목 3월 17일 기준</p>
           </div>
         </div>
-        <span className="flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500 whitespace-nowrap flex-shrink-0">
+        <span className="flex items-center gap-1 text-[12px] font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500 whitespace-nowrap flex-shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-gray-400 inline-block" />
           연동 준비 중
         </span>
@@ -679,11 +679,11 @@ function GalaxyWatchSection() {
         <div className="rounded-xl bg-red-50/60 border border-red-100/80 p-3">
           <div className="flex items-center gap-1.5 mb-2">
             <i className="ri-heart-pulse-line text-red-400 text-xs" />
-            <p className="text-[10px] font-semibold text-gray-600">심박수</p>
+            <p className="text-[12px] font-semibold text-gray-600">심박수</p>
           </div>
           <div className="flex items-baseline gap-1 mb-2">
             <span className="text-xl font-black text-gray-800">78</span>
-            <span className="text-[10px] text-gray-400">bpm 평균</span>
+            <span className="text-[12px] text-gray-400">bpm 평균</span>
           </div>
           {/* Sparkline */}
           <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ height: 36 }}>
@@ -697,8 +697,8 @@ function GalaxyWatchSection() {
             <path d={hrPath} fill="none" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
           <div className="flex justify-between mt-1">
-            <span className="text-[9px] text-gray-400">최저 {minHR}</span>
-            <span className="text-[9px] text-red-400 font-semibold">최고 {maxHR}</span>
+            <span className="text-[11px] text-gray-400">최저 {minHR}</span>
+            <span className="text-[11px] text-red-400 font-semibold">최고 {maxHR}</span>
           </div>
         </div>
 
@@ -706,7 +706,7 @@ function GalaxyWatchSection() {
         <div className="rounded-xl bg-indigo-50/60 border border-indigo-100/80 p-3">
           <div className="flex items-center gap-1.5 mb-2">
             <i className="ri-zzz-line text-indigo-400 text-xs" />
-            <p className="text-[10px] font-semibold text-gray-600">수면 단계</p>
+            <p className="text-[12px] font-semibold text-gray-600">수면 단계</p>
           </div>
           <div className="flex items-baseline gap-1 mb-2">
             <span className="text-xl font-black text-gray-800">{toHM(totalSleep)}</span>
@@ -723,23 +723,23 @@ function GalaxyWatchSection() {
           <div className="grid grid-cols-2 gap-x-2 gap-y-1">
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-sm flex-shrink-0" style={{ background: "#4f46e5" }} />
-              <span className="text-[9px] text-gray-500 whitespace-nowrap">깊은잠</span>
-              <span className="text-[9px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[0].minutes)}</span>
+              <span className="text-[11px] text-gray-500 whitespace-nowrap">깊은잠</span>
+              <span className="text-[11px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[0].minutes)}</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-sm flex-shrink-0" style={{ background: "#8b5cf6" }} />
-              <span className="text-[9px] text-gray-500 whitespace-nowrap">REM</span>
-              <span className="text-[9px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[1].minutes)}</span>
+              <span className="text-[11px] text-gray-500 whitespace-nowrap">REM</span>
+              <span className="text-[11px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[1].minutes)}</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-sm flex-shrink-0" style={{ background: "#a78bfa" }} />
-              <span className="text-[9px] text-gray-500 whitespace-nowrap">얕은잠</span>
-              <span className="text-[9px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[2].minutes)}</span>
+              <span className="text-[11px] text-gray-500 whitespace-nowrap">얕은잠</span>
+              <span className="text-[11px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[2].minutes)}</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-sm flex-shrink-0" style={{ background: "#e5e7eb" }} />
-              <span className="text-[9px] text-gray-500 whitespace-nowrap">깨짐</span>
-              <span className="text-[9px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[3].minutes)}</span>
+              <span className="text-[11px] text-gray-500 whitespace-nowrap">깨짐</span>
+              <span className="text-[11px] font-semibold text-gray-700 ml-auto whitespace-nowrap">{toHM(sleepStages[3].minutes)}</span>
             </div>
           </div>
         </div>
@@ -748,12 +748,12 @@ function GalaxyWatchSection() {
         <div className="rounded-xl bg-amber-50/60 border border-amber-100/80 p-3">
           <div className="flex items-center gap-1.5 mb-2">
             <i className="ri-mental-health-line text-amber-400 text-xs" />
-            <p className="text-[10px] font-semibold text-gray-600">스트레스 지수</p>
+            <p className="text-[12px] font-semibold text-gray-600">스트레스 지수</p>
           </div>
           <div className="flex items-baseline gap-1 mb-3">
             <span className="text-xl font-black text-gray-800">{stressLvl}</span>
-            <span className="text-[10px] text-gray-400">/ 100</span>
-            <span className="ml-auto text-[10px] font-bold text-amber-500 px-1.5 py-0.5 bg-amber-100 rounded-full">보통</span>
+            <span className="text-[12px] text-gray-400">/ 100</span>
+            <span className="ml-auto text-[12px] font-bold text-amber-500 px-1.5 py-0.5 bg-amber-100 rounded-full">보통</span>
           </div>
           {/* Gradient bar */}
           <div className="relative w-full h-2.5 rounded-full overflow-hidden mb-1.5" style={{
@@ -764,7 +764,7 @@ function GalaxyWatchSection() {
               style={{ left: `${stressLvl}%`, transform: "translateX(-50%)" }}
             />
           </div>
-          <div className="flex justify-between text-[9px] text-gray-400">
+          <div className="flex justify-between text-[11px] text-gray-400">
             <span>안정</span><span>보통</span><span>높음</span>
           </div>
         </div>
@@ -773,13 +773,13 @@ function GalaxyWatchSection() {
         <div className="rounded-xl bg-emerald-50/60 border border-emerald-100/80 p-3">
           <div className="flex items-center gap-1.5 mb-2">
             <i className="ri-walk-line text-emerald-400 text-xs" />
-            <p className="text-[10px] font-semibold text-gray-600">활동량</p>
+            <p className="text-[12px] font-semibold text-gray-600">활동량</p>
           </div>
           <div className="flex items-baseline gap-1 mb-1">
             <span className="text-xl font-black text-gray-800">{steps.toLocaleString()}</span>
-            <span className="text-[10px] text-gray-400">걸음</span>
+            <span className="text-[12px] text-gray-400">걸음</span>
           </div>
-          <p className="text-[9px] text-gray-400 mb-2.5">목표 {stepGoal.toLocaleString()} 걸음 중</p>
+          <p className="text-[11px] text-gray-400 mb-2.5">목표 {stepGoal.toLocaleString()} 걸음 중</p>
           {/* Progress ring */}
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10 flex-shrink-0">
@@ -792,12 +792,12 @@ function GalaxyWatchSection() {
                   strokeLinecap="round"
                 />
               </svg>
-              <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-emerald-600">
+              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-emerald-600">
                 {Math.round((steps / stepGoal) * 100)}%
               </span>
             </div>
             <div>
-              <p className="text-[9px] text-gray-500 leading-relaxed">
+              <p className="text-[11px] text-gray-500 leading-relaxed">
                 목표까지<br />
                 <strong className="text-gray-700">{(stepGoal - steps).toLocaleString()}걸음</strong> 남았어요
               </p>
@@ -810,7 +810,7 @@ function GalaxyWatchSection() {
       {/* Preview notice */}
       <div className="mt-3 flex items-center gap-2 px-3 py-2 rounded-xl bg-gray-50 border border-gray-100">
         <i className="ri-information-line text-gray-400 text-xs flex-shrink-0" />
-        <p className="text-[10px] text-gray-400 leading-relaxed">
+        <p className="text-[12px] text-gray-400 leading-relaxed">
           위 데이터는 연동 후 표시될 내용의 <strong className="text-gray-600">미리보기</strong>예요. 갤럭시 워치를 연동하면 매일 실제 생체 데이터가 자동으로 기록돼요.
         </p>
       </div>
@@ -831,9 +831,9 @@ function LifeCalendar({ data }: { data: HistoryEntry[] }) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-xs font-bold text-gray-700">30일 컨디션 달력</h3>
-          <p className="text-[10px] text-gray-400 mt-0.5">선생님이 관찰한 매일의 컨디션</p>
+          <p className="text-[12px] text-gray-400 mt-0.5">선생님이 관찰한 매일의 컨디션</p>
         </div>
-        <div className="flex items-center gap-2.5 text-[10px] text-gray-400">
+        <div className="flex items-center gap-2.5 text-[12px] text-gray-400">
           {[{ l: "좋음", c: "#10b981" }, { l: "보통", c: "#f59e0b" }, { l: "주의", c: "#ef4444" }].map((t) => (
             <span key={t.l} className="flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: t.c }} />{t.l}
@@ -860,12 +860,12 @@ function LifeCalendar({ data }: { data: HistoryEntry[] }) {
                   transform: isHov ? "scale(1.18)" : "scale(1)",
                 }}
               >
-                <span className="text-[9px] font-bold">{entry.date.split("-")[1].replace(/^0/, "")}</span>
+                <span className="text-[11px] font-bold">{entry.date.split("-")[1].replace(/^0/, "")}</span>
               </div>
-              <span className="text-[8px] text-gray-400 leading-none">{entry.date}</span>
+              <span className="text-[10px] text-gray-400 leading-none">{entry.date}</span>
               {isHov && (
                 <div
-                  className="absolute z-20 bottom-full mb-1.5 bg-gray-900 text-white rounded-lg px-2.5 py-2 text-[10px] pointer-events-none"
+                  className="absolute z-20 bottom-full mb-1.5 bg-gray-900 text-white rounded-lg px-2.5 py-2 text-[12px] pointer-events-none"
                   style={{ transform: "translateX(-20%)", minWidth: 140 }}
                 >
                   <p className="font-bold mb-1">{entry.date}</p>
@@ -904,7 +904,7 @@ function RecentReports() {
         </div>
         <div>
           <h3 className="text-xs font-bold text-gray-700">최근 생활 알리미</h3>
-          <p className="text-[10px] text-gray-400">선생님이 보내주신 최근 보고</p>
+          <p className="text-[12px] text-gray-400">선생님이 보내주신 최근 보고</p>
         </div>
       </div>
       <div className="space-y-3">
@@ -922,26 +922,26 @@ function RecentReports() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-800">{report.mood}</span>
                   <span
-                    className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                    className="text-[11px] font-bold px-1.5 py-0.5 rounded-full"
                     style={{ background: `${report.moodColor}18`, color: report.moodColor }}
                   >
                     {report.date.replace("2026년 ", "")}
                   </span>
                 </div>
-                <p className="text-[10px] text-gray-400">{report.teacher}</p>
+                <p className="text-[12px] text-gray-400">{report.teacher}</p>
               </div>
             </div>
             {/* items */}
             <div className="grid grid-cols-2 gap-1.5 mb-2.5">
               {report.items.map((item) => (
                 <div key={item.label} className="bg-gray-50 rounded-lg px-2.5 py-1.5">
-                  <p className="text-[9px] text-gray-400 mb-0.5">{item.label}</p>
-                  <p className="text-[11px] font-semibold text-gray-700">{item.value}</p>
+                  <p className="text-[11px] text-gray-400 mb-0.5">{item.label}</p>
+                  <p className="text-[12.5px] font-semibold text-gray-700">{item.value}</p>
                 </div>
               ))}
             </div>
             {report.note && (
-              <p className="text-[10px] text-gray-500 leading-relaxed border-t border-gray-50 pt-2">{report.note}</p>
+              <p className="text-[12px] text-gray-500 leading-relaxed border-t border-gray-50 pt-2">{report.note}</p>
             )}
           </div>
         ))}
@@ -992,20 +992,20 @@ function StatCards({ data }: { data: HistoryEntry[] }) {
               <div className="w-8 h-8 flex items-center justify-center rounded-xl" style={{ background: c.bg }}>
                 <i className={`${c.icon} text-sm`} style={{ color: c.color }} />
               </div>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: c.bg, color: c.color }}>
+              <span className="text-[12px] font-bold px-2 py-0.5 rounded-full" style={{ background: c.bg, color: c.color }}>
                 {pct}%
               </span>
             </div>
             <div className="flex items-baseline gap-1 mb-0.5">
               <span className="text-2xl font-black text-gray-900">{c.value}</span>
               <span className="text-xs text-gray-400">일</span>
-              <span className="text-[10px] text-gray-300">/ {total}일</span>
+              <span className="text-[12px] text-gray-300">/ {total}일</span>
             </div>
             <p className="text-xs font-semibold text-gray-700 mb-2">{c.label}</p>
             <div className="w-full h-1.5 rounded-full bg-gray-100 overflow-hidden mb-1.5">
               <div className="h-full rounded-full" style={{ width: `${pct}%`, background: c.color }} />
             </div>
-            <p className="text-[10px] text-gray-400">{c.sub}</p>
+            <p className="text-[12px] text-gray-400">{c.sub}</p>
           </div>
         );
       })}
@@ -1037,7 +1037,7 @@ function InsightBanner({ data }: { data: HistoryEntry[] }) {
         </div>
         <div>
           <h3 className="text-xs font-bold text-gray-700">AI 생활 패턴 인사이트</h3>
-          <p className="text-[10px] text-gray-400">30일 생활 알리미 기록 분석 · 주요 패턴</p>
+          <p className="text-[12px] text-gray-400">30일 생활 알리미 기록 분석 · 주요 패턴</p>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -1047,9 +1047,9 @@ function InsightBanner({ data }: { data: HistoryEntry[] }) {
               <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <i className={`${ins.icon} text-sm`} style={{ color: ins.color }} />
               </div>
-              <p className="text-[11px] font-bold leading-snug" style={{ color: ins.color }}>{ins.title}</p>
+              <p className="text-[12.5px] font-bold leading-snug" style={{ color: ins.color }}>{ins.title}</p>
             </div>
-            <p className="text-[10px] text-gray-600 leading-relaxed">{ins.desc}</p>
+            <p className="text-[12px] text-gray-600 leading-relaxed">{ins.desc}</p>
           </div>
         ))}
       </div>
@@ -1133,12 +1133,12 @@ export default function BehaviorStats() {
       <div className="sticky top-0 z-20 sm:hidden bg-white/90 backdrop-blur-md border-b border-gray-100 px-5 py-3 flex items-center justify-between">
         <div>
           <h1 className="text-sm font-black text-gray-900 leading-tight">우리 아이 이야기</h1>
-          <p className="text-[10px] text-gray-400 mt-0.5 leading-none">
+          <p className="text-[12px] text-gray-400 mt-0.5 leading-none">
             {childName} · 30일 생활 알리미 분석
           </p>
         </div>
-        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-gray-200 text-[10px] text-gray-500 whitespace-nowrap flex-shrink-0">
-          <i className="ri-calendar-line text-[11px]" />
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-gray-200 text-[12px] text-gray-500 whitespace-nowrap flex-shrink-0">
+          <i className="ri-calendar-line text-[12.5px]" />
           최근 30일
         </div>
       </div>
@@ -1152,7 +1152,7 @@ export default function BehaviorStats() {
               {childName}의 30일 생활 알리미 기록 분석 · 선생님 관찰 기반
             </p>
           </div>
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 text-[11px] text-gray-500 whitespace-nowrap flex-shrink-0">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-gray-200 text-[12.5px] text-gray-500 whitespace-nowrap flex-shrink-0">
             <i className="ri-calendar-line text-xs" />
             최근 30일
           </div>
@@ -1189,7 +1189,7 @@ export default function BehaviorStats() {
         {/* Divider */}
         <div className="flex items-center gap-3 pt-1">
           <div className="flex-1 h-px bg-gray-100" />
-          <span className="text-[11px] text-gray-400 font-semibold whitespace-nowrap flex items-center gap-1.5">
+          <span className="text-[12.5px] text-gray-400 font-semibold whitespace-nowrap flex items-center gap-1.5">
             <i className="ri-bar-chart-2-line text-xs" />도전행동 기록
           </span>
           <div className="flex-1 h-px bg-gray-100" />

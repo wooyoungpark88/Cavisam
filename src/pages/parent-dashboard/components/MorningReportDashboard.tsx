@@ -45,8 +45,8 @@ function SummaryCards({ data }: { data: HistoryItem[] }) {
           </div>
           <div className="min-w-0">
             <p className="text-base font-black text-gray-900 leading-none">{c.value}</p>
-            <p className="text-[10px] font-semibold text-gray-600 mt-0.5 leading-tight">{c.label}</p>
-            <p className="text-[9px] text-gray-400 leading-tight mt-0.5">{c.sub}</p>
+            <p className="text-[12px] font-semibold text-gray-600 mt-0.5 leading-tight">{c.label}</p>
+            <p className="text-[11px] text-gray-400 leading-tight mt-0.5">{c.sub}</p>
           </div>
         </div>
       ))}
@@ -111,7 +111,7 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
     <div ref={containerRef} className="bg-white rounded-2xl border border-gray-100 p-5">
       <div className="mb-3">
         <h3 className="text-xs font-bold text-gray-700">컨디션 변화 추이</h3>
-        <p className="text-[10px] text-gray-400 mt-0.5">
+        <p className="text-[12px] text-gray-400 mt-0.5">
           날짜별 컨디션 흐름을 한눈에 파악하고 컨디션이 나빴던 날의 원인을 찾아보세요
           <span className="ml-1.5 text-gray-300">· 도트 클릭 시 상세 정보</span>
         </p>
@@ -218,7 +218,7 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-bold text-gray-800">{d.date}</span>
                   <span
-                    className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                    className="text-[12px] font-semibold px-1.5 py-0.5 rounded-full"
                     style={{ background: `${color}18`, color }}
                   >
                     {d.condition}
@@ -231,14 +231,14 @@ function ConditionTrendChart({ data }: { data: HistoryItem[] }) {
                     { icon: "ri-capsule-line", label: "약 복용", value: d.medicine, color: "#026eff" },
                   ].map((row) => (
                     <div key={row.label} className="flex items-center gap-1.5">
-                      <i className={`${row.icon} text-[10px] flex-shrink-0`} style={{ color: row.color }} />
-                      <span className="text-[10px] text-gray-400 flex-1">{row.label}</span>
-                      <span className="text-[10px] font-semibold text-gray-700">{row.value}</span>
+                      <i className={`${row.icon} text-[12px] flex-shrink-0`} style={{ color: row.color }} />
+                      <span className="text-[12px] text-gray-400 flex-1">{row.label}</span>
+                      <span className="text-[12px] font-semibold text-gray-700">{row.value}</span>
                     </div>
                   ))}
                 </div>
                 {d.note && (
-                  <p className="mt-2 pt-2 border-t border-gray-50 text-[9px] text-gray-400 leading-relaxed line-clamp-2">
+                  <p className="mt-2 pt-2 border-t border-gray-50 text-[11px] text-gray-400 leading-relaxed line-clamp-2">
                     {d.note}
                   </p>
                 )}
@@ -275,7 +275,7 @@ function SleepConditionCorrelation({ data }: { data: HistoryItem[] }) {
     <div className="bg-white rounded-2xl border border-gray-100 p-5">
       <div className="mb-4">
         <h3 className="text-xs font-bold text-gray-700">수면 → 컨디션 연관성</h3>
-        <p className="text-[10px] text-gray-400 mt-0.5">
+        <p className="text-[12px] text-gray-400 mt-0.5">
           수면이 충분할수록 좋은 컨디션 비율이 높아지는지 확인해보세요
         </p>
       </div>
@@ -292,9 +292,9 @@ function SleepConditionCorrelation({ data }: { data: HistoryItem[] }) {
                     className="w-2 h-2 rounded-full flex-shrink-0"
                     style={{ background: sleepColor[sleep] }}
                   />
-                  <span className="text-[11px] font-semibold text-gray-600">수면 {sleep}</span>
+                  <span className="text-[12.5px] font-semibold text-gray-600">수면 {sleep}</span>
                 </div>
-                <span className="text-[10px] text-gray-400">{total}일</span>
+                <span className="text-[12px] text-gray-400">{total}일</span>
               </div>
               {/* Proportion bar */}
               <div className="flex h-5 rounded-lg overflow-hidden">
@@ -305,7 +305,7 @@ function SleepConditionCorrelation({ data }: { data: HistoryItem[] }) {
                   return (
                     <div
                       key={cond}
-                      className="flex items-center justify-center text-[9px] font-bold text-white"
+                      className="flex items-center justify-center text-[11px] font-bold text-white"
                       style={{ width: `${pct}%`, background: condColor(cond) }}
                     >
                       {pct >= 18 ? `${Math.round(pct)}%` : ""}
@@ -320,7 +320,7 @@ function SleepConditionCorrelation({ data }: { data: HistoryItem[] }) {
                   const pct = total > 0 ? Math.round((count / total) * 100) : 0;
                   if (count === 0) return null;
                   return (
-                    <span key={cond} className="flex items-center gap-1 text-[9px] text-gray-400">
+                    <span key={cond} className="flex items-center gap-1 text-[11px] text-gray-400">
                       <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: condColor(cond) }} />
                       {cond} {pct}%
                     </span>
@@ -355,13 +355,13 @@ function DistributionBar({
   return (
     <div className="flex items-center gap-2.5">
       <div className="w-16 flex-shrink-0 text-right">
-        <span className="text-[11px] font-semibold text-gray-600">{label}</span>
-        {sublabel && <p className="text-[9px] text-gray-400 leading-tight">{sublabel}</p>}
+        <span className="text-[12.5px] font-semibold text-gray-600">{label}</span>
+        {sublabel && <p className="text-[11px] text-gray-400 leading-tight">{sublabel}</p>}
       </div>
       <div className="flex-1 h-4 bg-gray-100 rounded-full overflow-hidden relative">
         <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
       </div>
-      <span className="text-[10px] text-gray-500 w-16 text-right flex-shrink-0 whitespace-nowrap">
+      <span className="text-[12px] text-gray-500 w-16 text-right flex-shrink-0 whitespace-nowrap">
         {value}일 ({pct}%)
       </span>
     </div>
@@ -393,7 +393,7 @@ function DistributionCharts({ data }: { data: HistoryItem[] }) {
           </div>
           <h3 className="text-xs font-bold text-gray-700">수면 패턴 분포</h3>
         </div>
-        <p className="text-[10px] text-gray-400 mb-3 ml-8">수면 상태가 얼마나 자주 어떻게 나타났는지 비율로 보여줘요</p>
+        <p className="text-[12px] text-gray-400 mb-3 ml-8">수면 상태가 얼마나 자주 어떻게 나타났는지 비율로 보여줘요</p>
         <div className="space-y-2.5">
           <DistributionBar label="충분" sublabel="7시간 이상" value={sleep["충분"] || 0} total={total} color="#8b5cf6" />
           <DistributionBar label="보통" sublabel="5~7시간" value={sleep["보통"] || 0} total={total} color="#a78bfa" />
@@ -409,7 +409,7 @@ function DistributionCharts({ data }: { data: HistoryItem[] }) {
           </div>
           <h3 className="text-xs font-bold text-gray-700">아침 식사 패턴 분포</h3>
         </div>
-        <p className="text-[10px] text-gray-400 mb-3 ml-8">아이가 아침을 얼마나 먹었는지 빈도로 파악해요</p>
+        <p className="text-[12px] text-gray-400 mb-3 ml-8">아이가 아침을 얼마나 먹었는지 빈도로 파악해요</p>
         <div className="space-y-2.5">
           <DistributionBar label="전부" sublabel="완식" value={meal["전부"] || 0} total={total} color="#10b981" />
           <DistributionBar label="대부분" sublabel="거의 다" value={meal["대부분"] || 0} total={total} color="#34d399" />
@@ -430,7 +430,7 @@ function HistoryList({ data }: { data: HistoryItem[] }) {
     <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
       <div className="px-5 py-4 border-b border-gray-50 flex items-center justify-between">
         <h3 className="text-xs font-bold text-gray-700">발송 이력</h3>
-        <span className="text-[10px] text-gray-400">최근 {recent.length}건</span>
+        <span className="text-[12px] text-gray-400">최근 {recent.length}건</span>
       </div>
       <div className="divide-y divide-gray-50">
         {recent.map((item) => {
@@ -439,10 +439,10 @@ function HistoryList({ data }: { data: HistoryItem[] }) {
           const sleepText = item.sleep === "충분" ? "#7c3aed" : item.sleep === "부족" ? "#dc2626" : "#6b7280";
           return (
             <div key={item.date} className="px-5 py-3 flex items-center gap-3">
-              <span className="text-[11px] text-gray-400 w-10 flex-shrink-0 font-medium">{item.date}</span>
+              <span className="text-[12.5px] text-gray-400 w-10 flex-shrink-0 font-medium">{item.date}</span>
               {/* Condition badge */}
               <span
-                className="text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap"
+                className="text-[12px] font-bold px-2 py-0.5 rounded-full flex-shrink-0 whitespace-nowrap"
                 style={{ background: `${cc}18`, color: cc }}
               >
                 {item.condition}
@@ -450,22 +450,22 @@ function HistoryList({ data }: { data: HistoryItem[] }) {
               {/* Tags */}
               <div className="flex items-center gap-1.5 flex-1 flex-wrap min-w-0">
                 <span
-                  className="text-[9px] font-semibold px-1.5 py-0.5 rounded-md whitespace-nowrap"
+                  className="text-[11px] font-semibold px-1.5 py-0.5 rounded-md whitespace-nowrap"
                   style={{ background: sleepBg, color: sleepText }}
                 >
                   수면 {item.sleep}
                 </span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-500 whitespace-nowrap">
+                <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-500 whitespace-nowrap">
                   식사 {item.meal}
                 </span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-500 whitespace-nowrap hidden sm:inline">
+                <span className="text-[11px] px-1.5 py-0.5 rounded-md bg-gray-100 text-gray-500 whitespace-nowrap hidden sm:inline">
                   약 {item.medicine}
                 </span>
               </div>
               {item.note && (
                 <div className="flex items-center gap-1 flex-shrink-0">
-                  <i className="ri-sticky-note-line text-[10px] text-gray-300" />
-                  <span className="text-[9px] text-gray-400 max-w-[80px] truncate hidden md:block">{item.note}</span>
+                  <i className="ri-sticky-note-line text-[12px] text-gray-300" />
+                  <span className="text-[11px] text-gray-400 max-w-[80px] truncate hidden md:block">{item.note}</span>
                 </div>
               )}
             </div>

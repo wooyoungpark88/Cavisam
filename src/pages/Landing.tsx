@@ -57,7 +57,7 @@ function ServiceCard({
         {features.map((f) => (
           <span
             key={f}
-            className="px-2.5 py-1 rounded-full text-[11px] font-medium whitespace-nowrap"
+            className="px-2.5 py-1 rounded-full text-[12.5px] font-medium whitespace-nowrap"
             style={{ background: featureBg, color: featureColor }}
           >
             {f}
@@ -65,7 +65,7 @@ function ServiceCard({
         ))}
       </div>
 
-      <p className="text-[11px] text-gray-300 mt-5 font-medium group-hover:text-gray-400 transition-colors">
+      <p className="text-[12.5px] text-gray-300 mt-5 font-medium group-hover:text-gray-400 transition-colors">
         눌러서 시작하기
       </p>
     </button>
@@ -149,7 +149,7 @@ export function Landing() {
 
       <button
         onClick={() => navigate("/admin")}
-        className="mt-3 flex items-center gap-1.5 text-[11px] text-gray-400 hover:text-gray-600 cursor-pointer transition-colors whitespace-nowrap"
+        className="mt-3 flex items-center gap-1.5 text-[12.5px] text-gray-400 hover:text-gray-600 cursor-pointer transition-colors whitespace-nowrap"
       >
         <i className="ri-shield-keyhole-line text-xs" />
         관리자 콘솔

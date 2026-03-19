@@ -22,10 +22,10 @@ function StatRow({
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-1.5 text-gray-400">
         <span className="text-xs">{emoji}</span>
-        <span className="text-[10px] font-medium">{label}</span>
+        <span className="text-[12px] font-medium">{label}</span>
         {!isNeutral && (
           <span
-            className="text-[9px] font-bold"
+            className="text-[11px] font-bold"
             style={{ color: positive ? "#10b981" : "#ef4444" }}
           >
             지난주 대비 {change}
@@ -65,7 +65,7 @@ export default function MessageStudentStats({ conversation }: Props) {
         </div>
         <div>
           <p className="text-sm font-bold text-gray-900">{conversation.studentName}</p>
-          <p className="text-[10px] text-gray-400">{conversation.parentName}</p>
+          <p className="text-[12px] text-gray-400">{conversation.parentName}</p>
         </div>
       </div>
 

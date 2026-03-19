@@ -37,7 +37,7 @@ function StatCard({
       <div>
         <p className="text-2xl font-bold text-gray-900">{value}</p>
         <p className="text-xs font-semibold text-gray-600 mt-0.5">{label}</p>
-        <p className="text-[10px] text-gray-400 mt-0.5">{sub}</p>
+        <p className="text-[12px] text-gray-400 mt-0.5">{sub}</p>
       </div>
     </div>
   );
@@ -106,7 +106,7 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
         <div className="px-4 sm:px-6 py-4 border-b border-gray-100 flex items-center justify-between">
           <div>
             <p className="text-sm font-bold text-gray-900">최근 승인 대기 요청</p>
-            <p className="text-[11px] text-gray-400 mt-0.5">신규 가입자의 역할을 지정해 주세요</p>
+            <p className="text-[12.5px] text-gray-400 mt-0.5">신규 가입자의 역할을 지정해 주세요</p>
           </div>
           {pending > 0 && (
             <button
@@ -138,10 +138,10 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800">{u.name}</p>
-                  <p className="text-[11px] text-gray-400 truncate">{u.email}</p>
+                  <p className="text-[12.5px] text-gray-400 truncate">{u.email}</p>
                 </div>
-                <span className="hidden sm:block text-[11px] text-gray-400 flex-shrink-0">{u.registeredAt} 가입</span>
-                <span className="px-2.5 py-1 rounded-full bg-orange-50 text-orange-500 text-[11px] font-semibold whitespace-nowrap">
+                <span className="hidden sm:block text-[12.5px] text-gray-400 flex-shrink-0">{u.registeredAt} 가입</span>
+                <span className="px-2.5 py-1 rounded-full bg-orange-50 text-orange-500 text-[12.5px] font-semibold whitespace-nowrap">
                   역할 미지정
                 </span>
               </div>
@@ -195,17 +195,17 @@ export default function AdminOverview({ users, onGoUsers, onGoPending }: AdminOv
               .map((u) => (
                 <div key={u.id} className="flex items-center gap-3">
                   <div
-                    className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
+                    className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
                     style={{ background: u.avatarColor }}
                   >
                     {u.initial}
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-xs font-semibold text-gray-800 truncate">{u.name}</p>
-                    <p className="text-[10px] text-gray-400 truncate">{u.approvedAt} 승인</p>
+                    <p className="text-[12px] text-gray-400 truncate">{u.approvedAt} 승인</p>
                   </div>
                   <span
-                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
+                    className="text-[12px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
                     style={{
                       background: u.role === "teacher" ? "#eff6ff" : "#fff7ed",
                       color: u.role === "teacher" ? "#026eff" : "#ea580c",

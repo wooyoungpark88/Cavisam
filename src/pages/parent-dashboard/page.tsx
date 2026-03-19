@@ -78,7 +78,7 @@ function TopBar({
           >
             <i className={`ri-notification-3-line text-base transition-colors ${notiOpen ? "text-[#026eff]" : "text-gray-400"}`} />
             {unreadCount > 0 && (
-              <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-[#026eff] flex items-center justify-center text-white text-[8px] font-bold leading-none">
+              <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-[#026eff] flex items-center justify-center text-white text-[10px] font-bold leading-none">
                 {unreadCount}
               </span>
             )}
@@ -93,7 +93,7 @@ function TopBar({
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-900">알림</span>
                   {unreadCount > 0 && (
-                    <span className="px-1.5 py-0.5 rounded-full bg-[#026eff] text-white text-[9px] font-bold">
+                    <span className="px-1.5 py-0.5 rounded-full bg-[#026eff] text-white text-[11px] font-bold">
                       {unreadCount}
                     </span>
                   )}
@@ -101,7 +101,7 @@ function TopBar({
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllRead}
-                    className="text-[11px] text-[#026eff] hover:opacity-70 cursor-pointer whitespace-nowrap font-medium"
+                    className="text-[12.5px] text-[#026eff] hover:opacity-70 cursor-pointer whitespace-nowrap font-medium"
                   >
                     모두 읽음
                   </button>
@@ -127,14 +127,14 @@ function TopBar({
                         </p>
                         {n.unread && <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-[#026eff]" />}
                       </div>
-                      <p className="text-[10px] text-gray-400 leading-snug line-clamp-2">{n.desc}</p>
-                      <p className="text-[10px] text-gray-300 mt-0.5">{n.time}</p>
+                      <p className="text-[12px] text-gray-400 leading-snug line-clamp-2">{n.desc}</p>
+                      <p className="text-[12px] text-gray-300 mt-0.5">{n.time}</p>
                     </div>
                   </button>
                 ))}
               </div>
               <div className="px-4 py-2.5 border-t border-gray-50 text-center">
-                <button className="text-[11px] text-gray-400 hover:text-gray-600 transition-colors cursor-pointer whitespace-nowrap">
+                <button className="text-[12.5px] text-gray-400 hover:text-gray-600 transition-colors cursor-pointer whitespace-nowrap">
                   알림 전체 보기
                 </button>
               </div>
@@ -149,14 +149,14 @@ function TopBar({
           </div>
           <div className="hidden sm:block">
             <p className="text-xs font-semibold text-gray-800 leading-tight">{childName} 보호자</p>
-            <p className="text-[10px] text-gray-400">{facility}</p>
+            <p className="text-[12px] text-gray-400">{facility}</p>
           </div>
         </div>
 
         {/* Logout */}
         <button
           onClick={onBack}
-          className="hidden sm:flex items-center gap-1.5 text-[11px] text-gray-400 hover:text-gray-700 transition-colors cursor-pointer whitespace-nowrap ml-1"
+          className="hidden sm:flex items-center gap-1.5 text-[12.5px] text-gray-400 hover:text-gray-700 transition-colors cursor-pointer whitespace-nowrap ml-1"
         >
           <i className="ri-logout-box-r-line text-xs" />
           나가기
@@ -273,7 +273,7 @@ function ParentDashboardInner() {
               <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                 <i className={`${item.icon} text-base leading-none`} />
               </div>
-              <div className="flex flex-col items-center justify-center gap-0 text-[9px] font-medium leading-[1.2] text-center min-h-[18px]">
+              <div className="flex flex-col items-center justify-center gap-0 text-[11px] font-medium leading-[1.2] text-center min-h-[18px]">
                 {item.label.map((line, i) => (
                   <span key={i} className="block">{line}</span>
                 ))}

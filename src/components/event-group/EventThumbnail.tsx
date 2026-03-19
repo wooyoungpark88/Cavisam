@@ -21,10 +21,10 @@ export function EventThumbnail({ time, imageUrl, label, onClick }: EventThumbnai
             </div>
           )}
         </div>
-        <div className="absolute top-1 left-1/2 -translate-x-1/2 text-[11px] font-bold text-gray-600">
+        <div className="absolute top-1 left-1/2 -translate-x-1/2 text-[12.5px] font-bold text-gray-600">
           {time}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 bg-gray-500/70 text-white text-center text-[8px] font-bold py-1">
+        <div className="absolute bottom-0 left-0 right-0 bg-gray-500/70 text-white text-center text-[10px] font-bold py-1">
           {label}
         </div>
       </div>

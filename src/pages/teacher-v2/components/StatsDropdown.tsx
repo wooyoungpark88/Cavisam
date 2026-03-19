@@ -15,12 +15,12 @@ function MiniBar({ data, colorFn }: {
         const color = colorFn ? colorFn(d.count, max) : "#026eff";
         return (
           <div key={d.label} className="flex-1 flex flex-col items-center gap-0.5">
-            <span className="text-[8px] text-gray-400 leading-none">{d.count}</span>
+            <span className="text-[10px] text-gray-400 leading-none">{d.count}</span>
             <div
               className="w-full rounded-t-sm"
               style={{ height: `${Math.max(pct * 0.28, 2)}px`, background: color, opacity: 0.75 }}
             />
-            <span className="text-[8px] text-gray-400 leading-none">{d.label}</span>
+            <span className="text-[10px] text-gray-400 leading-none">{d.label}</span>
           </div>
         );
       })}
@@ -29,10 +29,10 @@ function MiniBar({ data, colorFn }: {
 }
 
 function TrendIcon({ value, positiveIsGood = true }: { value: number; positiveIsGood?: boolean }) {
-  if (value === 0) return <i className="ri-subtract-line text-[10px] text-gray-400" />;
+  if (value === 0) return <i className="ri-subtract-line text-[12px] text-gray-400" />;
   const isGood = positiveIsGood ? value > 0 : value < 0;
   const icon = value > 0 ? "ri-arrow-up-line" : "ri-arrow-down-line";
-  return <i className={`${icon} text-[10px]`} style={{ color: isGood ? "#10b981" : "#ef4444" }} />;
+  return <i className={`${icon} text-[12px]`} style={{ color: isGood ? "#10b981" : "#ef4444" }} />;
 }
 
 function StatRow({
@@ -43,7 +43,7 @@ function StatRow({
 }) {
   return (
     <div className="flex items-center justify-between py-1.5">
-      <span className="text-gray-500 text-[11px]">{label}</span>
+      <span className="text-gray-500 text-[12.5px]">{label}</span>
       <div className="flex items-center gap-1">
         {trend !== undefined && (
           <TrendIcon value={trend} positiveIsGood={positiveIsGood} />
@@ -142,7 +142,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
             <button
               key={t.key}
               onClick={() => setTab(t.key)}
-              className="flex-1 py-2.5 text-[11px] font-semibold cursor-pointer whitespace-nowrap transition-all"
+              className="flex-1 py-2.5 text-[12.5px] font-semibold cursor-pointer whitespace-nowrap transition-all"
               style={{
                 color: tab === t.key ? "#026eff" : "#6b7280",
                 borderBottom: tab === t.key ? "2px solid #026eff" : "2px solid transparent",
@@ -158,7 +158,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
           {/* ── 일일 ── */}
           {tab === "daily" && (
             <>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+              <p className="text-[12px] font-bold text-gray-400 uppercase tracking-wider mb-2">
                 2026년 3월 18일 현황
               </p>
               <StatRow label="전체 이용인" value={mockDailyStatsSummary.total} unit="명" color="#026eff" />
@@ -177,8 +177,8 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
                       className="flex-1 rounded-xl py-2 px-1.5 text-center"
                       style={{ background: `${item.color}10` }}
                     >
-                      <p className="text-[10px] font-bold" style={{ color: item.color }}>{item.value}</p>
-                      <p className="text-[9px] text-gray-400 mt-0.5 leading-tight">{item.label}</p>
+                      <p className="text-[12px] font-bold" style={{ color: item.color }}>{item.value}</p>
+                      <p className="text-[11px] text-gray-400 mt-0.5 leading-tight">{item.label}</p>
                     </div>
                   ))}
                 </div>
@@ -189,7 +189,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
           {/* ── 일주일 ── */}
           {tab === "weekly" && (
             <>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+              <p className="text-[12px] font-bold text-gray-400 uppercase tracking-wider mb-2">
                 3월 3주차 (3.11 ~ 3.17)
               </p>
               <StatRow
@@ -201,7 +201,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
                 color="#111827"
               />
               <div className="text-right">
-                <span className="text-[10px] text-gray-400">
+                <span className="text-[12px] text-gray-400">
                   전주 {mockWeeklyStatsSummary.prevWeekBehaviors}회 대비{" "}
                   <span className="text-emerald-500 font-semibold">{mockWeeklyStatsSummary.changeRate}%</span>
                 </span>
@@ -212,7 +212,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
 
               {/* Mini bar chart */}
               <div className="mt-3 pt-3 border-t border-gray-100">
-                <p className="text-[9px] text-gray-400 mb-1.5">요일별 문제행동</p>
+                <p className="text-[11px] text-gray-400 mb-1.5">요일별 문제행동</p>
                 <MiniBar
                   data={mockWeeklyStatsSummary.dailyBehaviors.map((d) => ({ label: d.day, count: d.count }))}
                   colorFn={(count, max) => count === max ? "#ef4444" : count <= 5 ? "#10b981" : "#026eff"}
@@ -222,14 +222,14 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
               {/* Best / worst */}
               <div className="mt-3 pt-3 border-t border-gray-100 space-y-1.5">
                 <div className="flex items-center justify-between rounded-lg px-2.5 py-1.5 bg-emerald-50">
-                  <span className="text-[10px] text-emerald-700">가장 개선</span>
-                  <span className="text-[11px] font-bold text-emerald-600">
+                  <span className="text-[12px] text-emerald-700">가장 개선</span>
+                  <span className="text-[12.5px] font-bold text-emerald-600">
                     {mockWeeklyStatsSummary.mostImprovedName} {mockWeeklyStatsSummary.mostImprovedRate}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between rounded-lg px-2.5 py-1.5 bg-red-50">
-                  <span className="text-[10px] text-red-700">관심 필요</span>
-                  <span className="text-[11px] font-bold text-red-500">
+                  <span className="text-[12px] text-red-700">관심 필요</span>
+                  <span className="text-[12.5px] font-bold text-red-500">
                     {mockWeeklyStatsSummary.mostWorsenedName} +{mockWeeklyStatsSummary.mostWorsenedRate}%
                   </span>
                 </div>
@@ -240,7 +240,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
           {/* ── 한달 ── */}
           {tab === "monthly" && (
             <>
-              <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">
+              <p className="text-[12px] font-bold text-gray-400 uppercase tracking-wider mb-2">
                 2026년 3월 전체
               </p>
               <StatRow
@@ -252,7 +252,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
                 color="#111827"
               />
               <div className="text-right">
-                <span className="text-[10px] text-gray-400">
+                <span className="text-[12px] text-gray-400">
                   전월 {mockMonthlyStatsSummary.prevMonthBehaviors}회 대비{" "}
                   <span className="text-emerald-500 font-semibold">{mockMonthlyStatsSummary.changeRate}%</span>
                 </span>
@@ -263,7 +263,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
 
               {/* Weekly mini bar */}
               <div className="mt-3 pt-3 border-t border-gray-100">
-                <p className="text-[9px] text-gray-400 mb-1.5">주차별 문제행동</p>
+                <p className="text-[11px] text-gray-400 mb-1.5">주차별 문제행동</p>
                 <MiniBar
                   data={mockMonthlyStatsSummary.weeklyBehaviors.map((d) => ({ label: d.week, count: d.count }))}
                   colorFn={(count, max) => count === max ? "#ef4444" : count <= 50 ? "#10b981" : "#026eff"}
@@ -273,29 +273,29 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
               {/* Best / worst */}
               <div className="mt-3 pt-3 border-t border-gray-100 space-y-1.5">
                 <div className="flex items-center justify-between rounded-lg px-2.5 py-1.5 bg-emerald-50">
-                  <span className="text-[10px] text-emerald-700">이달의 개선 이용인</span>
+                  <span className="text-[12px] text-emerald-700">이달의 개선 이용인</span>
                   <div className="flex items-center gap-1">
                     <div
-                      className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[8px] font-bold"
+                      className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
                       style={{ background: mockMonthlyStatsSummary.mostImprovedColor }}
                     >
                       수
                     </div>
-                    <span className="text-[11px] font-bold text-emerald-600">
+                    <span className="text-[12.5px] font-bold text-emerald-600">
                       {mockMonthlyStatsSummary.mostImprovedName} {mockMonthlyStatsSummary.mostImprovedRate}%
                     </span>
                   </div>
                 </div>
                 <div className="flex items-center justify-between rounded-lg px-2.5 py-1.5 bg-red-50">
-                  <span className="text-[10px] text-red-700">집중 지원 대상</span>
+                  <span className="text-[12px] text-red-700">집중 지원 대상</span>
                   <div className="flex items-center gap-1">
                     <div
-                      className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[8px] font-bold"
+                      className="w-3.5 h-3.5 rounded-full flex items-center justify-center text-white text-[10px] font-bold"
                       style={{ background: mockMonthlyStatsSummary.leastImprovedColor }}
                     >
                       도
                     </div>
-                    <span className="text-[11px] font-bold text-red-500">
+                    <span className="text-[12.5px] font-bold text-red-500">
                       {mockMonthlyStatsSummary.leastImprovedName} +{mockMonthlyStatsSummary.leastImprovedRate}%
                     </span>
                   </div>
@@ -309,7 +309,7 @@ export default function StatsDropdown({ onClose }: { onClose: () => void }) {
         <div className="px-4 py-2.5 border-t border-gray-100 bg-gray-50/50 flex justify-end">
           <button
             onClick={onClose}
-            className="text-[11px] text-gray-400 hover:text-gray-600 cursor-pointer whitespace-nowrap transition-colors"
+            className="text-[12.5px] text-gray-400 hover:text-gray-600 cursor-pointer whitespace-nowrap transition-colors"
           >
             닫기
           </button>

@@ -208,7 +208,7 @@ export default function MorningReportForm({ onSent }: Props) {
             >
               {filledRequired}/{totalRequired}
             </span>
-            <span className="text-[10px] text-gray-400">필수</span>
+            <span className="text-[12px] text-gray-400">필수</span>
           </div>
         </div>
 
@@ -219,12 +219,12 @@ export default function MorningReportForm({ onSent }: Props) {
             className="w-full mb-3 sm:mb-4 flex items-center gap-2 sm:gap-2.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl border border-dashed border-gray-200 bg-gray-50 hover:bg-gray-100 hover:border-gray-300 transition-all cursor-pointer group"
           >
             <div className="w-6 h-6 flex items-center justify-center rounded-lg bg-white border border-gray-200 flex-shrink-0 group-hover:border-gray-300 transition-all">
-              <i className="ri-history-line text-[11px] text-gray-400" />
+              <i className="ri-history-line text-[12.5px] text-gray-400" />
             </div>
             <div className="flex-1 text-left min-w-0">
               <span className="text-xs font-semibold text-gray-600">어제와 같아요</span>
               {/* Desktop: show tags */}
-              <span className="text-[10px] text-gray-400 ml-2 hidden sm:inline">
+              <span className="text-[12px] text-gray-400 ml-2 hidden sm:inline">
                 어제 기록
                 <span className="inline-flex items-center gap-1 ml-1">
                   {[
@@ -234,7 +234,7 @@ export default function MorningReportForm({ onSent }: Props) {
                   ].map((tag) => (
                     <span
                       key={tag.val}
-                      className="px-1.5 py-px rounded-md text-[9px] font-semibold whitespace-nowrap"
+                      className="px-1.5 py-px rounded-md text-[11px] font-semibold whitespace-nowrap"
                       style={{ background: `${tag.color}18`, color: tag.color }}
                     >
                       {tag.val}
@@ -244,7 +244,7 @@ export default function MorningReportForm({ onSent }: Props) {
                 을 불러와요
               </span>
               {/* Mobile: simplified */}
-              <span className="text-[10px] text-gray-400 ml-1.5 sm:hidden">
+              <span className="text-[12px] text-gray-400 ml-1.5 sm:hidden">
                 컨디션·수면·식사 기록 가져오기
               </span>
             </div>
@@ -258,11 +258,11 @@ export default function MorningReportForm({ onSent }: Props) {
             style={{ background: "#f0fdf4", borderColor: "#bbf7d0" }}
           >
             <div className="w-6 h-6 flex items-center justify-center rounded-lg flex-shrink-0" style={{ background: "#10b98120" }}>
-              <i className="ri-checkbox-circle-fill text-[11px]" style={{ color: "#10b981" }} />
+              <i className="ri-checkbox-circle-fill text-[12.5px]" style={{ color: "#10b981" }} />
             </div>
             <div className="flex-1 min-w-0">
               <span className="text-xs font-semibold" style={{ color: "#059669" }}>어제 기록을 불러왔어요</span>
-              <span className="text-[10px] ml-1.5 hidden sm:inline" style={{ color: "#6ee7b7" }}>달라진 부분만 수정 후 발송하세요</span>
+              <span className="text-[12px] ml-1.5 hidden sm:inline" style={{ color: "#6ee7b7" }}>달라진 부분만 수정 후 발송하세요</span>
             </div>
             <button
               onClick={() => {
@@ -271,7 +271,7 @@ export default function MorningReportForm({ onSent }: Props) {
               }}
               className="w-5 h-5 flex items-center justify-center rounded-full flex-shrink-0 cursor-pointer hover:bg-green-200 transition-colors"
             >
-              <i className="ri-close-line text-[11px]" style={{ color: "#10b981" }} />
+              <i className="ri-close-line text-[12.5px]" style={{ color: "#10b981" }} />
             </button>
           </div>
         )}
@@ -308,17 +308,17 @@ export default function MorningReportForm({ onSent }: Props) {
                     className="w-5 h-5 flex items-center justify-center rounded-md flex-shrink-0"
                     style={{ background: `${section.accentColor}18` }}
                   >
-                    <i className={`${section.icon} text-[11px]`} style={{ color: section.accentColor }} />
+                    <i className={`${section.icon} text-[12.5px]`} style={{ color: section.accentColor }} />
                   </div>
                   <span className="text-xs font-bold text-gray-700">{section.title}</span>
                   {section.required && (
-                    <span className="text-[10px] font-semibold" style={{ color: "#ef4444" }}>
+                    <span className="text-[12px] font-semibold" style={{ color: "#ef4444" }}>
                       *필수
                     </span>
                   )}
                   {isLoadedField && (
                     <span
-                      className="ml-auto text-[9px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap"
+                      className="ml-auto text-[11px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap"
                       style={{ background: `${section.accentColor}14`, color: section.accentColor }}
                     >
                       어제와 동일
@@ -351,14 +351,14 @@ export default function MorningReportForm({ onSent }: Props) {
                       >
                         <span className="text-base sm:text-xl leading-none mb-0.5 sm:mb-1">{opt.emoji}</span>
                         <span
-                          className="text-[10px] sm:text-[11px] font-semibold leading-tight text-center px-0.5"
+                          className="text-[12px] sm:text-[12.5px] font-semibold leading-tight text-center px-0.5"
                           style={{ color: isSelected ? section.accentColor : "#374151" }}
                         >
                           {opt.label}
                         </span>
                         {opt.sublabel && (
                           <span
-                            className="text-[9px] mt-0.5 leading-tight text-center hidden sm:block"
+                            className="text-[11px] mt-0.5 leading-tight text-center hidden sm:block"
                             style={{ color: isSelected ? section.accentColor : "#9ca3af" }}
                           >
                             {opt.sublabel}
@@ -376,10 +376,10 @@ export default function MorningReportForm({ onSent }: Props) {
           <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 p-3 sm:p-4 sm:col-span-2">
             <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-3">
               <div className="w-5 h-5 flex items-center justify-center rounded-md flex-shrink-0 bg-gray-100">
-                <i className="ri-sticky-note-line text-[11px] text-gray-400" />
+                <i className="ri-sticky-note-line text-[12.5px] text-gray-400" />
               </div>
               <span className="text-xs font-bold text-gray-700">전달 사항</span>
-              <span className="text-[10px] text-gray-400 ml-0.5">(선택)</span>
+              <span className="text-[12px] text-gray-400 ml-0.5">(선택)</span>
             </div>
             <textarea
               value={selections.note}
@@ -389,7 +389,7 @@ export default function MorningReportForm({ onSent }: Props) {
               className="w-full bg-gray-50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-xs text-gray-700 placeholder-gray-400 resize-none focus:outline-none leading-relaxed"
               style={{ minHeight: 56 }}
             />
-            <p className="text-[10px] text-gray-300 text-right mt-1">{selections.note.length}/300</p>
+            <p className="text-[12px] text-gray-300 text-right mt-1">{selections.note.length}/300</p>
           </div>
         </div>
       </div>

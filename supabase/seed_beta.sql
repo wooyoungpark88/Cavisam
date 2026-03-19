@@ -13,12 +13,12 @@ ON CONFLICT (id) DO NOTHING;
 INSERT INTO auth.users (id, email, raw_user_meta_data, created_at, updated_at, instance_id, aud, role)
 VALUES
   ('00000000-0000-0000-0000-000000000010', 'teacher@carevia.test',
-   '{"full_name":"김수진 선생님"}', now(), now(),
+   '{"full_name":"김수진"}', now(), now(),
    '00000000-0000-0000-0000-000000000000', 'authenticated', 'authenticated')
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO public.profiles (id, name, role, status, organization_id)
-VALUES ('00000000-0000-0000-0000-000000000010', '김수진 선생님', 'teacher', 'approved', '00000000-0000-0000-0000-000000000001')
+VALUES ('00000000-0000-0000-0000-000000000010', '김수진', 'teacher', 'approved', '00000000-0000-0000-0000-000000000001')
 ON CONFLICT (id) DO UPDATE SET role = 'teacher', status = 'approved', organization_id = '00000000-0000-0000-0000-000000000001';
 
 -- 현재 로그인한 보호자(우영박)도 기관 연결 확인

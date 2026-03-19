@@ -62,12 +62,12 @@ function AttachmentPreview({
             />
             <button
               onClick={() => onRemove(idx)}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gray-800 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-[10px]"
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-gray-800 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-[12px]"
             >
               <i className="ri-close-line" />
             </button>
             <div className="absolute bottom-0 left-0 right-0 bg-black/40 rounded-b-xl px-1 py-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-              <p className="text-[8px] text-white truncate">{att.name}</p>
+              <p className="text-[10px] text-white truncate">{att.name}</p>
             </div>
           </div>
         ) : (
@@ -84,7 +84,7 @@ function AttachmentPreview({
                 style={{ color: DOC_COLOR[att.ext] ?? "#6b7280" }}
               />
             </div>
-            <p className="text-[11px] text-gray-700 font-medium truncate leading-tight">
+            <p className="text-[12.5px] text-gray-700 font-medium truncate leading-tight">
               {att.name}
             </p>
             <button
@@ -117,7 +117,7 @@ function UserList({
       {/* Header */}
       <div className="flex-shrink-0 px-4 py-3.5 border-b border-gray-100">
         <p className="text-xs font-bold text-gray-900">생활알리미</p>
-        <p className="text-[10px] text-gray-400 mt-0.5">이용인 선택 후 작성</p>
+        <p className="text-[12px] text-gray-400 mt-0.5">이용인 선택 후 작성</p>
       </div>
 
       {/* Student list */}
@@ -147,7 +147,7 @@ function UserList({
                   {student.initial}
                 </div>
                 {unconfirmed > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-orange-400 border border-white flex items-center justify-center text-white text-[9px] font-bold">
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-orange-400 border border-white flex items-center justify-center text-white text-[11px] font-bold">
                     {unconfirmed}
                   </span>
                 )}
@@ -163,12 +163,12 @@ function UserList({
                     {student.name}
                   </p>
                   {latest && (
-                    <span className="text-[10px] text-gray-400 flex-shrink-0 whitespace-nowrap">
+                    <span className="text-[12px] text-gray-400 flex-shrink-0 whitespace-nowrap">
                       {latest.sentAt}
                     </span>
                   )}
                 </div>
-                <p className="text-xs md:text-[10px] text-gray-400 truncate mt-0.5">
+                <p className="text-xs md:text-[12px] text-gray-400 truncate mt-0.5">
                   {latest
                     ? `${latest.type} · ${studentReports.length}건`
                     : "발송 내역 없음"}
@@ -306,7 +306,7 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-bold text-gray-900">{student.name} 이용인</p>
-          <p className="text-[11px] text-gray-400">보호자 타임라인에 전달됩니다</p>
+          <p className="text-[12.5px] text-gray-400">보호자 타임라인에 전달됩니다</p>
         </div>
         {sent && (
           <span className="flex items-center gap-1.5 text-xs text-[#10b981] font-semibold whitespace-nowrap">
@@ -337,7 +337,7 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
                     borderColor: isActive ? type.color : `${type.color}40`,
                   }}
                 >
-                  <i className={`${type.icon} text-[11px]`} />
+                  <i className={`${type.icon} text-[12.5px]`} />
                   {type.label}
                 </button>
               );
@@ -359,7 +359,7 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
 
           {/* 에러 메시지 */}
           {fileError && (
-            <p className="mt-2 text-[11px] text-red-500 flex items-center gap-1">
+            <p className="mt-2 text-[12.5px] text-red-500 flex items-center gap-1">
               <i className="ri-error-warning-line" />
               {fileError}
             </p>
@@ -380,7 +380,7 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={attachments.length >= MAX_FILES}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-[12.5px] font-semibold text-gray-500 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <i className="ri-image-add-line text-sm text-gray-400" />
                 이미지
@@ -388,20 +388,20 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={attachments.length >= MAX_FILES}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-[11px] font-semibold text-gray-500 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 text-[12.5px] font-semibold text-gray-500 hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <i className="ri-file-upload-line text-sm text-gray-400" />
                 문서
               </button>
               {attachments.length > 0 && (
-                <span className="text-[10px] text-gray-400 ml-1">
+                <span className="text-[12px] text-gray-400 ml-1">
                   {attachments.length}/{MAX_FILES}
                 </span>
               )}
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
-              <span className="text-[11px] text-gray-400">{content.length}/500</span>
+              <span className="text-[12.5px] text-gray-400">{content.length}/500</span>
               <button
                 onClick={handleSend}
                 disabled={!content.trim() && attachments.length === 0}
@@ -420,7 +420,7 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
         <div className="px-4 sm:px-6 pt-4 pb-6">
           <p className="text-xs font-bold text-gray-700 mb-3">
             최근 발송 내역
-            <span className="ml-1.5 text-[11px] font-normal text-gray-400">
+            <span className="ml-1.5 text-[12.5px] font-normal text-gray-400">
               ({filteredHistory.length}건)
             </span>
           </p>
@@ -452,20 +452,20 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
                         />
                       </div>
                       <span
-                        className="text-[11px] font-bold"
+                        className="text-[12.5px] font-bold"
                         style={{ color: report.typeColor }}
                       >
                         {report.type}
                       </span>
-                      <span className="text-[10px] text-gray-400">{report.sentAt}</span>
+                      <span className="text-[12px] text-gray-400">{report.sentAt}</span>
                     </div>
                     {report.confirmed ? (
-                      <span className="flex items-center gap-1 text-[10px] font-semibold text-[#10b981]">
+                      <span className="flex items-center gap-1 text-[12px] font-semibold text-[#10b981]">
                         <i className="ri-checkbox-circle-fill text-xs" />
                         보호자 확인 {report.confirmedAt}
                       </span>
                     ) : (
-                      <span className="text-[10px] text-gray-400">미확인</span>
+                      <span className="text-[12px] text-gray-400">미확인</span>
                     )}
                   </div>
                   {report.content && (
@@ -489,7 +489,7 @@ function ReportPanel({ studentId, onBack, studentList }: { studentId: string; on
                               className={`${DOC_ICON[att.ext] ?? "ri-file-line"} text-xs`}
                               style={{ color: DOC_COLOR[att.ext] ?? "#6b7280" }}
                             />
-                            <span className="text-[10px] text-gray-500 max-w-[80px] truncate">{att.name}</span>
+                            <span className="text-[12px] text-gray-500 max-w-[80px] truncate">{att.name}</span>
                           </div>
                         )
                       )}

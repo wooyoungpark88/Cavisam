@@ -28,7 +28,7 @@ export default function AdminSidebar({ activeTab, onTabChange, pendingCount }: A
           </div>
           <span className="text-sm font-bold text-white">관리자 콘솔</span>
         </div>
-        <p className="text-[10px] text-white/40 pl-0.5">CareVia 관리자</p>
+        <p className="text-[12px] text-white/40 pl-0.5">CareVia 관리자</p>
       </div>
 
       {/* Nav */}
@@ -57,12 +57,12 @@ export default function AdminSidebar({ activeTab, onTabChange, pendingCount }: A
                 >
                   {item.label}
                 </p>
-                <p className="text-[10px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
+                <p className="text-[12px] mt-0.5" style={{ color: "rgba(255,255,255,0.3)" }}>
                   {item.sub}
                 </p>
               </div>
               {item.key === "pending" && pendingCount > 0 && (
-                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[10px] font-bold">
+                <span className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[12px] font-bold">
                   {pendingCount}
                 </span>
               )}
@@ -78,8 +78,8 @@ export default function AdminSidebar({ activeTab, onTabChange, pendingCount }: A
             <i className="ri-admin-line text-[#60a5fa] text-xs" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold text-white/80 truncate">슈퍼 관리자</p>
-            <p className="text-[9px] text-white/30 truncate">admin@haeoreum.or.kr</p>
+            <p className="text-[12.5px] font-semibold text-white/80 truncate">슈퍼 관리자</p>
+            <p className="text-[11px] text-white/30 truncate">admin@haeoreum.or.kr</p>
           </div>
         </div>
       </div>

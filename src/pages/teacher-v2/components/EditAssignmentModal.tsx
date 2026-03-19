@@ -59,13 +59,13 @@ export default function EditAssignmentModal({ student, teamMembers, onSave, onCl
               <div className="flex items-center gap-2">
                 <h3 className="text-gray-900 text-sm font-bold">{student.studentName}</h3>
                 <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                  className="text-[12px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
                   style={{ color: ps.color, background: ps.bg }}
                 >
                   {student.priority}
                 </span>
               </div>
-              <p className="text-gray-400 text-[11px] mt-0.5">담당 팀원을 선택하세요</p>
+              <p className="text-gray-400 text-[12.5px] mt-0.5">담당 팀원을 선택하세요</p>
             </div>
           </div>
           <button
@@ -99,12 +99,12 @@ export default function EditAssignmentModal({ student, teamMembers, onSave, onCl
                     border: isChecked ? "none" : "1.5px solid #d1d5db",
                   }}
                 >
-                  {isChecked && <i className="ri-check-line text-white" style={{ fontSize: 10 }} />}
+                  {isChecked && <i className="ri-check-line text-white" style={{ fontSize: 12 }} />}
                 </div>
 
                 {/* Avatar */}
                 <div
-                  className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[11px] font-bold flex-shrink-0"
+                  className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[12.5px] font-bold flex-shrink-0"
                   style={{ background: m.avatarColor }}
                 >
                   {m.initial}
@@ -115,18 +115,18 @@ export default function EditAssignmentModal({ student, teamMembers, onSave, onCl
                   <div className="flex items-center gap-1.5">
                     <p className="text-gray-900 text-xs font-bold">{m.name}</p>
                     {m.isMe && (
-                      <span className="text-[9px] text-[#026eff] font-semibold">나</span>
+                      <span className="text-[11px] text-[#026eff] font-semibold">나</span>
                     )}
                   </div>
                   <span
-                    className="text-[10px] font-semibold px-1.5 py-0.5 rounded-md"
+                    className="text-[12px] font-semibold px-1.5 py-0.5 rounded-md"
                     style={{ color: rc.color, background: rc.bg }}
                   >
                     {m.role}
                   </span>
                 </div>
 
-                <p className="text-[11px] text-gray-400 whitespace-nowrap">{m.department}</p>
+                <p className="text-[12.5px] text-gray-400 whitespace-nowrap">{m.department}</p>
               </button>
             );
           })}
@@ -134,7 +134,7 @@ export default function EditAssignmentModal({ student, teamMembers, onSave, onCl
 
         {/* Summary */}
         <div className="px-5 pb-2">
-          <p className="text-[11px] text-gray-400">
+          <p className="text-[12.5px] text-gray-400">
             선택된 팀원:{" "}
             <span className="font-bold text-gray-700">{selectedIds.length}명</span>
           </p>

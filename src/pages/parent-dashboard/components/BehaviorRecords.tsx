@@ -38,14 +38,14 @@ export default function BehaviorRecords() {
             <div key={event.id} className="px-6 py-4 hover:bg-gray-50/50 transition-colors">
               <div className="flex items-start gap-3">
                 <span
-                  className="mt-0.5 px-2 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap flex-shrink-0"
+                  className="mt-0.5 px-2 py-0.5 rounded-full text-[12.5px] font-semibold whitespace-nowrap flex-shrink-0"
                   style={{ background: `${config.color}15`, color: config.color }}
                 >
                   {config.category}
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 mb-0.5">{event.label || config.category}</p>
-                  <p className="text-[11px] text-gray-300 mt-1">{date}</p>
+                  <p className="text-[12.5px] text-gray-300 mt-1">{date}</p>
                 </div>
               </div>
             </div>

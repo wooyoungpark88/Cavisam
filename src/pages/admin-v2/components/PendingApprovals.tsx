@@ -66,17 +66,17 @@ function ApproveCard({ user, onApprove, onReject }: ApproveCardProps) {
           <p className="text-xs text-gray-400">{user.phone}</p>
         </div>
         <div className="text-right flex-shrink-0">
-          <span className="text-[10px] px-2 py-1 bg-orange-50 text-orange-400 rounded-full font-semibold whitespace-nowrap">
+          <span className="text-[12px] px-2 py-1 bg-orange-50 text-orange-400 rounded-full font-semibold whitespace-nowrap">
             역할 미지정
           </span>
-          <p className="text-[10px] text-gray-400 mt-1">{user.registeredAt} 가입</p>
+          <p className="text-[12px] text-gray-400 mt-1">{user.registeredAt} 가입</p>
         </div>
       </div>
 
       <div className="px-5 py-4 space-y-4">
         {/* 역할 선택 */}
         <div>
-          <p className="text-[11px] font-bold text-gray-600 mb-2">역할 선택</p>
+          <p className="text-[12.5px] font-bold text-gray-600 mb-2">역할 선택</p>
           <div className="flex gap-2">
             <button
               onClick={() => { setSelectedRole("teacher"); setLinked([]); }}
@@ -108,7 +108,7 @@ function ApproveCard({ user, onApprove, onReject }: ApproveCardProps) {
         {/* 이용인 연결 (보호자 선택 시) */}
         {selectedRole === "parent" && (
           <div>
-            <p className="text-[11px] font-bold text-gray-600 mb-2">
+            <p className="text-[12.5px] font-bold text-gray-600 mb-2">
               이용인 연결
               <span className="text-gray-400 font-normal ml-1">( 1명 이상 선택 )</span>
             </p>
@@ -126,7 +126,7 @@ function ApproveCard({ user, onApprove, onReject }: ApproveCardProps) {
                       borderColor: isSelected ? "#ea580c" : "#e5e7eb",
                     }}
                   >
-                    {isSelected && <i className="ri-check-line mr-1 text-[10px]" />}
+                    {isSelected && <i className="ri-check-line mr-1 text-[12px]" />}
                     {s}
                   </button>
                 );

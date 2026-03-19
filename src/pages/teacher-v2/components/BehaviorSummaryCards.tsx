@@ -157,8 +157,8 @@ export default function BehaviorSummaryCards({ onShowCCTV }: Props) {
               className="absolute top-2.5 right-2.5 flex items-center gap-1 px-1.5 py-0.5 rounded-md opacity-0 group-hover:opacity-100 transition-all"
               style={{ background: "rgba(2,110,255,0.1)" }}
             >
-              <i className="ri-vidicon-2-line text-[#026eff]" style={{ fontSize: 10 }} />
-              <span className="text-[9px] font-bold text-[#026eff] whitespace-nowrap">영상 보기</span>
+              <i className="ri-vidicon-2-line text-[#026eff]" style={{ fontSize: 12 }} />
+              <span className="text-[11px] font-bold text-[#026eff] whitespace-nowrap">영상 보기</span>
             </div>
           )}
 
@@ -172,8 +172,8 @@ export default function BehaviorSummaryCards({ onShowCCTV }: Props) {
             <p className="text-xs text-gray-500 leading-tight">{card.label}</p>
           </div>
           <p className="text-xl font-bold text-gray-900 leading-tight mb-1">{card.value}</p>
-          <p className="text-[11px] font-semibold" style={{ color: card.subColor }}>
-            {card.subIcon && <i className={`${card.subIcon} text-[10px] mr-0.5`} />}
+          <p className="text-[12.5px] font-semibold" style={{ color: card.subColor }}>
+            {card.subIcon && <i className={`${card.subIcon} text-[12px] mr-0.5`} />}
             {card.sub}
           </p>
         </button>

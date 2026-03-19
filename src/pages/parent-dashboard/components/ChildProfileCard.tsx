@@ -42,7 +42,7 @@ export default function ChildProfileCard() {
 
       {/* AI Report badge */}
       <div className="flex-shrink-0 bg-white/15 rounded-xl px-3 py-2 text-center hidden sm:block">
-        <p className="text-white/70 text-[10px] mb-0.5">성장 단계</p>
+        <p className="text-white/70 text-[12px] mb-0.5">성장 단계</p>
         <p className="text-white text-sm font-bold">데이터 수집 중</p>
       </div>
     </div>
@@ -75,7 +75,7 @@ export function AIReportCard() {
           </div>
           <h2 className="text-sm font-bold text-gray-900">행동 분석 요약</h2>
         </div>
-        <span className="text-[11px] text-gray-400">최근 30일</span>
+        <span className="text-[12.5px] text-gray-400">최근 30일</span>
       </div>
 
       <div className="px-6 py-5">
@@ -85,15 +85,15 @@ export function AIReportCard() {
             <p className="text-base font-bold mb-0.5" style={{ color: changeRate <= 0 ? "#10b981" : "#ef4444" }}>
               {changeRate <= 0 ? `${changeRate}%` : `+${changeRate}%`}
             </p>
-            <p className="text-[10px] text-gray-400 leading-snug">주간 변화율</p>
+            <p className="text-[12px] text-gray-400 leading-snug">주간 변화율</p>
           </div>
           <div className="bg-gray-50 rounded-xl px-3 py-3 text-center">
             <p className="text-base font-bold mb-0.5 text-[#026eff]">{thisWeek}건</p>
-            <p className="text-[10px] text-gray-400 leading-snug">이번 주 행동</p>
+            <p className="text-[12px] text-gray-400 leading-snug">이번 주 행동</p>
           </div>
           <div className="bg-gray-50 rounded-xl px-3 py-3 text-center">
             <p className="text-base font-bold mb-0.5 text-gray-700">{total}건</p>
-            <p className="text-[10px] text-gray-400 leading-snug">30일 총 기록</p>
+            <p className="text-[12px] text-gray-400 leading-snug">30일 총 기록</p>
           </div>
         </div>
 

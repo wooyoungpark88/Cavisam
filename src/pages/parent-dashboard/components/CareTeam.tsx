@@ -46,11 +46,11 @@ export default function CareTeam() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5 flex-wrap">
                     <p className="text-sm font-bold text-gray-900">{name}</p>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold whitespace-nowrap" style={{ background: `${color}15`, color }}>
+                    <span className="px-2 py-0.5 rounded-full text-[12px] font-semibold whitespace-nowrap" style={{ background: `${color}15`, color }}>
                       {roleLabel}
                     </span>
                   </div>
-                  <p className="text-[11px] text-gray-400 mb-3 truncate">돌봄 팀 소속</p>
+                  <p className="text-[12.5px] text-gray-400 mb-3 truncate">돌봄 팀 소속</p>
                 </div>
               </div>
             );

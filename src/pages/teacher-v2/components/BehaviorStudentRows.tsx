@@ -59,7 +59,7 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
           activeDot={{ r: 3 }}
         />
         <Tooltip
-          contentStyle={{ fontSize: 10, border: "none", borderRadius: 8, padding: "2px 6px" }}
+          contentStyle={{ fontSize: 12, border: "none", borderRadius: 8, padding: "2px 6px" }}
           itemStyle={{ color: "#374151" }}
           labelStyle={{ display: "none" }}
         />
@@ -218,19 +218,19 @@ export default function BehaviorStudentRows({ onShowCCTV }: Props) {
       <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
         <h3 className="text-sm font-bold text-gray-900">이용인별 상세 현황</h3>
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-gray-400">이번 주 vs 지난 주</span>
+          <span className="text-[12.5px] text-gray-400">이번 주 vs 지난 주</span>
           <span
-            className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+            className="inline-flex items-center gap-1 text-[12px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
             style={{ background: "rgba(2,110,255,0.08)", color: "#026eff" }}
           >
-            <i className="ri-vidicon-2-line text-[10px]" />
+            <i className="ri-vidicon-2-line text-[12px]" />
             클릭 시 AI CCTV 영상
           </span>
         </div>
       </div>
 
       {/* Table header */}
-      <div className="hidden sm:grid px-6 py-2 bg-gray-50/70 grid-cols-12 gap-3 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+      <div className="hidden sm:grid px-6 py-2 bg-gray-50/70 grid-cols-12 gap-3 text-[12px] font-semibold text-gray-400 uppercase tracking-wider">
         <div className="col-span-3">이용인</div>
         <div className="col-span-2 text-center">이번 주</div>
         <div className="col-span-2 text-center">지난 주</div>
@@ -292,7 +292,7 @@ export default function BehaviorStudentRows({ onShowCCTV }: Props) {
                     }}
                   >
                     {!isNeutral && (
-                      <i className={`${isWorse ? "ri-arrow-up-line" : "ri-arrow-down-line"} text-[10px]`} />
+                      <i className={`${isWorse ? "ri-arrow-up-line" : "ri-arrow-down-line"} text-[12px]`} />
                     )}
                     {isNeutral ? "→" : `${Math.abs(changePct)}%`}
                   </span>
@@ -301,7 +301,7 @@ export default function BehaviorStudentRows({ onShowCCTV }: Props) {
                 {/* Main type */}
                 <div className="col-span-2 text-center">
                   <span
-                    className="text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
+                    className="text-[12px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap"
                     style={{ color: student.mainTypeColor, background: `${student.mainTypeColor}12` }}
                   >
                     {student.mainType}
@@ -326,7 +326,7 @@ export default function BehaviorStudentRows({ onShowCCTV }: Props) {
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-semibold text-gray-900">{student.name}</p>
                     <span
-                      className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap"
+                      className="text-[12px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap"
                       style={{ color: student.mainTypeColor, background: `${student.mainTypeColor}12` }}
                     >
                       {student.mainType}
@@ -336,9 +336,9 @@ export default function BehaviorStudentRows({ onShowCCTV }: Props) {
                     <span className="text-xs font-bold" style={{ color: isWorse ? "#ef4444" : "#374151" }}>
                       {student.thisWeek}건
                     </span>
-                    <span className="text-[10px] text-gray-400">/ 지난주 {student.lastWeek}건</span>
+                    <span className="text-[12px] text-gray-400">/ 지난주 {student.lastWeek}건</span>
                     <span
-                      className="inline-flex items-center gap-0.5 text-[10px] font-bold px-1.5 py-0.5 rounded-full"
+                      className="inline-flex items-center gap-0.5 text-[12px] font-bold px-1.5 py-0.5 rounded-full"
                       style={{
                         color: isNeutral ? "#6b7280" : isWorse ? "#ef4444" : "#10b981",
                         background: isNeutral ? "#f3f4f6" : isWorse ? "rgba(239,68,68,0.08)" : "rgba(16,185,129,0.08)",

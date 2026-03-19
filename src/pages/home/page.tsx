@@ -313,7 +313,7 @@ function ServiceCard({
             className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-1 group-hover:translate-x-0"
             style={{ color: accentColor }}
           >
-            <span className="text-[11px] font-bold">시작하기</span>
+            <span className="text-[12.5px] font-bold">시작하기</span>
             <i className="ri-arrow-right-line text-xs" />
           </div>
         </div>
@@ -405,7 +405,7 @@ export default function Home() {
         <div className="flex items-center gap-2.5 mb-6">
           <div className="h-px w-10 bg-gradient-to-r from-transparent to-[#026eff]/25" />
           <span
-            className="text-[11px] font-medium px-3.5 py-1 rounded-full"
+            className="text-[12.5px] font-medium px-3.5 py-1 rounded-full"
             style={{
               background: "rgba(2,110,255,0.07)",
               color: "#4a7fd4",
@@ -469,7 +469,7 @@ export default function Home() {
           className="fixed bottom-6 right-6 group flex items-center gap-2 cursor-pointer transition-all duration-300 z-20"
         >
           <span
-            className="text-[11px] font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 whitespace-nowrap pointer-events-none"
+            className="text-[12.5px] font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-all duration-300 -translate-x-2 group-hover:translate-x-0 whitespace-nowrap pointer-events-none"
           >
             관리자 콘솔
           </span>

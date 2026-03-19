@@ -54,11 +54,11 @@ function ComboChart({ data }: { data: JoinedDay[] }) {
       <div className="flex items-start justify-between mb-5">
         <div>
           <h3 className="text-sm font-bold text-gray-800">도전행동과 컨디션·수면의 관계</h3>
-          <p className="text-[11px] text-gray-400 mt-0.5">
+          <p className="text-[12.5px] text-gray-400 mt-0.5">
             막대가 높은 날 아래 블록이 주황·빨강이면 컨디션·수면이 영향을 준 거예요
           </p>
         </div>
-        <div className="flex items-center gap-2.5 text-[10px] text-gray-400 flex-shrink-0 ml-4">
+        <div className="flex items-center gap-2.5 text-[12px] text-gray-400 flex-shrink-0 ml-4">
           <span className="flex items-center gap-1">
             <span className="w-2.5 h-2.5 rounded-sm bg-[#10b981] inline-block" />좋음
           </span>
@@ -178,7 +178,7 @@ function ComboChart({ data }: { data: JoinedDay[] }) {
               transform: "translateX(-50%)",
             }}
           >
-            <div className="bg-gray-900 text-white rounded-xl px-3.5 py-3 text-[11px] whitespace-nowrap">
+            <div className="bg-gray-900 text-white rounded-xl px-3.5 py-3 text-[12.5px] whitespace-nowrap">
               <p className="font-bold text-center mb-2 pb-1.5 border-b border-white/10">{hovData.date}</p>
               <div className="space-y-1.5">
                 {[
@@ -210,7 +210,7 @@ function ComboChart({ data }: { data: JoinedDay[] }) {
             <div className="w-4 h-4 flex items-center justify-center flex-shrink-0 mt-0.5">
               <i className={`${g.icon} text-xs`} style={{ color: g.color }} />
             </div>
-            <p className="text-[10px] leading-snug" style={{ color: g.color }}>{g.text}</p>
+            <p className="text-[12px] leading-snug" style={{ color: g.color }}>{g.text}</p>
           </div>
         ))}
       </div>
@@ -225,11 +225,11 @@ function AvgBar({ label, value, max, color, n }: { label: string; value: number;
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
   return (
     <div className="flex items-center gap-2.5 mb-2 last:mb-0">
-      <span className="text-[10px] text-gray-500 w-16 flex-shrink-0 text-right leading-tight">{label}<br /><span className="text-gray-300">({n}일)</span></span>
+      <span className="text-[12px] text-gray-500 w-16 flex-shrink-0 text-right leading-tight">{label}<br /><span className="text-gray-300">({n}일)</span></span>
       <div className="flex-1 h-3 rounded-full bg-gray-100 overflow-hidden">
         <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: color }} />
       </div>
-      <span className="text-[11px] font-bold text-gray-700 w-10 text-right whitespace-nowrap flex-shrink-0">{value.toFixed(1)}건</span>
+      <span className="text-[12.5px] font-bold text-gray-700 w-10 text-right whitespace-nowrap flex-shrink-0">{value.toFixed(1)}건</span>
     </div>
   );
 }
@@ -275,13 +275,13 @@ function AverageAnalysis({ data }: { data: JoinedDay[] }) {
               <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
                 <i className={`${panel.icon} text-sm`} style={{ color: panel.icolor }} />
               </div>
-              <p className="text-[11px] font-bold text-gray-700">{panel.title}</p>
+              <p className="text-[12.5px] font-bold text-gray-700">{panel.title}</p>
             </div>
             {avgs.map((g) => (
               <AvgBar key={g.label} label={g.label} value={g.avgVal} max={maxAvg} color={g.color} n={g.items.length} />
             ))}
             <div className="border-t border-gray-50 pt-2.5 mt-3">
-              <p className="text-[10px] text-gray-400 leading-snug">
+              <p className="text-[12px] text-gray-400 leading-snug">
                 <strong className="text-gray-600">{sorted[0].label}</strong>일이{" "}
                 <strong className="text-gray-600">{sorted[sorted.length - 1].label}</strong>일보다{" "}
                 평균 <strong style={{ color: "#ef4444" }}>{diff.toFixed(1)}건</strong> 더 많이 발생
@@ -319,7 +319,7 @@ function ConditionImpactChart({ data }: { data: JoinedDay[] }) {
     <div className="bg-white rounded-2xl border border-gray-100 p-5 h-full flex flex-col">
       <div className="mb-4">
         <h3 className="text-xs font-bold text-gray-700">컨디션에 따른 도전행동 변화</h3>
-        <p className="text-[10px] text-gray-400 mt-0.5">컨디션이 나쁜 날, 도전행동이 얼마나 늘어날까요?</p>
+        <p className="text-[12px] text-gray-400 mt-0.5">컨디션이 나쁜 날, 도전행동이 얼마나 늘어날까요?</p>
       </div>
 
       {/* Visual bars */}
@@ -330,18 +330,18 @@ function ConditionImpactChart({ data }: { data: JoinedDay[] }) {
             <div key={s.label}>
               <div className="flex items-center gap-2.5 mb-1.5">
                 <span className="text-base leading-none">{s.emoji}</span>
-                <span className="text-[11px] font-bold w-8" style={{ color: s.color }}>{s.label}</span>
+                <span className="text-[12.5px] font-bold w-8" style={{ color: s.color }}>{s.label}</span>
                 <div className="flex-1 h-7 rounded-lg overflow-hidden" style={{ background: s.bg }}>
                   <div
                     className="h-full rounded-lg flex items-center justify-end pr-2 transition-all duration-700"
                     style={{ width: `${Math.max(pct, 8)}%`, background: s.color }}
                   >
-                    <span className="text-white text-[11px] font-bold whitespace-nowrap">
+                    <span className="text-white text-[12.5px] font-bold whitespace-nowrap">
                       평균 {s.avgCount.toFixed(1)}건
                     </span>
                   </div>
                 </div>
-                <span className="text-[10px] text-gray-400 w-10 text-right flex-shrink-0">{s.days}일</span>
+                <span className="text-[12px] text-gray-400 w-10 text-right flex-shrink-0">{s.days}일</span>
               </div>
             </div>
           );
@@ -354,7 +354,7 @@ function ConditionImpactChart({ data }: { data: JoinedDay[] }) {
           <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 mt-0.5">
             <i className="ri-alarm-warning-line text-[#ef4444] text-sm" />
           </div>
-          <p className="text-[11px] text-gray-700 leading-relaxed">
+          <p className="text-[12.5px] text-gray-700 leading-relaxed">
             컨디션 <strong className="text-[#ef4444]">주의</strong>인 날은{" "}
             <strong className="text-[#10b981]">좋음</strong>인 날보다{" "}
             도전행동이 평균 <strong className="text-[#ef4444]">{ratio}배</strong> 많아요
@@ -396,7 +396,7 @@ function KeyFindings({ data }: { data: JoinedDay[] }) {
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-5 h-full flex flex-col justify-between">
-      <p className="text-[11px] font-bold text-gray-700 mb-3">핵심 발견 요약</p>
+      <p className="text-[12.5px] font-bold text-gray-700 mb-3">핵심 발견 요약</p>
       <div className="space-y-2.5 flex-1">
         {findings.map((item) => (
           <div key={item.title} className="rounded-xl p-3" style={{ background: item.bg }}>
@@ -404,14 +404,14 @@ function KeyFindings({ data }: { data: JoinedDay[] }) {
               <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
                 <i className={`${item.icon} text-xs`} style={{ color: item.color }} />
               </div>
-              <p className="text-[11px] font-bold" style={{ color: item.color }}>{item.title}</p>
+              <p className="text-[12.5px] font-bold" style={{ color: item.color }}>{item.title}</p>
             </div>
-            <p className="text-[10px] text-gray-600 leading-snug">{item.body}</p>
+            <p className="text-[12px] text-gray-600 leading-snug">{item.body}</p>
           </div>
         ))}
       </div>
       <div className="mt-3 pt-3 border-t border-gray-50">
-        <p className="text-[10px] text-gray-400 leading-relaxed">
+        <p className="text-[12px] text-gray-400 leading-relaxed">
           30일 데이터 기반 분석이며 개인차가 있을 수 있어요. 추세 파악 목적으로 활용해 주세요.
         </p>
       </div>
@@ -481,7 +481,7 @@ export default function CorrelationChart() {
       <div className="space-y-5">
         <div className="flex items-center gap-3 pt-1">
           <div className="flex-1 h-px bg-gray-100" />
-          <span className="text-[11px] text-gray-500 font-bold whitespace-nowrap flex items-center gap-1.5">
+          <span className="text-[12.5px] text-gray-500 font-bold whitespace-nowrap flex items-center gap-1.5">
             <i className="ri-bar-chart-grouped-line text-xs" />
             도전행동 × 생활 알리미 교차 분석
           </span>
@@ -492,7 +492,7 @@ export default function CorrelationChart() {
             <i className="ri-bar-chart-grouped-line text-gray-300 text-lg" />
           </div>
           <p className="text-sm text-gray-400">아직 분석할 데이터가 없어요</p>
-          <p className="text-[11px] text-gray-300 mt-1">기록이 쌓이면 교차 분석이 시작돼요</p>
+          <p className="text-[12.5px] text-gray-300 mt-1">기록이 쌓이면 교차 분석이 시작돼요</p>
         </div>
       </div>
     );
@@ -503,7 +503,7 @@ export default function CorrelationChart() {
       {/* Section divider */}
       <div className="flex items-center gap-3 pt-1">
         <div className="flex-1 h-px bg-gray-100" />
-        <span className="text-[11px] text-gray-500 font-bold whitespace-nowrap flex items-center gap-1.5">
+        <span className="text-[12.5px] text-gray-500 font-bold whitespace-nowrap flex items-center gap-1.5">
           <i className="ri-bar-chart-grouped-line text-xs" />
           도전행동 × 생활 알리미 교차 분석
         </span>
@@ -517,7 +517,7 @@ export default function CorrelationChart() {
         </div>
         <div>
           <p className="text-xs font-bold text-gray-800 mb-0.5">교차 분석이란?</p>
-          <p className="text-[10px] text-gray-500 leading-relaxed">
+          <p className="text-[12px] text-gray-500 leading-relaxed">
             30일간의 선생님 생활 알리미 기록(컨디션·수면·식사)과 도전행동 발생 횟수를 날짜 기준으로 결합해,
             생활 상태가 도전행동에 미치는 영향을 시각적으로 분석합니다.
           </p>

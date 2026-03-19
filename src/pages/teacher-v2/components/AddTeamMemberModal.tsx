@@ -96,7 +96,7 @@ export default function AddTeamMemberModal({ existingMemberIds, onAdd, onClose }
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div>
             <h3 className="text-gray-900 text-sm font-bold">새 팀원 추가</h3>
-            <p className="text-gray-400 text-[11px] mt-0.5">교사로 등록된 회원 중 선택하세요</p>
+            <p className="text-gray-400 text-[12.5px] mt-0.5">교사로 등록된 회원 중 선택하세요</p>
           </div>
           <button
             onClick={onClose}
@@ -109,7 +109,7 @@ export default function AddTeamMemberModal({ existingMemberIds, onAdd, onClose }
         <div className="px-5 py-4 space-y-4">
           {/* Step 1: 교사 선택 */}
           <div>
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-2">
+            <p className="text-[12.5px] font-bold text-gray-500 uppercase tracking-wide mb-2">
               1단계 · 팀원 선택
             </p>
             {availableTeachers.length === 0 ? (
@@ -139,10 +139,10 @@ export default function AddTeamMemberModal({ existingMemberIds, onAdd, onClose }
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-gray-900 text-xs font-bold">{u.name}</p>
-                        <p className="text-gray-400 text-[10px]">{u.email}</p>
+                        <p className="text-gray-400 text-[12px]">{u.email}</p>
                       </div>
                       {u.department && (
-                        <span className="text-[10px] text-gray-400 whitespace-nowrap">{u.department}</span>
+                        <span className="text-[12px] text-gray-400 whitespace-nowrap">{u.department}</span>
                       )}
                       {isSelected && (
                         <i className="ri-check-circle-fill text-[#026eff] text-sm flex-shrink-0" />
@@ -157,7 +157,7 @@ export default function AddTeamMemberModal({ existingMemberIds, onAdd, onClose }
           {/* Step 2: 팀 내 역할 선택 */}
           {selectedUser && (
             <div>
-              <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wide mb-2">
+              <p className="text-[12.5px] font-bold text-gray-500 uppercase tracking-wide mb-2">
                 2단계 · 팀 내 역할 지정
               </p>
               <div className="grid grid-cols-3 gap-1.5">
@@ -168,7 +168,7 @@ export default function AddTeamMemberModal({ existingMemberIds, onAdd, onClose }
                     <button
                       key={role}
                       onClick={() => setSelectedRole(role)}
-                      className="px-2 py-2 rounded-xl text-[11px] font-semibold cursor-pointer whitespace-nowrap transition-all"
+                      className="px-2 py-2 rounded-xl text-[12.5px] font-semibold cursor-pointer whitespace-nowrap transition-all"
                       style={{
                         background: isActive ? rc.bg : "#f9fafb",
                         color: isActive ? rc.color : "#6b7280",

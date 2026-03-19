@@ -50,19 +50,19 @@ function ReportCard({ card }: { card: NonNullable<ParentChatMessage["reportCard"
       <div className="px-4 py-3 grid grid-cols-2 gap-x-4 gap-y-2">
         {card.items.map((item) => (
           <div key={item.label}>
-            <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
+            <p className="text-white/50 text-[11px] font-medium mb-0.5 flex items-center gap-1">
               <span>{item.emoji}</span>
               {item.label}
             </p>
-            <p className="text-white text-[11px] font-semibold">{item.value}</p>
+            <p className="text-white text-[12.5px] font-semibold">{item.value}</p>
           </div>
         ))}
       </div>
       {card.note && (
         <div className="px-4 pb-3">
           <div className="border-t border-white/15 pt-2.5">
-            <p className="text-white/50 text-[9px] font-medium mb-1">선생님 한마디</p>
-            <p className="text-white/90 text-[11px] leading-relaxed">{card.note}</p>
+            <p className="text-white/50 text-[11px] font-medium mb-1">선생님 한마디</p>
+            <p className="text-white/90 text-[12.5px] leading-relaxed">{card.note}</p>
           </div>
         </div>
       )}
@@ -87,7 +87,7 @@ function MessageBubble({
       <div className={`flex ${isTeacher ? "flex-row" : "flex-row-reverse"} items-end gap-2 mb-4`}>
         {isTeacher && (
           <div
-            className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 self-end"
+            className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0 self-end"
             style={{ background: teacherColor }}
           >
             {teacherInitial}
@@ -95,10 +95,10 @@ function MessageBubble({
         )}
         <div className={`flex flex-col ${isTeacher ? "items-start" : "items-end"}`}>
           {isTeacher && (
-            <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
+            <p className="text-[12px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
           )}
           <ReportCard card={msg.reportCard} />
-          <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+          <p className="text-[12px] text-gray-400 mt-1 px-1">{msg.time}</p>
         </div>
       </div>
     );
@@ -108,7 +108,7 @@ function MessageBubble({
     <div className={`flex ${isTeacher ? "flex-row" : "flex-row-reverse"} items-end gap-2 mb-3`}>
       {isTeacher && (
         <div
-          className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0 self-end"
+          className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0 self-end"
           style={{ background: teacherColor }}
         >
           {teacherInitial}
@@ -118,7 +118,7 @@ function MessageBubble({
         className={`flex flex-col ${isTeacher ? "items-start" : "items-end"} max-w-[80%] sm:max-w-[68%]`}
       >
         {isTeacher && (
-          <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
+          <p className="text-[12px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>
         )}
         <div
           className="px-4 py-2.5 rounded-2xl text-sm leading-relaxed break-words"
@@ -134,7 +134,7 @@ function MessageBubble({
         >
           {msg.text}
         </div>
-        <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+        <p className="text-[12px] text-gray-400 mt-1 px-1">{msg.time}</p>
       </div>
     </div>
   );
@@ -144,7 +144,7 @@ function DateDivider({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3 my-4">
       <div className="flex-1 h-px bg-gray-100" />
-      <span className="text-[10px] text-gray-400 font-medium whitespace-nowrap">{label}</span>
+      <span className="text-[12px] text-gray-400 font-medium whitespace-nowrap">{label}</span>
       <div className="flex-1 h-px bg-gray-100" />
     </div>
   );
@@ -169,7 +169,7 @@ function MemberList({
       {/* header */}
       <div className="flex-shrink-0 px-5 py-4 border-b border-gray-100">
         <h2 className="text-sm font-bold text-gray-900">케어톡</h2>
-        <p className="text-[11px] text-gray-400 mt-0.5">{childName} · 돌봄 팀 채팅</p>
+        <p className="text-[12.5px] text-gray-400 mt-0.5">{childName} · 돌봄 팀 채팅</p>
       </div>
 
       {/* list */}
@@ -204,7 +204,7 @@ function MemberList({
                     <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-white" />
                   )}
                   {unread > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-[9px] font-bold">
+                    <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 border-2 border-white flex items-center justify-center text-white text-[11px] font-bold">
                       {unread}
                     </span>
                   )}
@@ -217,7 +217,7 @@ function MemberList({
                       {member.name} 선생님
                     </p>
                     {last && (
-                      <span className="text-[10px] text-gray-400 flex-shrink-0 mt-0.5">
+                      <span className="text-[12px] text-gray-400 flex-shrink-0 mt-0.5">
                         {last.time.startsWith("오늘")
                           ? last.time.replace("오늘 ", "")
                           : last.time.split(" ").slice(-1)[0]}
@@ -225,7 +225,7 @@ function MemberList({
                     )}
                   </div>
                   <div className="flex items-start justify-between gap-1">
-                    <p className="text-[11px] text-gray-500 break-words leading-snug line-clamp-2 flex-1">
+                    <p className="text-[12.5px] text-gray-500 break-words leading-snug line-clamp-2 flex-1">
                       {last
                         ? last.type === "report-card"
                           ? "[활동 보고카드]"
@@ -233,7 +233,7 @@ function MemberList({
                         : "메시지 없음"}
                     </p>
                     <span
-                      className="flex-shrink-0 text-[9px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap mt-0.5"
+                      className="flex-shrink-0 text-[11px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap mt-0.5"
                       style={{ background: `${member.color}14`, color: member.color }}
                     >
                       {member.role}
@@ -399,19 +399,19 @@ function ChatPanel({
           <div className="flex items-center gap-1.5 flex-wrap">
             <p className="text-gray-900 text-sm font-bold break-words">{member.name} 선생님</p>
             {member.id === 1 ? (
-              <span className="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded-full whitespace-nowrap">
+              <span className="text-[12px] text-emerald-600 font-semibold bg-emerald-50 px-1.5 py-0.5 rounded-full whitespace-nowrap">
                 온라인
               </span>
             ) : (
               <span
-                className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap hidden sm:inline"
+                className="text-[12px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap hidden sm:inline"
                 style={{ background: `${member.color}14`, color: member.color }}
               >
                 {member.role}
               </span>
             )}
           </div>
-          <p className="text-gray-400 text-[11px] break-words leading-snug">
+          <p className="text-gray-400 text-[12.5px] break-words leading-snug">
             {member.id === 1
               ? `${childName} 담임`
               : member.department}
@@ -448,7 +448,7 @@ function ChatPanel({
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
           <i className="ri-information-line text-[#d97706] text-xs" />
         </div>
-        <p className="text-[11px] text-amber-700 leading-relaxed">
+        <p className="text-[12.5px] text-amber-700 leading-relaxed">
           <strong>{member.name} 선생님</strong>과의 전용 대화창이에요. 긴급 상황엔 전화를 이용해 주세요.
         </p>
       </div>
@@ -461,7 +461,7 @@ function ChatPanel({
               <i className="ri-chat-3-line text-gray-300 text-lg" />
             </div>
             <p className="text-sm text-gray-400">아직 대화 내용이 없어요</p>
-            <p className="text-[11px] text-gray-300 mt-1">먼저 인사를 건네보세요</p>
+            <p className="text-[12.5px] text-gray-300 mt-1">먼저 인사를 건네보세요</p>
           </div>
         ) : (
           groupedMessages.map((group) => (
@@ -487,7 +487,7 @@ function ChatPanel({
           <button
             key={reply}
             onClick={() => setInput(reply)}
-            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+            className="flex-shrink-0 px-3 py-1.5 rounded-full text-[12.5px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           >
             {reply}
           </button>

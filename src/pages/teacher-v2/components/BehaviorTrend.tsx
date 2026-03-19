@@ -72,11 +72,11 @@ export default function BehaviorTrend() {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-white text-xs font-bold leading-tight">AI CCTV로 도전행동 영상 확인</p>
-            <p className="text-white/50 text-[10px] mt-0.5">케어비아 AI CCTV 서비스 이용자는 실시간 감지 영상을 바로 확인할 수 있어요</p>
+            <p className="text-white/50 text-[12px] mt-0.5">케어비아 AI CCTV 서비스 이용자는 실시간 감지 영상을 바로 확인할 수 있어요</p>
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0">
             <span
-              className="text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
+              className="text-[12px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
               style={{ background: "rgba(2,110,255,0.3)", color: "#93c5fd" }}
             >
               미리보기

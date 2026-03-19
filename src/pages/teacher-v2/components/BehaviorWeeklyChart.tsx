@@ -87,7 +87,7 @@ function BehaviorTypeBar({ types }: { types: BehaviorTypeStat[] }) {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-900">{type.count}건</span>
-                  <span className="text-[10px] text-gray-400 w-8 text-right">{pct}%</span>
+                  <span className="text-[12px] text-gray-400 w-8 text-right">{pct}%</span>
                 </div>
               </div>
               <div className="w-full h-2 rounded-full bg-gray-100">
@@ -228,7 +228,7 @@ export default function BehaviorWeeklyChart() {
       <div className="xl:col-span-3 bg-white rounded-2xl p-5 border border-gray-100">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-sm font-bold text-gray-900">이용인별 주간 도전행동 추이</h3>
-          <span className="text-[11px] text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg">
+          <span className="text-[12.5px] text-gray-400 bg-gray-50 px-2.5 py-1 rounded-lg">
             {weekLabel}
           </span>
         </div>
@@ -242,12 +242,12 @@ export default function BehaviorWeeklyChart() {
               <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
               <XAxis
                 dataKey="day"
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                tick={{ fontSize: 12.5, fill: "#9ca3af" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
+                tick={{ fontSize: 12.5, fill: "#9ca3af" }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -261,7 +261,7 @@ export default function BehaviorWeeklyChart() {
                 cursor={{ fill: "rgba(0,0,0,0.03)" }}
               />
               <Legend
-                wrapperStyle={{ fontSize: 11, paddingTop: 12 }}
+                wrapperStyle={{ fontSize: 12.5, paddingTop: 12 }}
                 iconType="circle"
                 iconSize={8}
               />

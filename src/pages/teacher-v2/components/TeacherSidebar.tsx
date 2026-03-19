@@ -69,7 +69,7 @@ export default function TeacherSidebar({ active, onSelect, onSwitchToParent }: T
           </div>
           <span className="font-bold text-sm tracking-tight" style={{ color: "#0f172a" }}>CareVia</span>
         </div>
-        <p className="text-[10px] pl-8" style={{ color: "rgba(2,110,255,0.5)" }}>교사 대시보드</p>
+        <p className="text-[12px] pl-8" style={{ color: "rgba(2,110,255,0.5)" }}>교사 대시보드</p>
       </div>
 
       {/* Teacher info */}
@@ -91,7 +91,7 @@ export default function TeacherSidebar({ active, onSelect, onSwitchToParent }: T
             <p className="text-xs font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
               {teacherName}
             </p>
-            <p className="text-[10px] leading-tight truncate" style={{ color: "rgba(2,110,255,0.5)" }}>
+            <p className="text-[12px] leading-tight truncate" style={{ color: "rgba(2,110,255,0.5)" }}>
               CareVia
             </p>
           </div>

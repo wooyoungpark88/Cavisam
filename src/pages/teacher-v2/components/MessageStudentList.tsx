@@ -14,7 +14,7 @@ export default function MessageStudentList({ conversations, selectedId, onSelect
       {/* Header */}
       <div className="px-4 py-3.5 border-b border-gray-100">
         <p className="text-xs font-bold text-gray-900">케어톡</p>
-        <p className="text-[10px] text-gray-400 mt-0.5">담당 아동 보호자</p>
+        <p className="text-[12px] text-gray-400 mt-0.5">담당 아동 보호자</p>
       </div>
 
       {/* Student list */}
@@ -38,7 +38,7 @@ export default function MessageStudentList({ conversations, selectedId, onSelect
               >
                 {conv.initial}
                 {conv.unreadCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#ef4444] flex items-center justify-center text-white text-[9px] font-bold">
+                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-[#ef4444] flex items-center justify-center text-white text-[11px] font-bold">
                     {conv.unreadCount}
                   </span>
                 )}
@@ -53,11 +53,11 @@ export default function MessageStudentList({ conversations, selectedId, onSelect
                   >
                     {conv.studentName}
                   </p>
-                  <span className="text-[10px] text-gray-400 flex-shrink-0 whitespace-nowrap">
+                  <span className="text-[12px] text-gray-400 flex-shrink-0 whitespace-nowrap">
                     {conv.lastTime}
                   </span>
                 </div>
-                <p className="text-xs md:text-[10px] text-gray-400 truncate mt-0.5">
+                <p className="text-xs md:text-[12px] text-gray-400 truncate mt-0.5">
                   {conv.lastMessage}
                 </p>
               </div>

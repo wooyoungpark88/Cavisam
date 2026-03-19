@@ -135,14 +135,14 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
                 <div className="flex items-center gap-2">
                   <h2 className="text-gray-900 text-base font-bold">{student.name}</h2>
                   <span
-                    className="text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"
+                    className="text-[12.5px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1"
                     style={{ color: lvStyle.color, background: lvStyle.badgeBg }}
                   >
-                    <i className={`${lvStyle.icon} text-[11px]`} />
+                    <i className={`${lvStyle.icon} text-[12.5px]`} />
                     {lvStyle.label}
                   </span>
                 </div>
-                <p className="text-gray-400 text-[11px] mt-0.5">
+                <p className="text-gray-400 text-[12.5px] mt-0.5">
                   <i className="ri-sparkling-2-line mr-0.5" />
                   AI 케어 분석 · {report.generatedAt}
                 </p>
@@ -170,7 +170,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
             <span className="text-sm font-bold flex-shrink-0" style={{ color: lvStyle.color }}>
               {report.careLevelScore}점
             </span>
-            <span className="text-gray-400 text-[11px] flex-shrink-0">/ 100</span>
+            <span className="text-gray-400 text-[12.5px] flex-shrink-0">/ 100</span>
           </div>
         </div>
 
@@ -179,7 +179,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
           {/* Risk alerts */}
           {report.riskAlerts.length > 0 && (
             <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 space-y-1.5">
-              <p className="text-[11px] font-bold text-red-600 uppercase tracking-wide flex items-center gap-1">
+              <p className="text-[12.5px] font-bold text-red-600 uppercase tracking-wide flex items-center gap-1">
                 <i className="ri-alarm-warning-fill" />
                 즉각 대응 필요
               </p>
@@ -195,7 +195,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
           {/* Positive highlights */}
           {report.positiveHighlights.length > 0 && (
             <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 space-y-1.5">
-              <p className="text-[11px] font-bold text-emerald-600 uppercase tracking-wide flex items-center gap-1">
+              <p className="text-[12.5px] font-bold text-emerald-600 uppercase tracking-wide flex items-center gap-1">
                 <i className="ri-sparkling-line" />
                 긍정 하이라이트
               </p>
@@ -210,7 +210,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
 
           {/* Summary */}
           <div>
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <p className="text-[12.5px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
               <i className="ri-file-text-line" />
               AI 종합 분석
             </p>
@@ -221,7 +221,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
 
           {/* Pattern stats */}
           <div>
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <p className="text-[12.5px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
               <i className="ri-bar-chart-2-line" />
               핵심 지표
             </p>
@@ -253,7 +253,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
 
           {/* Weekly behavior chart */}
           <div>
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <p className="text-[12.5px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
               <i className="ri-calendar-line" />
               이번 주 행동 빈도
             </p>
@@ -269,7 +269,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
                       : "#026eff";
                   return (
                     <div key={d.day} className="flex-1 flex flex-col items-center gap-1">
-                      <span className="text-[10px] text-gray-500 font-medium">{d.count}</span>
+                      <span className="text-[12px] text-gray-500 font-medium">{d.count}</span>
                       <div
                         className="w-full rounded-t-md"
                         style={{
@@ -286,7 +286,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
               <div className="flex gap-2 mt-1.5">
                 {report.weeklyBehavior.map((d) => (
                   <div key={d.day} className="flex-1 text-center">
-                    <span className="text-[10px] text-gray-400">{d.day}</span>
+                    <span className="text-[12px] text-gray-400">{d.day}</span>
                   </div>
                 ))}
               </div>
@@ -295,7 +295,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
 
           {/* Insights */}
           <div>
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <p className="text-[12.5px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
               <i className="ri-lightbulb-line" />
               AI 인사이트
             </p>
@@ -313,7 +313,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
                   </div>
                   <div>
                     <p className="text-gray-800 text-[12px] font-bold mb-0.5">{ins.title}</p>
-                    <p className="text-gray-500 text-[11px] leading-relaxed">{ins.desc}</p>
+                    <p className="text-gray-500 text-[12.5px] leading-relaxed">{ins.desc}</p>
                   </div>
                 </div>
               ))}
@@ -322,7 +322,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
 
           {/* Recommendations */}
           <div>
-            <p className="text-[11px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
+            <p className="text-[12.5px] font-bold text-gray-400 uppercase tracking-wide mb-2 flex items-center gap-1">
               <i className="ri-task-line" />
               케어 권고사항
             </p>
@@ -339,17 +339,17 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
                         className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
                         style={{ background: "#f3f4f6" }}
                       >
-                        <i className={`${rec.icon} text-[11px] text-gray-500`} />
+                        <i className={`${rec.icon} text-[12.5px] text-gray-500`} />
                       </div>
                       <p className="text-gray-800 text-[12px] font-bold flex-1">{rec.title}</p>
                       <span
-                        className="text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
+                        className="text-[12px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap"
                         style={{ color: ps.color, background: ps.bg }}
                       >
                         {ps.label}
                       </span>
                     </div>
-                    <p className="text-gray-500 text-[11px] leading-relaxed pl-8">{rec.detail}</p>
+                    <p className="text-gray-500 text-[12.5px] leading-relaxed pl-8">{rec.detail}</p>
                   </div>
                 );
               })}
@@ -361,7 +361,7 @@ export default function AICareModal({ student, report, onClose }: AICareModalPro
             <div className="w-4 h-4 flex items-center justify-center flex-shrink-0 mt-0.5">
               <i className="ri-information-line text-xs text-gray-400" />
             </div>
-            <p className="text-gray-400 text-[11px] leading-relaxed">
+            <p className="text-gray-400 text-[12.5px] leading-relaxed">
               AI 분석은 축적된 등원 전 한마디·행동 기록·발송 보고를 기반으로 생성됩니다. 최종 판단은 담당 교사의 전문적 소견을 따라 주세요.
             </p>
           </div>

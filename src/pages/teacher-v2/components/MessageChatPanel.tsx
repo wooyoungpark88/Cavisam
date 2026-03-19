@@ -34,7 +34,7 @@ function DailyReportCard({ data }: { data: NonNullable<ChatMessage["reportData"]
           <i className="ri-file-list-2-line text-white text-xs" />
           <span className="text-white text-xs font-bold">일일 보고서</span>
         </div>
-        <span className="text-white/60 text-[10px]">2026. 03. 18</span>
+        <span className="text-white/60 text-[12px]">2026. 03. 18</span>
       </div>
       <div className="px-4 py-3 grid grid-cols-2 gap-x-4 gap-y-2">
         {[
@@ -44,21 +44,21 @@ function DailyReportCard({ data }: { data: NonNullable<ChatMessage["reportData"]
           { icon: "ri-restaurant-line", label: "식사량", value: data.meal },
         ].map((item) => (
           <div key={item.label}>
-            <p className="text-white/50 text-[9px] font-medium mb-0.5 flex items-center gap-1">
-              <i className={`${item.icon} text-[9px]`} /> {item.label}
+            <p className="text-white/50 text-[11px] font-medium mb-0.5 flex items-center gap-1">
+              <i className={`${item.icon} text-[11px]`} /> {item.label}
             </p>
-            <p className="text-white text-[11px] font-semibold">{item.value}</p>
+            <p className="text-white text-[12.5px] font-semibold">{item.value}</p>
           </div>
         ))}
         {data.note && (
           <div className="col-span-2">
-            <p className="text-white/50 text-[9px] font-medium mb-0.5">특이사항</p>
-            <p className="text-white text-[11px] leading-snug">{data.note}</p>
+            <p className="text-white/50 text-[11px] font-medium mb-0.5">특이사항</p>
+            <p className="text-white text-[12.5px] leading-snug">{data.note}</p>
           </div>
         )}
       </div>
       <div className="px-4 py-2.5 border-t border-white/10">
-        <p className="text-white/50 text-[10px]">{data.sentBy} · {data.sentTime}</p>
+        <p className="text-white/50 text-[12px]">{data.sentBy} · {data.sentTime}</p>
       </div>
     </div>
   );
@@ -111,14 +111,14 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
     return (
       <div className={`flex ${isMe ? "justify-end" : "justify-start"} mb-4`}>
         {!isMe && (
-          <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-bold flex-shrink-0 mr-2 mt-1 self-start">
+          <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[12px] font-bold flex-shrink-0 mr-2 mt-1 self-start">
             보
           </div>
         )}
         <div className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
-          {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
+          {!isMe && <p className="text-[12px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
           <DailyReportCard data={msg.reportData} />
-          <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+          <p className="text-[12px] text-gray-400 mt-1 px-1">{msg.time}</p>
         </div>
       </div>
     );
@@ -129,12 +129,12 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
     return (
       <div className={`flex ${isMe ? "flex-row-reverse" : "flex-row"} items-end gap-2 mb-3`}>
         {!isMe && (
-          <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-bold flex-shrink-0 self-end">
+          <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[12px] font-bold flex-shrink-0 self-end">
             보
           </div>
         )}
         <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} max-w-[72%]`}>
-          {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
+          {!isMe && <p className="text-[12px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
           <AttachmentContent msg={msg} />
           {msg.text && (
             <div
@@ -148,7 +148,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
               {msg.text}
             </div>
           )}
-          <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+          <p className="text-[12px] text-gray-400 mt-1 px-1">{msg.time}</p>
         </div>
       </div>
     );
@@ -157,12 +157,12 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
   return (
     <div className={`flex ${isMe ? "flex-row-reverse" : "flex-row"} items-end gap-2 mb-3`}>
       {!isMe && (
-        <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[10px] font-bold flex-shrink-0 self-end">
+        <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 text-[12px] font-bold flex-shrink-0 self-end">
           보
         </div>
       )}
       <div className={`flex flex-col ${isMe ? "items-end" : "items-start"} max-w-[72%]`}>
-        {!isMe && <p className="text-[10px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
+        {!isMe && <p className="text-[12px] text-gray-400 mb-1 ml-1">{msg.senderName}</p>}
         <div
           className="px-4 py-2.5 rounded-2xl text-sm leading-relaxed"
           style={
@@ -177,7 +177,7 @@ function MessageBubble({ msg }: { msg: ChatMessage }) {
         >
           {msg.text}
         </div>
-        <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+        <p className="text-[12px] text-gray-400 mt-1 px-1">{msg.time}</p>
       </div>
     </div>
   );
@@ -202,7 +202,7 @@ function MiniStat({
       <span className="text-xs font-bold text-gray-800 whitespace-nowrap">{value}</span>
       {!isNeutral && (
         <span
-          className="text-[10px] font-semibold whitespace-nowrap"
+          className="text-[12px] font-semibold whitespace-nowrap"
           style={{ color: positive ? "#10b981" : "#ef4444" }}
         >
           {positive ? "↑" : "↓"}{change}
@@ -354,7 +354,7 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
             </div>
             <div className="min-w-0 flex-shrink-0">
               <p className="text-sm font-bold text-gray-900 leading-tight">{conversation.studentName}</p>
-              <p className="text-[10px] text-gray-400">{conversation.parentName}</p>
+              <p className="text-[12px] text-gray-400">{conversation.parentName}</p>
             </div>
 
             {/* Divider */}
@@ -372,7 +372,7 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
 
             {/* AI 케어 button — desktop */}
             <button
-              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[11px] font-semibold text-white cursor-pointer whitespace-nowrap transition-opacity hover:opacity-85 flex-shrink-0"
+              className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-[12.5px] font-semibold text-white cursor-pointer whitespace-nowrap transition-opacity hover:opacity-85 flex-shrink-0"
               style={{ background: "linear-gradient(135deg, #026eff 0%, #0243c2 100%)" }}
             >
               <i className="ri-sparkling-2-line text-xs" />
@@ -415,7 +415,7 @@ export default function MessageChatPanel({ conversation, onBack }: Props) {
             <button
               key={reply}
               onClick={() => setInput(reply)}
-              className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+              className="flex-shrink-0 px-3 py-1.5 rounded-full text-[12.5px] font-medium text-gray-600 border border-gray-200 bg-white hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
             >
               {reply}
             </button>

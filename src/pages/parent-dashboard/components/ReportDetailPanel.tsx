@@ -48,7 +48,7 @@ function QuickReplies({ onSend }: { onSend: (msg: string) => void }) {
         <button
           key={t}
           onClick={() => onSend(t)}
-          className="text-[11px] px-3 py-1.5 rounded-full border border-gray-200 text-gray-600 hover:border-[#10b981] hover:text-[#10b981] hover:bg-[rgba(16,185,129,0.05)] transition-all cursor-pointer whitespace-nowrap"
+          className="text-[12.5px] px-3 py-1.5 rounded-full border border-gray-200 text-gray-600 hover:border-[#10b981] hover:text-[#10b981] hover:bg-[rgba(16,185,129,0.05)] transition-all cursor-pointer whitespace-nowrap"
         >
           {t}
         </button>
@@ -157,11 +157,11 @@ export default function ReportDetailPanel({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-gray-800 leading-tight">{report.actor}</p>
-          <p className="text-[11px] text-gray-400 mt-0.5 leading-tight">{report.sentAt ?? report.time}</p>
+          <p className="text-[12.5px] text-gray-400 mt-0.5 leading-tight">{report.sentAt ?? report.time}</p>
         </div>
         {confirmed ? (
           <span
-            className="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full flex-shrink-0"
+            className="inline-flex items-center gap-1 text-[12.5px] font-semibold px-2.5 py-1 rounded-full flex-shrink-0"
             style={{ color: "#10b981", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)" }}
           >
             <i className="ri-checkbox-circle-fill text-[12px]" />
@@ -170,7 +170,7 @@ export default function ReportDetailPanel({
         ) : (
           <button
             onClick={handleConfirm}
-            className="text-[11px] font-semibold px-3 py-1 rounded-full border cursor-pointer whitespace-nowrap transition-all hover:bg-gray-50 flex-shrink-0"
+            className="text-[12.5px] font-semibold px-3 py-1 rounded-full border cursor-pointer whitespace-nowrap transition-all hover:bg-gray-50 flex-shrink-0"
             style={{ color: "#6b7280", borderColor: "#e5e7eb" }}
           >
             확인하기
@@ -183,14 +183,14 @@ export default function ReportDetailPanel({
         className="rounded-2xl p-4"
         style={{ background: "white", border: "1px solid rgba(0,0,0,0.06)" }}
       >
-        <p className="text-[11px] font-semibold text-gray-400 mb-2 uppercase tracking-wide">내용</p>
+        <p className="text-[12.5px] font-semibold text-gray-400 mb-2 uppercase tracking-wide">내용</p>
         <p className="text-sm text-gray-700 leading-relaxed">
           {isLong && !showAllContent ? `${report.content.slice(0, 120)}...` : report.content}
         </p>
         {isLong && (
           <button
             onClick={() => setShowAllContent((v) => !v)}
-            className="mt-2 text-[11px] font-semibold cursor-pointer transition-colors"
+            className="mt-2 text-[12.5px] font-semibold cursor-pointer transition-colors"
             style={{ color: typeMeta.color }}
           >
             {showAllContent ? "접기" : "전체 보기"}
@@ -220,7 +220,7 @@ export default function ReportDetailPanel({
             <div className="w-4 h-4 flex items-center justify-center">
               <i className="ri-robot-2-line text-[#f59e0b] text-sm" />
             </div>
-            <span className="text-[11px] font-bold text-[#b45309]">AI 요약</span>
+            <span className="text-[12.5px] font-bold text-[#b45309]">AI 요약</span>
           </div>
           <p className="text-xs text-gray-600 leading-relaxed">{report.aiSummary || report.aiInsight}</p>
         </div>
@@ -235,7 +235,7 @@ export default function ReportDetailPanel({
           <div className="w-4 h-4 flex items-center justify-center flex-shrink-0 mt-0.5">
             <i className="ri-checkbox-circle-fill text-[#10b981] text-xs" />
           </div>
-          <p className="text-[11px] text-gray-600 leading-relaxed">{report.teacherConfirmed}</p>
+          <p className="text-[12.5px] text-gray-600 leading-relaxed">{report.teacherConfirmed}</p>
         </div>
       )}
 
@@ -243,7 +243,7 @@ export default function ReportDetailPanel({
 
       {/* Reactions */}
       <div>
-        <p className="text-[11px] font-semibold text-gray-400 mb-2.5 uppercase tracking-wide">반응</p>
+        <p className="text-[12.5px] font-semibold text-gray-400 mb-2.5 uppercase tracking-wide">반응</p>
         <div className="flex gap-2">
           {REACTIONS.map((r) => (
             <button
@@ -272,7 +272,7 @@ export default function ReportDetailPanel({
             <i className="ri-check-double-line text-[#10b981] text-xs" />
           </div>
           <div>
-            <p className="text-[10px] font-semibold text-[#10b981] mb-0.5">답장 전송됨</p>
+            <p className="text-[12px] font-semibold text-[#10b981] mb-0.5">답장 전송됨</p>
             <p className="text-xs text-gray-600">{sentReply}</p>
           </div>
         </div>
@@ -281,7 +281,7 @@ export default function ReportDetailPanel({
       {/* Reply area */}
       {!sentReply && (
         <div>
-          <p className="text-[11px] font-semibold text-gray-400 mb-2.5 uppercase tracking-wide">선생님께 답장</p>
+          <p className="text-[12.5px] font-semibold text-gray-400 mb-2.5 uppercase tracking-wide">선생님께 답장</p>
           <QuickReplies onSend={handleSendReply} />
           <div className="flex items-end gap-2 mt-3">
             <textarea
@@ -309,7 +309,7 @@ export default function ReportDetailPanel({
               <i className="ri-send-plane-fill text-sm" />
             </button>
           </div>
-          <p className="text-right text-[10px] text-gray-300 mt-1">{replyText.length}/200</p>
+          <p className="text-right text-[12px] text-gray-300 mt-1">{replyText.length}/200</p>
         </div>
       )}
     </div>

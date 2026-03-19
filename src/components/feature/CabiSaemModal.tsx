@@ -119,11 +119,11 @@ export default function CabiSaemModal({ mode, onClose }: CabiSaemModalProps) {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <p className="text-white text-sm font-bold">캐비쌤</p>
-              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-white/20 text-white whitespace-nowrap">
+              <span className="text-[12px] font-semibold px-1.5 py-0.5 rounded-full bg-white/20 text-white whitespace-nowrap">
                 ABA 컨설팅 AI
               </span>
             </div>
-            <p className="text-white/70 text-[10px] mt-0.5">
+            <p className="text-white/70 text-[12px] mt-0.5">
               {mode === "teacher"
                 ? "행동 분석·강화 전략·BIP 작성을 도와드려요"
                 : "가정 지원·행동 대처·강화 전략을 쉽게 알려드려요"}
@@ -143,7 +143,7 @@ export default function CabiSaemModal({ mode, onClose }: CabiSaemModalProps) {
           style={{ background: "#fffbeb", borderBottom: "1px solid #fde68a" }}
         >
           <i className="ri-information-line text-amber-500 text-xs flex-shrink-0 mt-0.5" />
-          <p className="text-[10px] text-amber-700 leading-relaxed">
+          <p className="text-[12px] text-amber-700 leading-relaxed">
             캐비쌤은 참고용 AI예요. 의료·법적 조언을 대체하지 않으며 중요한 결정은 전문가와 상의하세요.
           </p>
         </div>
@@ -161,7 +161,7 @@ export default function CabiSaemModal({ mode, onClose }: CabiSaemModalProps) {
                     className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 self-end"
                     style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)" }}
                   >
-                    <i className="ri-sparkling-2-fill text-white text-[10px]" />
+                    <i className="ri-sparkling-2-fill text-white text-[12px]" />
                   </div>
                 )}
                 <div
@@ -181,7 +181,7 @@ export default function CabiSaemModal({ mode, onClose }: CabiSaemModalProps) {
                   >
                     {msg.text}
                   </div>
-                  <p className="text-[10px] text-gray-400 mt-1 px-1">{msg.time}</p>
+                  <p className="text-[12px] text-gray-400 mt-1 px-1">{msg.time}</p>
                 </div>
               </div>
             ))}
@@ -193,7 +193,7 @@ export default function CabiSaemModal({ mode, onClose }: CabiSaemModalProps) {
                   className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{ background: "linear-gradient(135deg, #f59e0b, #d97706)" }}
                 >
-                  <i className="ri-sparkling-2-fill text-white text-[10px]" />
+                  <i className="ri-sparkling-2-fill text-white text-[12px]" />
                 </div>
                 <div
                   className="px-4 py-3 rounded-2xl flex items-center gap-1"
@@ -221,7 +221,7 @@ export default function CabiSaemModal({ mode, onClose }: CabiSaemModalProps) {
               <button
                 key={s}
                 onClick={() => sendMessage(s)}
-                className="flex-shrink-0 px-3 py-1.5 rounded-full text-[11px] font-medium border cursor-pointer whitespace-nowrap transition-colors hover:bg-amber-50"
+                className="flex-shrink-0 px-3 py-1.5 rounded-full text-[12.5px] font-medium border cursor-pointer whitespace-nowrap transition-colors hover:bg-amber-50"
                 style={{ borderColor: "#f59e0b", color: "#d97706", background: "white" }}
               >
                 {s}

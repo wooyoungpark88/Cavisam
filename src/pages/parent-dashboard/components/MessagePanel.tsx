@@ -135,7 +135,7 @@ export default function MessagePanel() {
           </div>
           <h2 className="text-sm font-bold text-gray-900">선생님과 대화</h2>
         </div>
-        <span className="text-[11px] text-gray-400">{messages.length > 0 ? `${messages.length}개 메시지` : "새 대화"}</span>
+        <span className="text-[12.5px] text-gray-400">{messages.length > 0 ? `${messages.length}개 메시지` : "새 대화"}</span>
       </div>
 
       {/* Messages */}
@@ -181,7 +181,7 @@ export default function MessagePanel() {
                     {msg.content}
                   </div>
                 )}
-                <span className="text-[10px] text-gray-300 px-1">{time}</span>
+                <span className="text-[12px] text-gray-300 px-1">{time}</span>
               </div>
             </div>
           );
@@ -199,7 +199,7 @@ export default function MessagePanel() {
             )}
             <button
               onClick={clearPending}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[10px] shadow cursor-pointer hover:bg-red-600"
+              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-[12px] shadow cursor-pointer hover:bg-red-600"
             >
               <i className="ri-close-line" />
             </button>

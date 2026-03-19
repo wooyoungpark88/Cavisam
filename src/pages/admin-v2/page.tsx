@@ -155,12 +155,12 @@ export default function AdminPage() {
               <div className="w-5 h-5 flex items-center justify-center relative">
                 <i className={`${tab.icon} text-base`} />
                 {tab.key === "pending" && pendingCount > 0 && (
-                  <span className="absolute -top-1 -right-1.5 w-3.5 h-3.5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[8px] font-bold leading-none">
+                  <span className="absolute -top-1 -right-1.5 w-3.5 h-3.5 rounded-full bg-orange-400 flex items-center justify-center text-white text-[10px] font-bold leading-none">
                     {pendingCount}
                   </span>
                 )}
               </div>
-              <span className="text-[9px] font-medium leading-tight">{tab.label}</span>
+              <span className="text-[11px] font-medium leading-tight">{tab.label}</span>
             </button>
           );
         })}

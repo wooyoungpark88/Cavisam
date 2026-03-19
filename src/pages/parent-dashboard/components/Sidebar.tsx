@@ -72,7 +72,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
           </div>
           <span className="font-bold text-sm tracking-tight" style={{ color: "#0f172a" }}>CareVia</span>
         </div>
-        <p className="text-[10px] pl-8" style={{ color: "rgba(234,88,12,0.5)" }}>보호자 대시보드</p>
+        <p className="text-[12px] pl-8" style={{ color: "rgba(234,88,12,0.5)" }}>보호자 대시보드</p>
       </div>
 
       {/* Child info */}
@@ -94,7 +94,7 @@ export default function Sidebar({ active, onSelect }: SidebarProps) {
             <p className="text-xs font-semibold leading-tight truncate" style={{ color: "#1e293b" }}>
               {childName}
             </p>
-            <p className="text-[10px] leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
+            <p className="text-[12px] leading-tight truncate" style={{ color: "rgba(234,88,12,0.5)" }}>
               CareVia
             </p>
           </div>

@@ -55,7 +55,7 @@ function StatusCards({ visible, dailyStatus }: { visible: boolean; dailyStatus: 
             <p className="text-xs sm:text-sm font-bold leading-tight" style={{ color: s.color }}>
               {s.value}
             </p>
-            <p className="text-[10px] sm:text-[11px] text-gray-400 leading-tight mt-0.5">{s.label}</p>
+            <p className="text-[12px] sm:text-[12.5px] text-gray-400 leading-tight mt-0.5">{s.label}</p>
           </div>
         </div>
       ))}
@@ -136,7 +136,7 @@ function MorningFormModal({
             </div>
             <div>
               <p className="text-sm font-bold text-gray-900 leading-tight">오늘 등원 전 한마디</p>
-              <p className="text-[11px] text-gray-400 leading-tight mt-0.5">
+              <p className="text-[12.5px] text-gray-400 leading-tight mt-0.5">
                 박지영 선생님께 전달돼요
               </p>
             </div>
@@ -178,10 +178,10 @@ function MorningReportBanner({
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-xs sm:text-sm font-bold text-[#10b981] leading-tight">오늘 등원 전 한마디 완료</p>
-          <p className="text-[11px] text-gray-400 mt-0.5">박지영 선생님께 전달됐어요</p>
+          <p className="text-[12.5px] text-gray-400 mt-0.5">박지영 선생님께 전달됐어요</p>
         </div>
         <span
-          className="text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0"
+          className="text-[12.5px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0"
           style={{ background: "rgba(16,185,129,0.12)", color: "#10b981" }}
         >
           발송됨
@@ -229,7 +229,7 @@ function MorningReportBanner({
                 오늘 등원 전 한마디가 아직 전달되지 않았어요
               </p>
               <span
-                className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
+                className="inline-flex items-center gap-1 text-[12px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
                 style={{ background: "#fee2e2", color: "#ef4444" }}
               >
                 <span
@@ -239,10 +239,10 @@ function MorningReportBanner({
                 미발송
               </span>
             </div>
-            <p className="text-[11px] text-gray-500 leading-relaxed hidden sm:block">
+            <p className="text-[12.5px] text-gray-500 leading-relaxed hidden sm:block">
               선생님이 오늘 자녀의 상태를 파악하려면 등원 전 한마디가 필요해요. 등원 전이나 오전 중에 꼭 보내주세요.
             </p>
-            <p className="text-[11px] text-gray-500 leading-relaxed sm:hidden">
+            <p className="text-[12.5px] text-gray-500 leading-relaxed sm:hidden">
               선생님이 오늘 수업 계획에 반영할 수 있도록 보내주세요.
             </p>
           </div>
@@ -264,7 +264,7 @@ function MorningReportBanner({
               <div className="w-4 h-4 sm:w-5 sm:h-5 flex items-center justify-center flex-shrink-0">
                 <i className={`${item.icon} text-xs sm:text-sm`} style={{ color: "#f97316" }} />
               </div>
-              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-600 whitespace-nowrap">{item.label}</span>
+              <span className="text-[12px] sm:text-[12.5px] font-semibold text-gray-600 whitespace-nowrap">{item.label}</span>
             </div>
           ))}
         </div>
@@ -280,7 +280,7 @@ function MorningReportBanner({
             <span className="hidden sm:inline">지금 등원 전 한마디 작성하기</span>
             <span className="sm:hidden">등원 전 한마디 작성하기</span>
           </button>
-          <p className="text-[11px] text-gray-400 leading-tight hidden sm:block">
+          <p className="text-[12.5px] text-gray-400 leading-tight hidden sm:block">
             선생님은 등원 전 한마디를 확인 후<br />
             당일 수업 계획에 반영해요
           </p>
@@ -303,14 +303,14 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
     >
       <div className="flex items-center gap-2 mb-2 sm:mb-3">
         <div
-          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
+          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
           style={{ background: "#026eff" }}
         >
           {entry.actorInitial}
         </div>
         <span className="text-xs font-semibold text-gray-700 flex-1 truncate">{entry.actor}</span>
         <span
-          className="text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
+          className="text-[12px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: "rgba(2,110,255,0.12)", color: "#026eff" }}
         >
           등원 전 한마디
@@ -320,17 +320,17 @@ function ParentEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         </div>
       </div>
       <div className="bg-white rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5 mb-2 sm:mb-2.5">
-        <p className="text-[10px] font-semibold text-gray-400 mb-1">AI 요약</p>
+        <p className="text-[12px] font-semibold text-gray-400 mb-1">AI 요약</p>
         <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{entry.aiSummary}</p>
       </div>
       <div className="flex items-center gap-2">
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
           <i className="ri-checkbox-circle-fill text-[#10b981] text-xs" />
         </div>
-        <span className="text-[11px] text-gray-500 flex-1 truncate">{entry.teacherConfirmed}</span>
+        <span className="text-[12.5px] text-gray-500 flex-1 truncate">{entry.teacherConfirmed}</span>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
             color: confirmed ? "#10b981" : "#9ca3af",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
@@ -353,7 +353,7 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
     >
       <div className="flex items-center gap-2 mb-2">
         <div
-          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
+          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
           style={{ background: entry.actorColor }}
         >
           {entry.actorInitial}
@@ -378,7 +378,7 @@ function TeacherEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () =>
         <span className="text-sm leading-none ml-0.5">👍</span>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="ml-auto text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="ml-auto text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
             color: confirmed ? "#10b981" : "#9ca3af",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
@@ -405,7 +405,7 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
       {/* Header */}
       <div className="flex items-center gap-2 mb-2 sm:mb-2.5">
         <div
-          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0"
+          className="w-6 h-6 rounded-full flex items-center justify-center text-white text-[12px] font-bold flex-shrink-0"
           style={{ background: entry.actorColor }}
         >
           {entry.actorInitial}
@@ -413,10 +413,10 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         <span className="text-xs font-semibold text-gray-700 flex-1 truncate">{entry.actor}</span>
         {/* Type badge */}
         <span
-          className="inline-flex items-center gap-1 text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
+          className="inline-flex items-center gap-1 text-[12px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap"
           style={{ background: badgeBg, color: entry.reportTypeColor ?? "#6b7280" }}
         >
-          {entry.reportTypeIcon && <i className={`${entry.reportTypeIcon} text-[11px]`} />}
+          {entry.reportTypeIcon && <i className={`${entry.reportTypeIcon} text-[12.5px]`} />}
           {entry.reportType}
         </span>
         <div className="w-4 h-4 flex items-center justify-center flex-shrink-0">
@@ -440,16 +440,16 @@ function ReportEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => 
         <div className="flex-1" />
         {confirmed ? (
           <span
-            className="inline-flex items-center gap-1 text-[10px] font-semibold px-2.5 py-1 rounded-lg"
+            className="inline-flex items-center gap-1 text-[12px] font-semibold px-2.5 py-1 rounded-lg"
             style={{ color: "#10b981", background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.25)" }}
           >
-            <i className="ri-checkbox-circle-fill text-[11px]" />
+            <i className="ri-checkbox-circle-fill text-[12.5px]" />
             확인됨
           </span>
         ) : (
           <button
             onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-            className="text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+            className="text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
             style={{ color: "#9ca3af", borderColor: "#e5e7eb", background: "white" }}
           >
             확인
@@ -481,7 +481,7 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
         </div>
         <button
           onClick={(e) => { e.stopPropagation(); setConfirmed(true); }}
-          className="text-[10px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
+          className="text-[12px] border px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-lg hover:bg-gray-50 cursor-pointer whitespace-nowrap transition-colors"
           style={{
             color: confirmed ? "#10b981" : "#9ca3af",
             borderColor: confirmed ? "#10b981" : "#e5e7eb",
@@ -498,7 +498,7 @@ function AIEntry({ entry, onClick }: { entry: TimelineEntry; onClick: () => void
         {entry.content}
       </p>
       <div className="bg-white rounded-lg sm:rounded-xl px-2.5 sm:px-3 py-2 sm:py-2.5">
-        <p className="text-[10px] font-semibold text-gray-400 mb-1">AI Insight</p>
+        <p className="text-[12px] font-semibold text-gray-400 mb-1">AI Insight</p>
         <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">{entry.aiInsight}</p>
       </div>
     </div>
@@ -562,7 +562,7 @@ function TimelineColumn({
                   }}
                 />
               </div>
-              <p className="text-[11px] font-bold text-gray-400 mb-1.5 tracking-wide leading-none">
+              <p className="text-[12.5px] font-bold text-gray-400 mb-1.5 tracking-wide leading-none">
                 {entry.time}
               </p>
               <EntryRenderer entry={entry} onSelect={onSelect} />
@@ -588,16 +588,16 @@ function AISidebar({
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
         <h3 className="text-xs font-bold text-gray-800 mb-3">AI 주간 인사이트</h3>
         {aiWeeklyInsights.length === 0 ? (
-          <p className="text-[11px] text-gray-400">아직 분석할 데이터가 없어요</p>
+          <p className="text-[12.5px] text-gray-400">아직 분석할 데이터가 없어요</p>
         ) : (
           <div className="space-y-3.5">
             {aiWeeklyInsights.map((insight, i) => (
               <div key={i}>
                 {/* 라벨 + 변화율 배지 */}
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] text-gray-600">{insight.label}</span>
+                  <span className="text-[12.5px] text-gray-600">{insight.label}</span>
                   <span
-                    className="text-[11px] font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
+                    className="text-[12.5px] font-bold px-1.5 py-0.5 rounded-md whitespace-nowrap"
                     style={{ background: `${insight.color}15`, color: insight.color }}
                   >
                     {insight.badge}
@@ -611,7 +611,7 @@ function AISidebar({
                   />
                 </div>
                 {/* 막대 의미 설명 */}
-                <p className="text-[9px] text-gray-400 leading-relaxed">{insight.subLabel}</p>
+                <p className="text-[11px] text-gray-400 leading-relaxed">{insight.subLabel}</p>
               </div>
             ))}
           </div>
@@ -621,10 +621,10 @@ function AISidebar({
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-xs font-bold text-gray-800">돌봄 팀</h3>
-          <span className="text-[10px] text-gray-400 font-medium">클릭 시 대화</span>
+          <span className="text-[12px] text-gray-400 font-medium">클릭 시 대화</span>
         </div>
         {careTeamDisplay.length === 0 ? (
-          <p className="text-[11px] text-gray-400">돌봄 팀 정보가 없어요</p>
+          <p className="text-[12.5px] text-gray-400">돌봄 팀 정보가 없어요</p>
         ) : (
           <div className="flex gap-2 sm:block sm:space-y-1 overflow-x-auto pb-1 sm:pb-0">
             {careTeamDisplay.slice(0, 3).map((member) => (
@@ -651,7 +651,7 @@ function AISidebar({
                   <p className="text-xs font-semibold text-gray-800 leading-tight truncate">
                     {member.name}
                   </p>
-                  <p className="text-[10px] text-gray-400 leading-tight hidden sm:block">{member.role}</p>
+                  <p className="text-[12px] text-gray-400 leading-tight hidden sm:block">{member.role}</p>
                 </div>
                 {/* Chat icon */}
                 <div
@@ -659,7 +659,7 @@ function AISidebar({
                   style={{ background: `${member.color}18` }}
                 >
                   <i
-                    className="ri-chat-1-line text-[11px]"
+                    className="ri-chat-1-line text-[12.5px]"
                     style={{ color: member.color }}
                   />
                 </div>
@@ -848,7 +848,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
           <h1 className="text-base sm:text-lg font-bold text-gray-900">타임라인</h1>
           {reportCount > 0 && (
             <span
-              className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 sm:px-2.5 py-1 rounded-full"
+              className="inline-flex items-center gap-1 text-[12.5px] font-semibold px-2 sm:px-2.5 py-1 rounded-full"
               style={{ background: "rgba(16,185,129,0.1)", color: "#10b981" }}
             >
               <i className="ri-mail-send-line text-[12px]" />
@@ -877,23 +877,23 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
       {/* Legend — scrollable on mobile */}
       <div className="mb-4 sm:mb-5">
         <div className="flex items-center gap-3 sm:gap-4 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
-          <span className="text-[11px] text-gray-400 font-medium whitespace-nowrap flex-shrink-0">항목 유형</span>
+          <span className="text-[12.5px] text-gray-400 font-medium whitespace-nowrap flex-shrink-0">항목 유형</span>
           {[
             { color: "#026eff", label: "등원 전 한마디" },
             { color: "#10b981", label: "선생님 메시지" },
             { color: "#f59e0b", label: "AI 감지" },
           ].map((item) => (
-            <span key={item.label} className="flex items-center gap-1.5 text-[11px] text-gray-500 whitespace-nowrap flex-shrink-0">
+            <span key={item.label} className="flex items-center gap-1.5 text-[12.5px] text-gray-500 whitespace-nowrap flex-shrink-0">
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: item.color }} />
               {item.label}
             </span>
           ))}
-          <span className="flex items-center gap-1.5 text-[11px] text-gray-500 whitespace-nowrap flex-shrink-0">
+          <span className="flex items-center gap-1.5 text-[12.5px] text-gray-500 whitespace-nowrap flex-shrink-0">
             <span className="w-2 h-2 rounded-full flex-shrink-0 bg-gradient-to-r from-[#10b981] to-[#06b6d4]" />
             선생님 보고서
           </span>
-          <span className="hidden sm:flex items-center gap-1.5 text-[11px] text-gray-400 ml-auto flex-shrink-0">
-            <i className="ri-cursor-line text-[11px]" />
+          <span className="hidden sm:flex items-center gap-1.5 text-[12.5px] text-gray-400 ml-auto flex-shrink-0">
+            <i className="ri-cursor-line text-[12.5px]" />
             항목 클릭 시 상세 보기
           </span>
         </div>
@@ -911,7 +911,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
             <div className="w-1 h-[15px] rounded-full flex-shrink-0" style={{ background: "#1f2937" }} />
             <span className="text-xs font-bold text-gray-900">일일 기록</span>
             <span
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+              className="text-[12px] font-semibold px-2 py-0.5 rounded-full"
               style={{ background: "rgba(31,41,55,0.07)", color: "#6b7280" }}
             >
               메인
@@ -924,16 +924,16 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
                   <i className="ri-time-line text-gray-300 text-lg" />
                 </div>
                 <p className="text-sm text-gray-400">오늘의 기록이 아직 없어요</p>
-                <p className="text-[11px] text-gray-300 mt-1">등원 전 한마디를 작성하면 타임라인이 시작돼요</p>
+                <p className="text-[12.5px] text-gray-300 mt-1">등원 전 한마디를 작성하면 타임라인이 시작돼요</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <div>
-                  <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
+                  <p className="text-[12.5px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오전</p>
                   <TimelineColumn entries={amEntries} onSelect={setSelectedEntry} />
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
+                  <p className="text-[12.5px] font-bold text-gray-300 uppercase tracking-widest mb-3 sm:mb-4">오후</p>
                   <TimelineColumn entries={pmEntries} onSelect={setSelectedEntry} />
                 </div>
               </div>
@@ -954,7 +954,7 @@ export default function HomeTimeline({ onMemberMessage }: { onMemberMessage?: (i
             <div className="w-1 h-[15px] rounded-full flex-shrink-0 bg-gray-300" />
             <span className="text-xs font-semibold text-gray-400">보조 정보</span>
             <span
-              className="text-[10px] font-semibold px-2 py-0.5 rounded-full ml-auto"
+              className="text-[12px] font-semibold px-2 py-0.5 rounded-full ml-auto"
               style={{ background: "rgba(156,163,175,0.12)", color: "#9ca3af" }}
             >
               참고
