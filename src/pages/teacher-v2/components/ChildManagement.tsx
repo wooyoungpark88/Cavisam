@@ -212,7 +212,7 @@ export default function ChildManagement() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-3 p-4 sm:p-5" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))" }}>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4 sm:p-5">
             {displayed.map((student) => (
               <StudentCard key={student.id} student={student} />
             ))}
