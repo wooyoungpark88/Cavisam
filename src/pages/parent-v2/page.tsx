@@ -239,7 +239,7 @@ export default function ParentPage() {
               <div className="flex items-center justify-center gap-2 mt-4 py-2.5 rounded-xl bg-green-50 border border-green-100">
                 <i className="ri-checkbox-circle-fill text-green-500 text-sm" />
                 <span className="text-xs font-medium text-green-700">
-                  {profile?.name ?? profile?.email ?? "사용자"}님으로 로그인됨
+                  {profile?.name ?? "사용자"}님으로 로그인됨
                 </span>
               </div>
             ) : (

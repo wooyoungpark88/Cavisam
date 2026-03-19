@@ -122,7 +122,7 @@ export default function TeacherMessages() {
 
           const parentMsg = msgs.find((m: any) => m.sender_id !== profile.id);
           const parentName = parentMsg?.sender?.name ?? "보호자";
-          const parentId: string = parentMsg?.sender_id ?? student.parent_id ?? "";
+          const parentId: string = parentMsg?.sender_id ?? "";
 
           const chatMessages: ChatMessage[] = msgs.map((m: any) => ({
             id: m.id,
